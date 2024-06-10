@@ -1,15 +1,18 @@
-import { User } from "@/app/models/User"
-import mongoose from "mongoose"
+
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import bcrypt from 'bcrypt';
+import GoogleProvider from "next-auth/providers/google";
 
 const handler = NextAuth( { 
     secret: process.env.SECRET,
     providers: [ 
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET
+        }),
         CredentialsProvider({ 
-            name: 'Credentials', 
-            id: 'credentials',
+            name:   'Credentials', 
+            id:     'credentials',
             credentials: {
                 username: { label: "Username", type: "text", placeholder: "huuvi168@gmail.com" },
                 password: { label: "Password", type: "password" }
@@ -26,24 +29,24 @@ const handler = NextAuth( {
                 //     body: JSON.stringify(credentials),
                 //     headers: { "Content-Type": "application/json" }
                 // })
- 
-                console.log(credentials)
+  
                 const email = credentials?.email 
-                const password = credentials?.password
+                const password = credentials?.password 
+              
+                console.log(req)
 
-                console.log(credentials)
-                console.log(password)
-
-                mongoose.connect(process.env.MONGO_URL)
-                const user =  User.findOne({ email })
+                // mongoose.connect(process.env.MONGO_URL)
+                // const user = await User.findOne({ email })
+                // console.log(user)
         
                 // const passwordChecked = bcrypt.compare(password, user.password)
 
-                // console.log('==--->')
-                // console.log (passwordChecked)
-                // if (user && passwordChecked) {
-                //     return user
-                // }
+                console.log('==--->')
+                console.log (credentials)
+                if (email == 'huuvi168@gmail.com') {
+                    return {"username": "huuvi168", "name": "Vi"}
+                } 
+                return null;
                   
             }
         })

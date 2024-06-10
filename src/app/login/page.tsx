@@ -14,7 +14,7 @@ export default function LoginPage() {
         e.preventDefault();
         setLoginInProgress(true)
         
-        await signIn('credentials', { email, password });
+        await signIn('credentials', { email, password, callbackUrl: '/'});
         // await signIn('credentials' );
 
         setLoginInProgress(false)
@@ -48,7 +48,10 @@ export default function LoginPage() {
                    Or login with provide
                 </div>
 
-                <button className="flex gap-4 items-center justify-center loginWithGoogle" > 
+                <button className="flex gap-4 items-center justify-center loginWithGoogle" 
+                    onClick={ () => signIn('google', { callbackUrl: '/' }) }
+                    type="button"
+                > 
                     <Image width={'32'}  height={'32'}  src={'/google.png'} objectFit={'contain'}   alt={'google icon'} />
                     Login with google 
                 </button>
