@@ -1,10 +1,15 @@
+import { User } from "@/app/models/User"
+import mongoose from "mongoose"
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import bcrypt from 'bcrypt';
 
 const handler = NextAuth( { 
-    providers: [
+    secret: process.env.SECRET,
+    providers: [ 
         CredentialsProvider({ 
             name: 'Credentials', 
+            id: 'credentials',
             credentials: {
                 username: { label: "Username", type: "text", placeholder: "huuvi168@gmail.com" },
                 password: { label: "Password", type: "password" }
@@ -16,20 +21,30 @@ const handler = NextAuth( {
                 // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
                 // You can also use the `req` object to obtain additional parameters
                 // (i.e., the request IP address)
-                const res = await fetch("/your/endpoint", {
-                    method: 'POST',
-                    body: JSON.stringify(credentials),
-                    headers: { "Content-Type": "application/json" }
-                })
-                const user = await res.json()
+                // const res = await fetch("/your/endpoint", {
+                //     method: 'POST',
+                //     body: JSON.stringify(credentials),
+                //     headers: { "Content-Type": "application/json" }
+                // })
+ 
+                console.log(credentials)
+                const email = credentials?.email 
+                const password = credentials?.password
+
+                console.log(credentials)
+                console.log(password)
+
+                mongoose.connect(process.env.MONGO_URL)
+                const user =  User.findOne({ email })
         
-                // If no error and we have user data, return it
-                if (res.ok && user) {
-                    return user
-                }
-                
-                // Return null if user data could not be retrieved
-                return null
+                // const passwordChecked = bcrypt.compare(password, user.password)
+
+                // console.log('==--->')
+                // console.log (passwordChecked)
+                // if (user && passwordChecked) {
+                //     return user
+                // }
+                  
             }
         })
     ]
