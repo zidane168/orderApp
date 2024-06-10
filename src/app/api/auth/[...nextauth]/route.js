@@ -46,8 +46,7 @@ const handler = NextAuth( {
                 if (email == 'huuvi168@gmail.com') {
                     return {"username": "huuvi168", "name": "Vi"}
                 } 
-                return null;
-                  
+                return null; 
             }
         })
     ]
