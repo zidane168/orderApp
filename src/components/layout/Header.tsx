@@ -7,7 +7,10 @@ export default function Header() {
     const session = useSession()
     console.log(session)
 
+    const userData = session?.data?.user
+    const userName  = userData?.name || userData?.email 
     const status = session.status
+    
     return (
         <header className="flex items-center justify-between"> 
             <nav className="flex gap-8 text-gray-500 font-semibold items-center" >
@@ -21,10 +24,13 @@ export default function Header() {
 
             <nav className="flex items-center gap-4 text-gray-500 font-semibold">
                 {status == 'authenticated' && (
-                    <button
-                        onClick={() => signOut()}
-                        className='bg-primary rounded-full text-white'
-                    >Logout </button> 
+                    <>
+                        <Link href={'/profile'}> { userName } </Link>
+                        <button
+                            onClick={() => signOut()}
+                            className='bg-primary rounded-full text-white'
+                        >Logout </button> 
+                    </>
                 )}
                 {status == 'unauthenticated' && (
                     <>
