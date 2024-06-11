@@ -12,10 +12,10 @@ export async function PUT(req: any) {
 
     const email = session?.user.email;
     const user = await User.findOne({ email })
+    user.name = data.name
+    await user.save() 
+    console.log ({ email }, { name: data.name } )
     
-    if ('name' in data) {
-        await User.updateOne({ email }, { name: data.name } )
-    }
 
     return Response.json(true)
 }
