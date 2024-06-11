@@ -2,9 +2,13 @@
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
+import clientPromise from '@/libs/mongoConnect'
 
-const handler = NextAuth( { 
-    secret: process.env.SECRET,
+export const authOptions = 
+{ 
+    secret: process.env.SECRET, 
+    adapter: MongoDBAdapter(clientPromise),
     providers: [ 
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID,
@@ -29,10 +33,10 @@ const handler = NextAuth( {
                 //     body: JSON.stringify(credentials),
                 //     headers: { "Content-Type": "application/json" }
                 // })
-  
+    
                 const email = credentials?.email 
                 const password = credentials?.password 
-              
+                
                 console.log(req)
 
                 // mongoose.connect(process.env.MONGO_URL)
@@ -50,6 +54,7 @@ const handler = NextAuth( {
             }
         })
     ]
-})
+} 
+const handler = NextAuth( authOptions )
 
 export { handler as GET, handler as POST }

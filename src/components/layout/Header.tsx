@@ -7,9 +7,13 @@ export default function Header() {
     const session = useSession()
     console.log(session)
 
+    const status = session.status 
     const userData = session?.data?.user
-    const userName  = userData?.name || userData?.email 
-    const status = session.status
+    let  userName  = userData?.name || userData?.email 
+    let firstName = "";
+    if (userName && userName.includes('')) {
+        firstName = userName.split(' ')[0];
+    }
     
     return (
         <header className="flex items-center justify-between"> 
@@ -18,14 +22,15 @@ export default function Header() {
                 <Link href={'/'}> Home </Link>
                 <Link href={''}> Menu </Link>
                 <Link href={''}> About </Link>
-                <Link href={''}> Contact </Link>
-               
+                <Link href={''}> Contact </Link> 
             </nav>
 
             <nav className="flex items-center gap-4 text-gray-500 font-semibold">
                 {status == 'authenticated' && (
                     <>
-                        <Link href={'/profile'}> { userName } </Link>
+                        <div className='w-[150px]'>
+                            <Link  href={'/profile'} > Hello, { firstName } </Link>
+                        </div>
                         <button
                             onClick={() => signOut()}
                             className='bg-primary rounded-full text-white'
@@ -35,12 +40,9 @@ export default function Header() {
                 {status == 'unauthenticated' && (
                     <>
                         <Link href={'/login'}> Login </Link>
-                        <Link href={'/register'} className = "bg-primary text-white px-4 py-2 rounded-full"> Register </Link> 
-                    </>
-                   
-                )}
-               
-                
+                        <Link href={'/register'} className = "bg-primary text-white px-4 py-2 rounded-full">  Register </Link> 
+                    </> 
+                )} 
             </nav>
         </header>
     )
