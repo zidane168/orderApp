@@ -1,8 +1,11 @@
 'use client'
+import InfoBox from "@/components/layout/InfoBox";
+import SuccessBox from "@/components/layout/SuccessBox";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast  from 'react-hot-toast';
 
 export default function ProfilePage() {
     const session = useSession(); 
@@ -31,7 +34,9 @@ export default function ProfilePage() {
     async function handleProfileInfoUpdate(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setSaved(false)
-        setIsSaving(true)
+        setIsSaving(true) 
+        
+
         const response = await fetch('api/profile', {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
@@ -43,8 +48,24 @@ export default function ProfilePage() {
         setIsSaving(false)
         if ( ok ) {
             setSaved(true)
+            toast.success('Profile saved!')
         }
     } 
+
+    async function handleFileCHange(e: React.FormEvent<HTMLFormElement>) {
+        console.log(e);
+        const files = e?.target?.files;
+        toast('Uploading ...')
+        if (files?.length > 0) {
+            const data = new FormData
+            data.set('file', files[0])
+            await fetch('/api/upload', {
+                method: 'POST',
+                body: data,
+                // headers: {'Content-Type': 'multipart/form-data'}
+            })
+        } 
+    }
 
     return ( 
         <section className="my-8">
@@ -53,17 +74,21 @@ export default function ProfilePage() {
             <div className='max-w-lg mx-auto border p-4'>
 
                 {saved && (
-                    <h2 className="text-center bg-green-200 p-4 rounded-lg border-4 border-green-500"> Profile saved </h2>
+                    <SuccessBox> Profile saved </SuccessBox>
                 )}
 
                 {isSaving && (
-                     <h2 className="text-center bg-blue-200 p-4 rounded-lg border-4 border-blue-500"> Saving ...</h2>
+                   <InfoBox > Saving ... </InfoBox>
                 )}
                 
                 <div className="flex gap-4 items-center mt-2">
                     <div className="bg-gray-600 p-4 rounded-md">
                         <Image src={ userImage } className="rounded-full" width={ 128 } height={ 128 } alt={'avatar'} />
-                        <button type="button" className="mt-2 text-white" > Change avatar </button>
+
+                        <label>
+                            <input type="file" className="hidden" onChange={ handleFileCHange }/>
+                            <span className="cursor-pointer text-white justify-center flex mt-2 border-2 rounded-md p-1"> Change avatar </span>
+                        </label>
                     </div>
                     <form className="grow" onSubmit={ handleProfileInfoUpdate }>
                         <input type="text"  value= { userName }  onChange={ e => setUserName(e.target.value) }/>
