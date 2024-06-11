@@ -34,22 +34,34 @@ export default function ProfilePage() {
     async function handleProfileInfoUpdate(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setSaved(false)
-        setIsSaving(true) 
-        
+        setIsSaving(true)  
 
-        const response = await fetch('api/profile', {
-            method: 'PUT',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({name: userName})
+
+        const savePromise = new Promise(async(resolve, reject) => { 
+            const response = await fetch('api/profile', {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name: userName})
+            })
+    
+            const { ok } = response
+    
+            setIsSaving(false)
+            if ( ok ) {
+                setSaved(true)
+                resolve()
+            } else {
+                reject()
+            }
         })
 
-        const { ok } = response
+        await toast.promise(savePromise, {
+            loading: 'Saving ...',
+            success: 'Profile saved!',
+            error: 'Error',
+        })
 
-        setIsSaving(false)
-        if ( ok ) {
-            setSaved(true)
-            toast.success('Profile saved!')
-        }
+       
     } 
 
     async function handleFileCHange(e: React.FormEvent<HTMLFormElement>) {
