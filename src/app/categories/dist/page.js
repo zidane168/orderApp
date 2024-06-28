@@ -97,6 +97,7 @@ function Categories() {
                                         response = _a.sent();
                                         setCategoryName('');
                                         fetchCategories();
+                                        setEditCategory(null); // fix bug when edit xong se con luu lai va them moi vo tinh se edit
                                         if (response.ok)
                                             resolve();
                                         else

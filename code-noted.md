@@ -75,3 +75,23 @@ toast('Uploading ...')
 
 React.FormEvent<HTMLFormElement>
 async function handleProfileInfoUpdate(e: React.FormEvent<HTMLFormElement>)
+
+
+# ------------------------------------------------------
+## create / updated / show realtime on Category/page.tsx #------------------------------------------------------
+create cong sẽ tự reload lai và khi bấm vào edit se tư sưa 
+hoc cach items-start tat ca cả image, label, button se đứng ở dòng trên cùng
+
+
+ <div className="flex items-start gap-2"> 
+    <div>
+        Image
+    </div>
+    <div className="grow">
+        <label> Menu item name </label>
+        <input type="text" />
+    </div>
+    <div>
+        <button className="mb-2" type="submit"> Create</button>
+    </div>
+</div>
