@@ -13,6 +13,7 @@ const UserSchema = new Schema({
         //     }
         // } 
     },
+    admin: { type: Boolean, default: false }
 }, { timestamps: true})
 
 // UserSchema.post('validate', function(user) {

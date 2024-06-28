@@ -36,7 +36,7 @@ export default function RegisterPage() {
 
     return (
         <section>
-            <h1 className="text-center text-primary mt-6  text-4xl"> Register </h1>
+            <h1 className="mt-6 text-4xl text-center text-primary"> Register </h1>
 
             { userCreated && (
                     <div className="my-4 text-center"> 
@@ -46,7 +46,7 @@ export default function RegisterPage() {
 
             { error && (
                 <div className="my-4 text-center">
-                    Ann error has occurred <br/>
+                    An error has occurred <br/>
                     Please try again later
                 </div>
             )}
@@ -68,16 +68,16 @@ export default function RegisterPage() {
                     Register 
                 </button>
 
-                <div className="text-center text-gray-400 my-4">
+                <div className="my-4 text-center text-gray-400">
                    Or login with provide
                 </div>
 
-                <button className="flex gap-4 items-center justify-center loginWithGoogle" disabled={ creatingUser }> 
+                <button className="flex items-center justify-center gap-4 loginWithGoogle" disabled={ creatingUser }> 
                     <Image width={'32'}  height={'32'}  src={'/google.png'} objectFit={'contain'}   alt={'google icon'} />
                     Login with google 
                 </button>
 
-                <div className="my-6 text-center text-gray-500 text border-t">
+                <div className="my-6 text-center text-gray-500 border-t text">
                     Existing Account? <Link className="underline" href={'/login'}> Login </Link>
                 </div>
             </form>

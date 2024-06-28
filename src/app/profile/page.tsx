@@ -1,6 +1,7 @@
 'use client'
 import InfoBox from "@/components/layout/InfoBox";
 import SuccessBox from "@/components/layout/SuccessBox";
+import UserTabs from "@/components/layout/Tabs";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -17,9 +18,14 @@ export default function ProfilePage() {
     const [ isSaving, setIsSaving ] = useState(false)
     const { status } = session
 
+    const [ isAdmin, setIsAdmin ] = useState(false)
+
     useEffect(() => {
         if (status === 'authenticated') {
             setUserName( session?.data?.user?.name )
+            // setIsAdmin( session?.data?.user?.admin )
+            setIsAdmin(true)
+            // call api here;
         }
     }, [session, status])
 
@@ -35,8 +41,7 @@ export default function ProfilePage() {
         e.preventDefault()
         setSaved(false)
         setIsSaving(true)  
-
-
+        
         const savePromise = new Promise(async(resolve, reject) => { 
             const response = await fetch('api/profile', {
                 method: 'PUT',
@@ -60,8 +65,6 @@ export default function ProfilePage() {
             success: 'Profile saved!',
             error: 'Error',
         })
-
-       
     } 
 
     async function handleFileCHange(e: React.FormEvent<HTMLFormElement>) {
@@ -81,9 +84,9 @@ export default function ProfilePage() {
 
     return ( 
         <section className="my-8">
-            <h1 className="text-center text-primary my-6  text-4xl"> Profile </h1>
+            <UserTabs isAdmin={ isAdmin } />
 
-            <div className='max-w-lg mx-auto border p-4'>
+            <div className='max-w-lg p-4 mx-auto border'>
 
                 {saved && (
                     <SuccessBox> Profile saved </SuccessBox>
@@ -93,13 +96,13 @@ export default function ProfilePage() {
                    <InfoBox > Saving ... </InfoBox>
                 )}
                 
-                <div className="flex gap-4 items-center mt-2">
-                    <div className="bg-gray-600 p-4 rounded-md">
+                <div className="flex items-center gap-4 mt-2">
+                    <div className="p-4 bg-gray-600 rounded-md">
                         <Image src={ userImage } className="rounded-full" width={ 128 } height={ 128 } alt={'avatar'} />
 
                         <label>
                             <input type="file" className="hidden" onChange={ handleFileCHange }/>
-                            <span className="cursor-pointer text-white justify-center flex mt-2 border-2 rounded-md p-1"> Change avatar </span>
+                            <span className="flex justify-center p-1 mt-2 text-white border-2 rounded-md cursor-pointer"> Change avatar </span>
                         </label>
                     </div>
                     <form className="grow" onSubmit={ handleProfileInfoUpdate }>
