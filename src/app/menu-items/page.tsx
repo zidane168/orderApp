@@ -1,3 +1,5 @@
+// tiep tu 6:08:00
+
 'use client'
 import { useProfile } from "@/components/UseProfile"
 import UserTabs from "@/components/layout/Tabs"
@@ -18,18 +20,20 @@ export default function MenuItemsPage() {
         <section className="mt-8">
             <UserTabs isAdmin={ true } />
             <form className="max-w-md mx-auto mt-8">
-                <div className="flex items-start gap-2">
-
+                <div className="flex items-start gap-2"> 
                     <div>
                         Image
                     </div>
                     <div className="grow">
-                        <label> Menu item name </label>
+                        <label> Item name </label>
                         <input type="text" />
-                    </div>
-                    <div>
-                        <button className="mb-2" type="submit"> Create</button>
-                    </div>
+                        <label> Description </label>
+                        <input type="text" />
+                        <label> Base price </label>
+                        <input type="text" />
+
+                        <button type="submit"> Save </button>
+                    </div> 
                 </div>
             </form>
         </section>

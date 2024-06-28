@@ -1,3 +1,4 @@
+// tiep tu 6:08:00
 'use client';
 "use strict";
 exports.__esModule = true;
@@ -17,9 +18,12 @@ function MenuItemsPage() {
             React.createElement("div", { className: "flex items-start gap-2" },
                 React.createElement("div", null, "Image"),
                 React.createElement("div", { className: "grow" },
-                    React.createElement("label", null, " Menu item name "),
-                    React.createElement("input", { type: "text" })),
-                React.createElement("div", null,
-                    React.createElement("button", { className: "mb-2", type: "submit" }, " Create"))))));
+                    React.createElement("label", null, " Item name "),
+                    React.createElement("input", { type: "text" }),
+                    React.createElement("label", null, " Description "),
+                    React.createElement("input", { type: "text" }),
+                    React.createElement("label", null, " Base price "),
+                    React.createElement("input", { type: "text" }),
+                    React.createElement("button", { type: "submit" }, " Save "))))));
 }
 exports["default"] = MenuItemsPage;
