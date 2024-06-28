@@ -1,5 +1,3 @@
-// tiep tu 6:08:00
-
 'use client'
 import { useProfile } from "@/components/UseProfile"
 import UserTabs from "@/components/layout/Tabs"
