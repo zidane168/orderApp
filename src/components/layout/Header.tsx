@@ -5,8 +5,7 @@ import Link from 'next/link'
 import Log from '../../ultis/log'
 
 export default function Header() {
-    const session = useSession()  
-    Log( {content: session} )
+    const session = useSession() 
 
     const status = session.status 
     const userData = session?.data?.user

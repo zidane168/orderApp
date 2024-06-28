@@ -43,7 +43,28 @@ var react_1 = require("react");
 var react_hot_toast_1 = require("react-hot-toast");
 function Categories() {
     var _a = UseProfile_1.useProfile(), profileLoading = _a.loading, profileData = _a.data; // tra
-    var _b = react_1.useState(''), newCategoryName = _b[0], setNewCategoryName = _b[1];
+    var _b = react_1.useState(''), categoryName = _b[0], setCategoryName = _b[1];
+    var _c = react_1.useState([]), categories = _c[0], setCategories = _c[1];
+    var _d = react_1.useState(null), editCategory = _d[0], setEditCategory = _d[1];
+    react_1.useEffect(function () {
+        fetchCategories();
+    }, []);
+    function fetchCategories() {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, fetch('api/categories').then(function (res) {
+                            res.json().then(function (categories) {
+                                setCategories(categories);
+                            });
+                        })];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    }
     if (profileLoading) {
         return "Loading user info ...";
     }
@@ -59,16 +80,23 @@ function Categories() {
                     case 0:
                         ev.preventDefault();
                         creationPromise = new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-                            var response;
+                            var data, response;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0: return [4 /*yield*/, fetch('/api/categories', {
-                                            body: JSON.stringify({ name: newCategoryName }),
-                                            method: 'POST',
-                                            headers: { 'content-type': 'application/json' }
-                                        })];
+                                    case 0:
+                                        data = { name: categoryName };
+                                        if (editCategory) {
+                                            data._id = editCategory._id;
+                                        }
+                                        return [4 /*yield*/, fetch('api/categories', {
+                                                method: editCategory ? 'PUT' : 'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify(data)
+                                            })];
                                     case 1:
                                         response = _a.sent();
+                                        setCategoryName('');
+                                        fetchCategories();
                                         if (response.ok)
                                             resolve();
                                         else
@@ -78,9 +106,9 @@ function Categories() {
                             });
                         }); });
                         return [4 /*yield*/, react_hot_toast_1["default"].promise(creationPromise, {
-                                loading: 'Creating your new category ...',
-                                error: 'Error created,',
-                                success: 'Category created'
+                                loading: editCategory ? 'Updating category' : 'Creating your new category ...',
+                                error: 'Error while creating category!',
+                                success: editCategory ? 'Congrats, Category updated succeed' : 'Congrats, Category created succeed!'
                             })];
                     case 1:
                         _a.sent();
@@ -94,9 +122,31 @@ function Categories() {
         React.createElement("form", { className: "mt-8", onSubmit: handleNewCategorySubmit },
             React.createElement("div", { className: "flex items-end gap-2" },
                 React.createElement("div", { className: "grow" },
-                    React.createElement("label", null, "New Category Name "),
-                    React.createElement("input", { type: "text", value: newCategoryName, onChange: function (ev) { return setNewCategoryName(ev.target.value); } })),
+                    React.createElement("label", null,
+                        editCategory ? 'Update Category' : 'New Category Name',
+                        editCategory && (React.createElement(React.Fragment, null,
+                            ": ",
+                            React.createElement("b", null,
+                                " ",
+                                editCategory.name,
+                                " ")))),
+                    React.createElement("input", { type: "text", value: categoryName, onChange: function (ev) { return setCategoryName(ev.target.value); } })),
                 React.createElement("div", { className: "pb-2" },
-                    React.createElement("button", { type: "submit" }, " Create "))))));
+                    React.createElement("button", { type: "submit" },
+                        " ",
+                        editCategory ? 'Update' : 'Create',
+                        " ")))),
+        React.createElement("div", null,
+            React.createElement("h2", { className: "mt-8 text-sm text-gray-500" }, " Edit Category: "),
+            (categories === null || categories === void 0 ? void 0 : categories.length) > 0 && categories.map(function (c) {
+                return React.createElement("button", { onClick: function () {
+                        setEditCategory(c);
+                        setCategoryName(c.name);
+                    }, className: "flex gap-1 p-2 px-4 mb-1 bg-gray-300 cursor-pointer rounded-xl" },
+                    React.createElement("span", null,
+                        " ",
+                        c.name,
+                        " "));
+            }))));
 }
 exports["default"] = Categories;

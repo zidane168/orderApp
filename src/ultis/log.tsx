@@ -1,7 +1,7 @@
-export default function Log({ content } : { content: any } ): void { 
+export default function Log(content: string): void { 
 
-    console.log("env: ", process.env.ENV)
-    // if ("local" == process.env.ENV) {
+    const currentEnv= 'local' 
+    if ("local" == currentEnv) {
         if (typeof content == 'object') {
             console.log(JSON.stringify(content))
         
@@ -11,5 +11,5 @@ export default function Log({ content } : { content: any } ): void {
         } else {
             console.log(content)
         }
-    // }
+    }
 }

@@ -3,9 +3,7 @@ import {  usePathname } from 'next/navigation'
 import Log from "../../ultis/log";
 
 export default function UserTabs({ isAdmin } : { isAdmin: boolean }) {
-    const path: string = usePathname() 
-    Log( {'content': path} );
-    console.log("env2: ", process.env.GOOGLE_CLIENT_ID)
+    const path: string = usePathname()   
     return (
         <div className="flex justify-center gap-2 mx-auto mb-4 tabs">
             <Link className={ path === '/profile' ? 'active' : ''} href={'/profile'}> Profile </Link>

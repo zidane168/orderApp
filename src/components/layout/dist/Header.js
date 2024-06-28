@@ -3,11 +3,9 @@
 exports.__esModule = true;
 var react_1 = require("next-auth/react");
 var link_1 = require("next/link");
-var log_1 = require("../../ultis/log");
 function Header() {
     var _a;
     var session = react_1.useSession();
-    log_1["default"]({ content: session });
     var status = session.status;
     var userData = (_a = session === null || session === void 0 ? void 0 : session.data) === null || _a === void 0 ? void 0 : _a.user;
     var userName = (userData === null || userData === void 0 ? void 0 : userData.name) || (userData === null || userData === void 0 ? void 0 : userData.email);
