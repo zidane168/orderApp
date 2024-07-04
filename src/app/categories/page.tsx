@@ -1,7 +1,7 @@
 'use client'
 import { useProfile } from "@/components/UseProfile"
 import UserTabs from "@/components/layout/Tabs"
-import Log from "@/ultis/log";
+import Log from "@/utils/log";
 import { ReactHTMLElement, useEffect, useState } from "react"
 import toast from "react-hot-toast";
 

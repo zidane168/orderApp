@@ -1,6 +1,6 @@
 import Link from "next/link"; 
 import {  usePathname } from 'next/navigation'
-import Log from "../../ultis/log";
+import Log from "../../utils/log";
 
 export default function UserTabs({ isAdmin } : { isAdmin: boolean }) {
     const path: string = usePathname()   

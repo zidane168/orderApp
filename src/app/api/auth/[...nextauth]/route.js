@@ -3,7 +3,10 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
-import clientPromise from '@/libs/mongoConnect'
+import clientPromise from '@/libs/mongoConnect' 
+import memberApi from '../../members/member.api';
+import Log from '@/utils/log';
+import toast from 'react-hot-toast';
 
 export const authOptions = 
 { 
@@ -18,38 +21,23 @@ export const authOptions =
             name:   'Credentials', 
             id:     'credentials',
             credentials: {
-                username: { label: "Username", type: "text", placeholder: "huuvi168@gmail.com" },
+                username: { label: "Username", type: "text", placeholder: "your email address" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials, req) {
-                // You need to provide your own logic here that takes the credentials
-                // submitted and returns either a object representing a user or value
-                // that is false/null if the credentials are invalid.
-                // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
-                // You can also use the `req` object to obtain additional parameters
-                // (i.e., the request IP address)
-                // const res = await fetch("/your/endpoint", {
-                //     method: 'POST',
-                //     body: JSON.stringify(credentials),
-                //     headers: { "Content-Type": "application/json" }
-                // })
-    
-                const email = credentials?.email 
-                const password = credentials?.password 
-                
-                console.log(req)
+            async authorize(credentials, req) { 
+                const res = await memberApi.login({
+                    email:      credentials.email,
+                    password:   credentials.password,
+                })
 
-                // mongoose.connect(process.env.MONGO_URL)
-                // const user = await User.findOne({ email })
-                // console.log(user)
-        
-                // const passwordChecked = bcrypt.compare(password, user.password)
+                if (res.data.status === 200) {
+                    localStorage.setItem('token', res.data.params.token);
+                } else {
+                    toast.error('Login failed. Please check your credentials')
+                }
 
                 console.log('==--->')
-                console.log (credentials)
-                if (email == 'huuvi168@gmail.com') {
-                    return {"username": "huuvi168", "name": "Vi"}
-                } 
+                console.log (localStorage.getItem('token'))
                 return null; 
             }
         })

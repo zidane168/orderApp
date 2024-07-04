@@ -73,14 +73,39 @@ toast('Uploading ...')
 ## khai bao biến
 # ------------------------------------------------------
 
+## for form
 React.FormEvent<HTMLFormElement>
 async function handleProfileInfoUpdate(e: React.FormEvent<HTMLFormElement>)
 
+## for files
+React.ChangeEvent<HTMLInputElement> 
+async function handleFileChange(ev: React.ChangeEvent<HTMLInputElement>) 
+    const files = ev.target.files;
+
+## for setLink dispatch ( const [ link, setLink ] = useState() )
+## <EditableImage link={ link } setLink={ setLink } />
+interface IEditableImage {
+    link: string,
+    setLink: React.Dispatch<React.SetStateAction<string>>
+}
+
+const uploadPromise = fetch('/api/upload', {
+    method: 'POST',
+    body: data,
+}).then(response => {
+    if (response.ok) {
+        return response.json().then(link => {
+            setLink(link)
+        })
+    } 
+    throw new Error('Something went wrong')
+})
 
 # ------------------------------------------------------
-## create / updated / show realtime on Category/page.tsx #------------------------------------------------------
+## create / updated / show realtime on Category/page.tsx 
+# ------------------------------------------------------
 create cong sẽ tự reload lai và khi bấm vào edit se tư sưa 
-hoc cach items-start tat ca cả image, label, button se đứng ở dòng trên cùng
+hoc cách items-start tat ca cả image, label, button se đứng ở dòng trên cùng
 
 
  <div className="flex items-start gap-2"> 
@@ -96,4 +121,54 @@ hoc cach items-start tat ca cả image, label, button se đứng ở dòng trên
     </div>
 </div>
 
-## xem tiep 6:11:51
+# ------------------------------------------------------
+# Modified array before return!!!
+# ------------------------------------------------------
+constructor(document: EventExpense, domain: string | null) { 
+    const { id,  eventId, expenseType, company, brandPercents, serviceDescription, plannedAmount, actualAmount, paidBy, settledBySponsor, claimStatus, claimRemarks, enabled, eventExpenseFiles  } = document || {};
+    Object.assign(this, {  id, eventId, expenseType, brandPercents, company, serviceDescription, plannedAmount, actualAmount, paidBy, settledBySponsor, claimStatus, claimRemarks, enabled, eventExpenseFiles });
+    this.id = id
+    this.eventId = eventId
+    this.expenseType = expenseType ?? '';    
+    this.company = company ?? '' 
+    this.serviceDescription = serviceDescription ?? ''    
+    this.plannedAmount = plannedAmount ?? 0
+    this.actualAmount = actualAmount ?? 0;
+    this.paidBy = paidBy
+    this.settledBySponsor = settledBySponsor ?? true;  
+    this.claimStatus = claimStatus ?? true
+    this.claimRemarks = claimRemarks ?? ''   
+
+    const updateEventExpenseFiles = eventExpenseFiles?.map( (item) => {
+      item.path = domain + '/' + item.path 
+      return item
+    })  
+
+    this.eventExpenseFiles = updateEventExpenseFiles 
+
+    if (brandPercents) {
+      let temp: any[] = brandPercents.map((brand) => {
+        return {
+          "brandId": brand.brandId, 
+          "brandName": brand.brand.vendorName,
+          "percent": brand.percent
+        }
+      })
+      this.brandPercents =  temp
+    } 
+
+    this.enabled = enabled ?? true;
+  }
+
+## ------------------------------------------------------
+  const brandPercents = data.brandPercents.map( (brand) => {
+                const temp = new BrandPercent(); 
+                temp.eventExpenseId = id
+                temp.brandId = brand.brandId
+                temp.percent = brand.percent 
+                return temp 
+            })   
+            await this.brandPercentRepository.save(brandPercents) 
+            item.brandPercents = brandPercents;  
+
+## xem tiep 6:11:51 

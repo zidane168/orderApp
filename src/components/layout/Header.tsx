@@ -2,7 +2,7 @@
 
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link' 
-import Log from '../../ultis/log'
+import Log from '../../utils/log'
 
 export default function Header() {
     const session = useSession() 

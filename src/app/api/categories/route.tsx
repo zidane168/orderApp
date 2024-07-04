@@ -1,5 +1,5 @@
 import { Category } from "@/app/models/Category"
-import Log from "@/ultis/log"
+import Log from "@/utils/log"
 import mongoose from "mongoose"
 
 export async function POST(req: any) {
