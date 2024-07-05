@@ -14,22 +14,8 @@ export default function EditableImage( {link, setLink} : IEditableImage ) {
       
         const files = ev.target.files;
         if (files?.length > 0) {
-           
-            // const uploadPromise = fetch('/api/upload', {
-            //     method: 'POST',
-            //     body: data,
-            // }).then(response => {
-            //     if (response.ok) {
-            //         return response.json().then(link => {
-            //             setLink(link)
-            //         })
-            //     }
-    
-            //     throw new Error('Something went wrong')
-            // }) 
-
-            let message = ""; 
-
+            
+            let message = "";  
             const uploadPromise = memberApi.uploadImage(files[0]).then((result) => {
                 if (result.data.status == 200) { 
  

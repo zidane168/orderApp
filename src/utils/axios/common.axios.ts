@@ -11,6 +11,7 @@ const commonAxios = axios.create({
   }
 });
 
+export const API_HOST = `${commonConfig.API_HOST}` 
 
 export const formatFormData = (data: Object) => {
   const fd = new FormData();

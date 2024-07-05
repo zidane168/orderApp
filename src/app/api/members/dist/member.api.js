@@ -72,11 +72,8 @@ var memberApi = {
                 case 0:
                     formData = new FormData();
                     formData.append("file", file);
-                    console.log('------ files ------');
-                    console.log(file);
-                    common_axios_1["default"].defaults.headers['Content-Type'] = 'multipart/form-data';
                     return [4 /*yield*/, axios_1["default"]({
-                            url: 'http://localhost:8888/Ecommerce-NextJS/order-app-server/api/v1/members/uploadImage.json',
+                            url: common_axios_1.API_HOST + '/api/v1/members/uploadImage.json',
                             method: 'POST',
                             data: formData,
                             headers: {
@@ -85,11 +82,7 @@ var memberApi = {
                                 Language: 'en_US'
                             }
                         })];
-                case 1: 
-                // return commonAxios.post<AxiosResponseData>('/api/v1/members/uploadImage.json', { 
-                //   data: file
-                // });
-                return [2 /*return*/, _a.sent()];
+                case 1: return [2 /*return*/, _a.sent()];
             }
         });
     }); }

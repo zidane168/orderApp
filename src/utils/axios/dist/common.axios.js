@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.formatFormData = void 0;
+exports.formatFormData = exports.API_HOST = void 0;
 var axios_1 = require("axios");
 var configs_1 = require("../configs");
 var commonAxios = axios_1["default"].create({
@@ -10,6 +10,7 @@ var commonAxios = axios_1["default"].create({
         'Content-Type': 'application/json'
     }
 });
+exports.API_HOST = "" + configs_1.commonConfig.API_HOST;
 exports.formatFormData = function (data) {
     var fd = new FormData();
     Object.entries(data).forEach(function (_a) {

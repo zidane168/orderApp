@@ -1,4 +1,4 @@
-import commonAxios from "@/utils/axios/common.axios";
+import commonAxios, { API_HOST } from "@/utils/axios/common.axios";
 
 import type { AxiosResponseData } from "@/utils/axios/axios.types";
 import { IMember, ILogin, IAvatar } from "./member.api.types"; 
@@ -28,19 +28,11 @@ const memberApi = {
   }, 
 
   uploadImage: async (file: File) => {
-    var formData = new FormData();
-    formData.append("file", file);
-
-    console.log( '------ files ------' )
-    console.log( file )
-
-    commonAxios.defaults.headers['Content-Type'] = 'multipart/form-data';
-    // return commonAxios.post<AxiosResponseData>('/api/v1/members/uploadImage.json', { 
-    //   data: file
-    // });
+    const formData = new FormData();
+    formData.append("file", file);  
 
     return await axios({
-      url: 'http://localhost:8888/Ecommerce-NextJS/order-app-server/api/v1/members/uploadImage.json',
+      url: API_HOST + '/api/v1/members/uploadImage.json',
       method: 'POST',
       data: formData,
       headers: {
