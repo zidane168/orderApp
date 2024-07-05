@@ -36,61 +36,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.GET = exports.PUT = void 0;
-var mongoose_1 = require("mongoose");
-var next_auth_1 = require("next-auth");
-var route_1 = require("../auth/[...nextauth]/route");
-var User_1 = require("@/app/models/User");
-// ---------------------------------
-// xem tiep 4:02:00
-// ---------------------------------
-function PUT(req) {
+exports.POST = void 0;
+function POST(req) {
     return __awaiter(this, void 0, void 0, function () {
-        var data, session, email, user;
+        var data;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0:
-                    mongoose_1["default"].connect(process.env.MONGO_URL);
-                    return [4 /*yield*/, req.json()];
+                case 0: return [4 /*yield*/, req.formData()];
                 case 1:
                     data = _a.sent();
-                    return [4 /*yield*/, next_auth_1.getServerSession(route_1.authOptions)];
-                case 2:
-                    session = _a.sent();
-                    email = session === null || session === void 0 ? void 0 : session.user.email;
-                    return [4 /*yield*/, User_1.User.findOne({ email: email })];
-                case 3:
-                    user = _a.sent();
-                    user.name = data.name;
-                    return [4 /*yield*/, user.save()];
-                case 4:
-                    _a.sent();
+                    console.log(data);
+                    if (data.get('file')) {
+                        console.log('got file!!!', data.get('file'));
+                    }
                     return [2 /*return*/, Response.json(true)];
             }
         });
     });
 }
-exports.PUT = PUT;
-function GET() {
-    var _a;
-    return __awaiter(this, void 0, void 0, function () {
-        var session, email, _b, _c;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
-                case 0:
-                    mongoose_1["default"].connect(process.env.MONGO_URL);
-                    return [4 /*yield*/, next_auth_1.getServerSession(route_1.authOptions)];
-                case 1:
-                    session = _d.sent();
-                    email = (_a = session === null || session === void 0 ? void 0 : session.user) === null || _a === void 0 ? void 0 : _a.email;
-                    if (!email) {
-                        return [2 /*return*/, Response.json({})];
-                    }
-                    _c = (_b = Response).json;
-                    return [4 /*yield*/, User_1.User.findOne({ email: email })];
-                case 2: return [2 /*return*/, _c.apply(_b, [_d.sent()])];
-            }
-        });
-    });
-}
-exports.GET = GET;
+exports.POST = POST;

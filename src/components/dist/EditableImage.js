@@ -36,35 +36,36 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+var member_api_1 = require("@/app/api/members/member.api");
 var react_1 = require("react");
 var react_hot_toast_1 = require("react-hot-toast");
+var image_1 = require("next/image");
 function EditableImage(_a) {
     var link = _a.link, setLink = _a.setLink;
     function handleFileChange(ev) {
         return __awaiter(this, void 0, void 0, function () {
-            var files, data, uploadPromise;
+            var files, message_1, uploadPromise;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         files = ev.target.files;
-                        if (!((files === null || files === void 0 ? void 0 : files.length) === 1)) return [3 /*break*/, 2];
-                        data = new FormData;
-                        data.set('file', files[0]);
-                        uploadPromise = fetch('/api/upload', {
-                            method: 'POST',
-                            body: data
-                        }).then(function (response) {
-                            if (response.ok) {
-                                return response.json().then(function (link) {
-                                    setLink(link);
-                                });
+                        if (!((files === null || files === void 0 ? void 0 : files.length) > 0)) return [3 /*break*/, 2];
+                        message_1 = "";
+                        uploadPromise = member_api_1["default"].uploadImage(files[0]).then(function (result) {
+                            var _a, _b, _c, _d;
+                            if (result.data.status == 200) {
+                                console.log((_b = (_a = result === null || result === void 0 ? void 0 : result.data) === null || _a === void 0 ? void 0 : _a.params) === null || _b === void 0 ? void 0 : _b.path);
+                                setLink((_d = (_c = result === null || result === void 0 ? void 0 : result.data) === null || _c === void 0 ? void 0 : _c.params) === null || _d === void 0 ? void 0 : _d.path);
                             }
-                            throw new Error('Something went wrong');
+                            else {
+                                message_1 = result.data.message;
+                                throw new Error(message_1);
+                            }
                         });
                         return [4 /*yield*/, react_hot_toast_1["default"].promise(uploadPromise, {
                                 loading: 'Uploading ...',
                                 success: 'Upload complete',
-                                error: 'Upload failed'
+                                error: message_1
                             })];
                     case 1:
                         _a.sent();
@@ -75,7 +76,7 @@ function EditableImage(_a) {
         });
     }
     return (react_1["default"].createElement(react_1["default"].Fragment, null,
-        link && (react_1["default"].createElement(Image, { className: "w-full h-full mb-1 rounded-lg", src: link, width: 250, height: 250, alt: 'avatar' })),
+        link && (react_1["default"].createElement(image_1["default"], { className: "w-full h-full mb-1 rounded-lg", src: link, width: 100, height: 100, alt: 'avatar' })),
         !link && (react_1["default"].createElement("div", { className: "p-4 mb-1 text-center text-gray-500 bg-gray-200 rounded-lg" }, "No image")),
         react_1["default"].createElement("label", null,
             react_1["default"].createElement("input", { type: "file", className: "hidden", onChange: handleFileChange }),

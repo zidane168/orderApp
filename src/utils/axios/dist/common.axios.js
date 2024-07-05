@@ -1,8 +1,8 @@
 "use strict";
 exports.__esModule = true;
+exports.formatFormData = void 0;
 var axios_1 = require("axios");
 var configs_1 = require("../configs");
-var common_helpers_1 = require("../helpers/common/common.helpers");
 var commonAxios = axios_1["default"].create({
     baseURL: "" + configs_1.commonConfig.API_HOST,
     headers: {
@@ -10,6 +10,21 @@ var commonAxios = axios_1["default"].create({
         'Content-Type': 'application/json'
     }
 });
+exports.formatFormData = function (data) {
+    var fd = new FormData();
+    Object.entries(data).forEach(function (_a) {
+        var key = _a[0], value = _a[1];
+        if (Array.isArray(value) && value.some(function (v) { return v instanceof File; })) {
+            fd.append(key + "[]", value);
+        }
+        else {
+            fd.append(key, typeof value === "string" || value instanceof File
+                ? value
+                : JSON.stringify(value));
+        }
+    });
+    return fd;
+};
 commonAxios.interceptors.request.use(function (req) {
     if (typeof req.headers["Language"] === "undefined" &&
         typeof window !== "undefined")
@@ -20,15 +35,16 @@ commonAxios.interceptors.request.use(function (req) {
             break;
         }
         case "POST": {
-            req.data = JSON.stringify(req.data);
-            // if (!(req.data instanceof FormData) && !!req.data) {
-            //   req.data = formatFormData(req.data);  
-            // }
+            if (!(req.data instanceof FormData) && !!req.data) {
+                req.data = exports.formatFormData(req.data);
+                console.log(' --0-00-> ');
+                console.log(req.data);
+            }
             break;
         }
         case "PUT": {
             if (!(req.data instanceof FormData) && !!req.data) {
-                req.data = common_helpers_1.formatFormData(req.data);
+                req.data = exports.formatFormData(req.data);
                 // req.data = commonHelpers.formatFormData(req.data);
             }
             break;

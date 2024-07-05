@@ -14,3 +14,7 @@ export type ILogin = {
   password: string,
   type: number
 }
+
+export type IAvatar = {
+  file: any
+}

@@ -1,8 +1,7 @@
 import axios from "axios";
 
 import { commonConfig } from "../configs";
-import { commonHelpers } from "../helpers";
-import { formatFormData } from '../helpers/common/common.helpers'
+import { commonHelpers } from "../helpers";  
 
 const commonAxios = axios.create({
   baseURL: `${commonConfig.API_HOST}`,
@@ -11,6 +10,24 @@ const commonAxios = axios.create({
     'Content-Type': 'application/json' 
   }
 });
+
+
+export const formatFormData = (data: Object) => {
+  const fd = new FormData();
+  Object.entries(data).forEach(([key, value]) => {
+    if (Array.isArray(value) && value.some((v) => v instanceof File)) {
+      fd.append(`${key}[]`, value as any);
+    } else {
+      fd.append(
+        key,
+        typeof value === "string" || value instanceof File
+          ? value
+          : JSON.stringify(value)
+      );
+    }
+  });
+  return fd;
+};
 
 commonAxios.interceptors.request.use(
   (req) => {
@@ -26,12 +43,15 @@ commonAxios.interceptors.request.use(
         req.params = req.params || {}; 
         break;
       }
-      case "POST": { 
-        req.data = JSON.stringify(req.data) 
-        // if (!(req.data instanceof FormData) && !!req.data) {
-        //   req.data = formatFormData(req.data);  
+      case "POST": {   
+      
+        if (!(req.data instanceof FormData) && !!req.data) {
+          req.data = formatFormData(req.data);  
+
+          console.log(' --0-00-> ')
+          console.log( req.data)
        
-        // }
+        }
  
         break;
       }

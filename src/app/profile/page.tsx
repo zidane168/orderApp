@@ -7,13 +7,15 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast  from 'react-hot-toast';
+import memberApi from "../api/members/member.api";
+import EditableImage from "@/components/EditableImage";
 
 export default function ProfilePage() {
     const session = useSession(); 
 
-    console.log (' ------------> ')
-    console.log (session)
-    console.log (' ------------> ')
+    // console.log (' ------------> ')
+    // console.log (session)
+    // console.log (' ------------> ')
 
     const userEmail = session.data?.user?.email || '';
     const userImage = session.data?.user?.avatar || '';
@@ -24,11 +26,13 @@ export default function ProfilePage() {
     const { status } = session
 
     const [ isAdmin, setIsAdmin ] = useState(false)
+    const [ image, setImage ] = useState();
 
     useEffect(() => {
         if (status === 'authenticated') {
             setUserName( session?.data?.user?.name )
             setIsAdmin( session?.data?.user?.is_admin ) 
+            setImage( session?.data?.user?.avatar )
             // call api here;
         }
     }, [session, status])
@@ -71,20 +75,41 @@ export default function ProfilePage() {
         })
     } 
 
-    async function handleFileCHange(e: React.FormEvent<HTMLFormElement>) {
-        console.log(e);
-        const files = e?.target?.files;
-        toast('Uploading ...')
-        if (files?.length > 0) {
-            const data = new FormData
-            data.set('file', files[0])
-            await fetch('/api/upload', {
-                method: 'POST',
-                body: data,
-                // headers: {'Content-Type': 'multipart/form-data'}
-            })
-        } 
-    }
+    // async function handleFileChange(e: React.FormEvent<HTMLFormElement>) {
+
+    //     // toast( JSON.stringify(e?.target?.files) )
+    //     const files = e?.target?.files;  
+    //     if (files?.length > 0) {
+    //         const formData = new FormData()
+    //         formData.append('file', files[0])
+
+    //        // toast( JSON.stringify(files[0]) )
+
+    //         // toast('Uploading image:',  );
+    //        toast('Uploading image:', formData.get('file'));
+    //         await memberApi.uploadImage(formData).then((result) => {
+    //             if (result.status == 200) { 
+    //                // toast (JSON.stringify(result))
+    //               //  toast("upload succeed")
+    //             } else {
+    //                // toast("upload failed")
+    //             }
+    //         })
+    //     } 
+        
+    //     // console.log(e);
+    //     // const files = e?.target?.files;
+    //     // toast('Uploading ...')
+    //     // if (files?.length > 0) {
+    //     //     const data = new FormData
+    //     //     data.set('file', files[0])
+    //     //     await fetch('/api/upload', {
+    //     //         method: 'POST',
+    //     //         body: data,
+    //     //         // headers: {'Content-Type': 'multipart/form-data'}
+    //     //     })
+    //     // } 
+    // }
 
     return ( 
         <section className="my-8">
@@ -102,12 +127,7 @@ export default function ProfilePage() {
                 
                 <div className="flex items-center gap-4 mt-2">
                     <div className="p-4 bg-gray-600 rounded-md">
-                        <Image src={ userImage } className="rounded-full" width={ 128 } height={ 128 } alt={'avatar'} />
-
-                        <label>
-                            <input type="file" className="hidden" onChange={ handleFileCHange }/>
-                            <span className="flex justify-center p-1 mt-2 text-white border-2 rounded-md cursor-pointer"> Change avatar </span>
-                        </label>
+                        <EditableImage link={ image } setLink={ setImage } /> 
                     </div>
                     <form className="grow" onSubmit={ handleProfileInfoUpdate }>
                         <input type="text"  value= { userName }  onChange={ e => setUserName(e.target.value) }/>

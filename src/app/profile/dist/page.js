@@ -41,16 +41,16 @@ var InfoBox_1 = require("@/components/layout/InfoBox");
 var SuccessBox_1 = require("@/components/layout/SuccessBox");
 var Tabs_1 = require("@/components/layout/Tabs");
 var react_1 = require("next-auth/react");
-var image_1 = require("next/image");
 var navigation_1 = require("next/navigation");
 var react_2 = require("react");
 var react_hot_toast_1 = require("react-hot-toast");
+var EditableImage_1 = require("@/components/EditableImage");
 function ProfilePage() {
     var _a, _b, _c, _d;
     var session = react_1.useSession();
-    console.log(' ------------> ');
-    console.log(session);
-    console.log(' ------------> ');
+    // console.log (' ------------> ')
+    // console.log (session)
+    // console.log (' ------------> ')
     var userEmail = ((_b = (_a = session.data) === null || _a === void 0 ? void 0 : _a.user) === null || _b === void 0 ? void 0 : _b.email) || '';
     var userImage = ((_d = (_c = session.data) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? void 0 : _d.avatar) || '';
     var _e = react_2.useState(''), userName = _e[0], setUserName = _e[1];
@@ -58,11 +58,13 @@ function ProfilePage() {
     var _g = react_2.useState(false), isSaving = _g[0], setIsSaving = _g[1];
     var status = session.status;
     var _h = react_2.useState(false), isAdmin = _h[0], setIsAdmin = _h[1];
+    var _j = react_2.useState(), image = _j[0], setImage = _j[1];
     react_2.useEffect(function () {
-        var _a, _b, _c, _d;
+        var _a, _b, _c, _d, _e, _f;
         if (status === 'authenticated') {
             setUserName((_b = (_a = session === null || session === void 0 ? void 0 : session.data) === null || _a === void 0 ? void 0 : _a.user) === null || _b === void 0 ? void 0 : _b.name);
             setIsAdmin((_d = (_c = session === null || session === void 0 ? void 0 : session.data) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? void 0 : _d.is_admin);
+            setImage((_f = (_e = session === null || session === void 0 ? void 0 : session.data) === null || _e === void 0 ? void 0 : _e.user) === null || _f === void 0 ? void 0 : _f.avatar);
             // call api here;
         }
     }, [session, status]);
@@ -118,31 +120,37 @@ function ProfilePage() {
             });
         });
     }
-    function handleFileCHange(e) {
-        var _a;
-        return __awaiter(this, void 0, void 0, function () {
-            var files, data;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        console.log(e);
-                        files = (_a = e === null || e === void 0 ? void 0 : e.target) === null || _a === void 0 ? void 0 : _a.files;
-                        react_hot_toast_1["default"]('Uploading ...');
-                        if (!((files === null || files === void 0 ? void 0 : files.length) > 0)) return [3 /*break*/, 2];
-                        data = new FormData;
-                        data.set('file', files[0]);
-                        return [4 /*yield*/, fetch('/api/upload', {
-                                method: 'POST',
-                                body: data
-                            })];
-                    case 1:
-                        _b.sent();
-                        _b.label = 2;
-                    case 2: return [2 /*return*/];
-                }
-            });
-        });
-    }
+    // async function handleFileChange(e: React.FormEvent<HTMLFormElement>) {
+    //     // toast( JSON.stringify(e?.target?.files) )
+    //     const files = e?.target?.files;  
+    //     if (files?.length > 0) {
+    //         const formData = new FormData()
+    //         formData.append('file', files[0])
+    //        // toast( JSON.stringify(files[0]) )
+    //         // toast('Uploading image:',  );
+    //        toast('Uploading image:', formData.get('file'));
+    //         await memberApi.uploadImage(formData).then((result) => {
+    //             if (result.status == 200) { 
+    //                // toast (JSON.stringify(result))
+    //               //  toast("upload succeed")
+    //             } else {
+    //                // toast("upload failed")
+    //             }
+    //         })
+    //     } 
+    //     // console.log(e);
+    //     // const files = e?.target?.files;
+    //     // toast('Uploading ...')
+    //     // if (files?.length > 0) {
+    //     //     const data = new FormData
+    //     //     data.set('file', files[0])
+    //     //     await fetch('/api/upload', {
+    //     //         method: 'POST',
+    //     //         body: data,
+    //     //         // headers: {'Content-Type': 'multipart/form-data'}
+    //     //     })
+    //     // } 
+    // }
     return (React.createElement("section", { className: "my-8" },
         React.createElement(Tabs_1["default"], { isAdmin: isAdmin }),
         React.createElement("div", { className: 'max-w-lg p-4 mx-auto border' },
@@ -150,10 +158,7 @@ function ProfilePage() {
             isSaving && (React.createElement(InfoBox_1["default"], null, " Saving ... ")),
             React.createElement("div", { className: "flex items-center gap-4 mt-2" },
                 React.createElement("div", { className: "p-4 bg-gray-600 rounded-md" },
-                    React.createElement(image_1["default"], { src: userImage, className: "rounded-full", width: 128, height: 128, alt: 'avatar' }),
-                    React.createElement("label", null,
-                        React.createElement("input", { type: "file", className: "hidden", onChange: handleFileCHange }),
-                        React.createElement("span", { className: "flex justify-center p-1 mt-2 text-white border-2 rounded-md cursor-pointer" }, " Change avatar "))),
+                    React.createElement(EditableImage_1["default"], { link: image, setLink: setImage })),
                 React.createElement("form", { className: "grow", onSubmit: handleProfileInfoUpdate },
                     React.createElement("input", { type: "text", value: userName, onChange: function (e) { return setUserName(e.target.value); } }),
                     React.createElement("input", { type: "email", disabled: true, value: userEmail }),

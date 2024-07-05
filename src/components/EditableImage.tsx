@@ -1,36 +1,50 @@
+import memberApi from "@/app/api/members/member.api";
 import React, { ReactHTMLElement } from "react"
 import toast from "react-hot-toast"
+import Image from 'next/image'
 
 interface IEditableImage {
     link: string,
     setLink: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function EditableImage( {link, setLink} : IEditableImage ) {
- 
+export default function EditableImage( {link, setLink} : IEditableImage ) { 
+
     async function handleFileChange(ev: React.ChangeEvent<HTMLInputElement>) {  
+      
         const files = ev.target.files;
-        if (files?.length === 1) {
-            const data = new FormData;
-            data.set('file', files[0]) 
+        if (files?.length > 0) {
+           
+            // const uploadPromise = fetch('/api/upload', {
+            //     method: 'POST',
+            //     body: data,
+            // }).then(response => {
+            //     if (response.ok) {
+            //         return response.json().then(link => {
+            //             setLink(link)
+            //         })
+            //     }
     
-            const uploadPromise = fetch('/api/upload', {
-                method: 'POST',
-                body: data,
-            }).then(response => {
-                if (response.ok) {
-                    return response.json().then(link => {
-                        setLink(link)
-                    })
-                }
-    
-                throw new Error('Something went wrong')
+            //     throw new Error('Something went wrong')
+            // }) 
+
+            let message = ""; 
+
+            const uploadPromise = memberApi.uploadImage(files[0]).then((result) => {
+                if (result.data.status == 200) { 
+ 
+                    console.log(result?.data?.params?.path)
+                    setLink(result?.data?.params?.path)
+                } else {
+                    message = result.data.message
+                    throw new Error(message)
+                } 
             })
-    
+                    
             await toast.promise(uploadPromise, {
                 loading: 'Uploading ...',
                 success: 'Upload complete',
-                error: 'Upload failed',
+                error: message,
             }) 
         }  
      
@@ -39,7 +53,7 @@ export default function EditableImage( {link, setLink} : IEditableImage ) {
     return (
         <>
             { link && (
-                <Image className="w-full h-full mb-1 rounded-lg" src={ link } width={ 250 } height={ 250 } alt={'avatar'} /> 
+                <Image className="w-full h-full mb-1 rounded-lg" src={ link } width={ 100 } height={ 100 } alt={'avatar'} /> 
             )}
 
             {
