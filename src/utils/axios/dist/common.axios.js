@@ -21,9 +21,6 @@ commonAxios.interceptors.request.use(function (req) {
         }
         case "POST": {
             req.data = JSON.stringify(req.data);
-            console.log('------>');
-            console.log(req);
-            console.log('------>');
             // if (!(req.data instanceof FormData) && !!req.data) {
             //   req.data = formatFormData(req.data);  
             // }

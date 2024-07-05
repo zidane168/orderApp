@@ -10,8 +10,13 @@ import toast  from 'react-hot-toast';
 
 export default function ProfilePage() {
     const session = useSession(); 
+
+    console.log (' ------------> ')
+    console.log (session)
+    console.log (' ------------> ')
+
     const userEmail = session.data?.user?.email || '';
-    const userImage = session.data?.user?.image || '';
+    const userImage = session.data?.user?.avatar || '';
  
     const [ userName, setUserName ] = useState('' as string | null | undefined )  
     const [ saved, setSaved ] = useState(false)
@@ -23,8 +28,7 @@ export default function ProfilePage() {
     useEffect(() => {
         if (status === 'authenticated') {
             setUserName( session?.data?.user?.name )
-            // setIsAdmin( session?.data?.user?.admin )
-            setIsAdmin(true)
+            setIsAdmin( session?.data?.user?.is_admin ) 
             // call api here;
         }
     }, [session, status])

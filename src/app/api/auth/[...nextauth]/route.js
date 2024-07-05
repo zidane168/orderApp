@@ -4,9 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from '@/libs/mongoConnect' 
-import memberApi from '../../members/member.api';
-import Log from '@/utils/log';
-import toast from 'react-hot-toast';
+import memberApi from '../../members/member.api'; 
 
 export const authOptions = 
 { 
@@ -28,20 +26,71 @@ export const authOptions =
                 const res = await memberApi.login({
                     email:      credentials.email,
                     password:   credentials.password,
-                })
-
+                }) 
+  
                 if (res.data.status === 200) {
-                    localStorage.setItem('token', res.data.params.token);
-                } else {
-                    toast.error('Login failed. Please check your credentials')
+                    return { status: true, user_data:  res.data.params}
+                    // return Promise.resolve(response.params);  // ket qua tra ve tu server se di xuong function jwt b
+                 
+                } else { 
+                    throw new Error(
+                        JSON.stringify({  status: false, message: res.data.message })
+                    );
                 }
-
-                console.log('==--->')
-                console.log (localStorage.getItem('token'))
-                return null; 
             }
         })
-    ]
+    ],
+    pages: {
+        signIn: "/auth/login",
+    },
+    session: {
+        strategy: "jwt",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+    },
+
+    callbacks: {
+        async signIn({ user, account, profile }) {
+            if (account.provider !== "credentials") {
+                // const response = await loginSocial(
+                //   account.provider,
+                //   account.providerAccountId,
+                //   profile?.picture,
+                //   profile.email,
+                //   profile.name
+                // );
+                // if (response?.params?.token) {
+                //   user.token = response?.params?.token;
+                //   return true;
+                // } else {
+                //   return false;
+                // }
+            }
+            return true; // Do different verification for other providers that don't have `email_verified`
+        },
+            
+        async jwt({ token, user, account, profile, isNewUser }) {
+            // Persist the OAuth access_token to the token right after signIn function
+         
+            if (account) {
+                token.user_info = user;   // save token from server  
+
+                // data : 
+                //     expires: "2024-08-04T03:47:13.781Z" 
+                //     user : 
+                //         email: "huuvi168@gmail.com"
+                //         enabled: 1
+                //         name: "Vi"
+                //         token:"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.IntcImVtYWlsXCI6XCJodXV2aTE2OEBnbWFpbC5jb21cIixcInR5cGVcIjoyfSI.QZ20ElnzhhPxAlRt7d3_QDIFs5kaAlG0KSOC_W405q8"
+                //     status: "authenticated"
+            }
+            return Promise.resolve(token);
+        },
+
+        async session({ session, token }) {   
+            session.user = token.user_info.user_data;        
+            return Promise.resolve(session);
+        },
+    },
 } 
 const handler = NextAuth( authOptions )
 

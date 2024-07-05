@@ -4,21 +4,37 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import toast from "react-hot-toast";
+
+// huuvi168@gmail.com
 
 export default function LoginPage() {
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
-    const [ loginInProgress, setLoginInProgress ] = useState(false);
+    const [ loginInProgress, setLoginInProgress ] = useState(false); 
 
     async function handleFormSubmit(e: any) {
         e.preventDefault();
         setLoginInProgress(true)
         
-        await signIn('credentials', { email, password, callbackUrl: '/'});
-        // await signIn('credentials' );
+        signIn('credentials', { email, password, callbackUrl: '/'}).then((result: any) => { 
+        
+            if (!result.error) {    // use Session and this result from api/auth/[...nextauth]
+                toast('Login successfully!')
+                console.log (' --------- ')
+                console.log(result.data)
+                console.log (' --------- ')
 
-        setLoginInProgress(false)
- 
+            } else { 
+                let rel = JSON.parse(result.error) 
+                console.log (' --------- ')
+                console.log(rel)
+                console.log (' --------- ')
+                toast(rel.message)
+            }
+        });  
+
+        setLoginInProgress(false) 
     }
 
     return (
