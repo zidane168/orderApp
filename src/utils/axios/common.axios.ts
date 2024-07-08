@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { commonConfig } from "../configs";
 import { commonHelpers } from "../helpers";  
+import { jwtService } from '@/app/services/jwt'
 
 const commonAxios = axios.create({
   baseURL: `${commonConfig.API_HOST}`,
@@ -32,12 +33,15 @@ export const formatFormData = (data: Object) => {
 
 commonAxios.interceptors.request.use(
   (req) => {
+    const token = jwtService.getToken()
+    
+    if (!req.headers['Authorization']) req.headers['Authorization'] = `Bearer ${token}`
     if (
       typeof req.headers["Language"] === "undefined" &&
       typeof window !== "undefined"
     )
       req.headers["Language"] = 'en_US'; //window.NextPublic.lang.replace("-", "_");
-
+      req.headers["Authorization"] = 'en_US'; //window.NextPublic.lang.replace("-", "_");
     
     switch ((req.method as string).toUpperCase()) {
       case "GET": {
@@ -47,11 +51,7 @@ commonAxios.interceptors.request.use(
       case "POST": {   
       
         if (!(req.data instanceof FormData) && !!req.data) {
-          req.data = formatFormData(req.data);  
-
-          console.log(' --0-00-> ')
-          console.log( req.data)
-       
+          req.data = formatFormData(req.data);    
         }
  
         break;

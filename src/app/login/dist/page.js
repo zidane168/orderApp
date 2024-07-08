@@ -42,7 +42,6 @@ var image_1 = require("next/image");
 var link_1 = require("next/link");
 var react_2 = require("react");
 var react_hot_toast_1 = require("react-hot-toast");
-// huuvi168@gmail.com
 function LoginPage() {
     var _a = react_2.useState(''), email = _a[0], setEmail = _a[1];
     var _b = react_2.useState(''), password = _b[0], setPassword = _b[1];
@@ -58,12 +57,10 @@ function LoginPage() {
                         console.log(' --------- ');
                         console.log(result.data);
                         console.log(' --------- ');
+                        return;
                     }
                     else {
                         var rel = JSON.parse(result.error);
-                        console.log(' --------- ');
-                        console.log(rel);
-                        console.log(' --------- ');
                         react_hot_toast_1["default"](rel.message);
                     }
                 });

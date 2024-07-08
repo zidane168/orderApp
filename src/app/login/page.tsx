@@ -5,8 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
+ 
 
-// huuvi168@gmail.com
+import { jwtService } from '@/app/services/jwt'  
 
 export default function LoginPage() {
     const [ email, setEmail ] = useState('');
@@ -23,13 +24,11 @@ export default function LoginPage() {
                 toast('Login successfully!')
                 console.log (' --------- ')
                 console.log(result.data)
-                console.log (' --------- ')
-
+                console.log (' --------- ')  
+   
+                return
             } else { 
-                let rel = JSON.parse(result.error) 
-                console.log (' --------- ')
-                console.log(rel)
-                console.log (' --------- ')
+                let rel = JSON.parse(result.error)  
                 toast(rel.message)
             }
         });  

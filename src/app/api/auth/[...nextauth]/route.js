@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from '@/libs/mongoConnect' 
 import memberApi from '../../members/member.api'; 
+import { jwtService } from '@/app/services/jwt'  
 
 export const authOptions = 
 { 
@@ -23,7 +24,7 @@ export const authOptions =
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) { 
-                const res = await memberApi.login({
+                const res = await memberApi().login({
                     email:      credentials.email,
                     password:   credentials.password,
                 }) 
@@ -68,8 +69,7 @@ export const authOptions =
             return true; // Do different verification for other providers that don't have `email_verified`
         },
             
-        async jwt({ token, user, account, profile, isNewUser }) {
-            // Persist the OAuth access_token to the token right after signIn function
+        async jwt({ token, user, account, profile, isNewUser }) { 
          
             if (account) {
                 token.user_info = user;   // save token from server  
@@ -87,7 +87,7 @@ export const authOptions =
         },
 
         async session({ session, token }) {   
-            session.user = token.user_info.user_data;        
+            session.user = token.user_info.user_data;    
             return Promise.resolve(session);
         },
     },

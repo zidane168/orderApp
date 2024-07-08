@@ -11,12 +11,8 @@ import memberApi from "../api/members/member.api";
 import EditableImage from "@/components/EditableImage";
 
 export default function ProfilePage() {
-    const session = useSession(); 
-
-    // console.log (' ------------> ')
-    // console.log (session)
-    // console.log (' ------------> ')
-
+    const session = useSession();  
+    
     const userEmail = session.data?.user?.email || '';
     const userImage = session.data?.user?.avatar || '';
  

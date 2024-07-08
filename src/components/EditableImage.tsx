@@ -3,12 +3,16 @@ import React, { ReactHTMLElement } from "react"
 import toast from "react-hot-toast"
 import Image from 'next/image'
 
+import { useSession } from 'next-auth/react';
+
 interface IEditableImage {
     link: string,
     setLink: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function EditableImage( {link, setLink} : IEditableImage ) { 
+export default function EditableImage( {link, setLink} : IEditableImage ) {  
+
+    const { data: session } = useSession();
 
     async function handleFileChange(ev: React.ChangeEvent<HTMLInputElement>) {  
       
@@ -17,6 +21,8 @@ export default function EditableImage( {link, setLink} : IEditableImage ) {
             
             let message = "";  
             const uploadPromise = memberApi.uploadImage(files[0]).then((result) => {
+                console.log(result);
+                console.log(' ------> ')
                 if (result.data.status == 200) { 
  
                     console.log(result?.data?.params?.path)

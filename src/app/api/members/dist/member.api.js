@@ -49,27 +49,80 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var common_axios_1 = require("@/utils/axios/common.axios");
 var axios_1 = require("axios");
-var memberApi = {
-    register: function (payload) {
+var useSessionData_1 = require("@/customHook/useSessionData");
+// const memberApi = {  
+//   register: (payload: IMember) => {
+//     return commonAxios.post<AxiosResponseData>("/api/v1/members/register.json", {
+//       ...payload,
+//     });
+//   },  
+//   getProfile: () => {
+//     const token = localStorage.getItem('token');
+//     return commonAxios.post<AxiosResponseData>("/api/v1/members/getProfile.json", {  
+//       headers: {
+//         Authorization: `Bearer ${token}`,
+//       }
+//     });
+//   },  
+//   login: (payload: ILogin) => { 
+//     payload.type = 2;
+//     return commonAxios.post<AxiosResponseData>("/api/v1/members/login.json", {
+//       ...payload
+//     });
+//   }, 
+//  // uploadImage: async (file: File, token: any) => {
+//  uploadImage: async (file: File) => {
+//     try {  
+//       if (!session.user.token) { 
+//         console.error("No session token available.");
+//         return { 'data': {"status": 999, "message": 'No session token available'} }
+//       }
+//       const formData = new FormData();
+//       formData.append("file", file);  
+//       return await axios({
+//         url: API_HOST + '/api/v1/members/uploadImage.json',
+//         method: 'POST',
+//         data: formData,
+//         headers: {
+//           Accept: 'application/json',
+//           'Content-Type': 'multipart/form-data',
+//           Language: 'en_US', 
+//           Authorization: `Bearer ${session.user.token}`,
+//         },
+//       });
+//     } catch (error: any) {
+//       console.log('Error uploading image: ', error.message)
+//     }
+//   }
+// };
+function memberApi() {
+    var _this = this;
+    var session = useSessionData_1.useSessionData();
+    var register = function (payload) {
         return common_axios_1["default"].post("/api/v1/members/register.json", __assign({}, payload));
-    },
-    getProfile: function () {
-        var token = localStorage.getItem('token');
+    };
+    var getProfile = function () {
         return common_axios_1["default"].post("/api/v1/members/getProfile.json", {
             headers: {
-                Authorization: "Bearer " + token
+                Authorization: "Bearer " + session.user.token
             }
         });
-    },
-    login: function (payload) {
+    };
+    var login = function (payload) {
         payload.type = 2;
         return common_axios_1["default"].post("/api/v1/members/login.json", __assign({}, payload));
-    },
-    uploadImage: function (file) { return __awaiter(void 0, void 0, void 0, function () {
-        var formData;
+    };
+    // uploadImage: async (file: File, token: any) => {
+    var uploadImage = function (file) { return __awaiter(_this, void 0, void 0, function () {
+        var formData, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    _a.trys.push([0, 2, , 3]);
+                    if (!session.user.token) {
+                        console.error("No session token available.");
+                        return [2 /*return*/, { 'data': { "status": 999, "message": 'No session token available' } }];
+                    }
                     formData = new FormData();
                     formData.append("file", file);
                     return [4 /*yield*/, axios_1["default"]({
@@ -79,12 +132,20 @@ var memberApi = {
                             headers: {
                                 Accept: 'application/json',
                                 'Content-Type': 'multipart/form-data',
-                                Language: 'en_US'
+                                Language: 'en_US',
+                                Authorization: "Bearer " + session.user.token
                             }
                         })];
                 case 1: return [2 /*return*/, _a.sent()];
+                case 2:
+                    error_1 = _a.sent();
+                    console.log('Error uploading image: ', error_1.message);
+                    return [3 /*break*/, 3];
+                case 3: return [2 /*return*/];
             }
         });
-    }); }
-};
+    }); };
+    return { login: login, register: register, getProfile: getProfile, uploadImage: uploadImage };
+}
+;
 exports["default"] = memberApi;

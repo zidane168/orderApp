@@ -48,9 +48,6 @@ var EditableImage_1 = require("@/components/EditableImage");
 function ProfilePage() {
     var _a, _b, _c, _d;
     var session = react_1.useSession();
-    // console.log (' ------------> ')
-    // console.log (session)
-    // console.log (' ------------> ')
     var userEmail = ((_b = (_a = session.data) === null || _a === void 0 ? void 0 : _a.user) === null || _b === void 0 ? void 0 : _b.email) || '';
     var userImage = ((_d = (_c = session.data) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? void 0 : _d.avatar) || '';
     var _e = react_2.useState(''), userName = _e[0], setUserName = _e[1];

@@ -172,3 +172,20 @@ constructor(document: EventExpense, domain: string | null) {
             item.brandPercents = brandPercents;  
 
 ## xem tiep 6:11:51 
+
+
+## dùng cách này để mà wrap nó lại, thay vì phải su dung const { data: session } = useSession() o component (có return) nhưng mình su dung o component memberApi
+import { createContext, useContext, useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+
+const SessionContext = createContext(null);
+
+export function SessionProvider({ children }) {
+  const { data: session } = useSession();
+
+  return (
+    <SessionContext.Provider value={session}>
+      {children}
+    </SessionContext.Provider>
+  );
+}

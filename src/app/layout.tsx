@@ -5,7 +5,7 @@ import "./globals.css";
 import moment from "moment";
 import Header from "@/components/layout/Header"; 
 import { AppProvider } from "@/components/AppContext";
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast' 
 
 const roboto = Roboto({ subsets: ["latin"], weight: ['400', '500', '700'] });
 
@@ -25,14 +25,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={roboto.className}>
         <main className="max-w-4xl p-4 mx-auto"> 
-          <AppProvider>
-
-            <Toaster />
-            <Header />
-            {children}
-            <footer className="p-8 mt-16 text-center border-t">
-              &copy; { moment().year()} All right reserved
-            </footer> 
+          <AppProvider> 
+              <Toaster />
+              <Header />
+              {children}
+              <footer className="p-8 mt-16 text-center border-t">
+                &copy; { moment().year()} All right reserved
+              </footer>  
           </AppProvider>
         </main>
       </body>
