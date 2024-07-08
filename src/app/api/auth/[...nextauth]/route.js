@@ -4,8 +4,8 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import clientPromise from '@/libs/mongoConnect' 
-import memberApi from '../../members/member.api'; 
-import { jwtService } from '@/app/services/jwt'  
+import { memberApi } from '../../members/member.api';  
+import { useSessionData } from '@/customHook/useSessionData';
 
 export const authOptions = 
 { 
@@ -24,7 +24,10 @@ export const authOptions =
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials, req) { 
-                const res = await memberApi().login({
+                const session = await useSessionData()
+                const { login } = memberApi(session)
+
+                const res = await login({
                     email:      credentials.email,
                     password:   credentials.password,
                 }) 

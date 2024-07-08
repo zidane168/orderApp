@@ -1,18 +1,16 @@
-import memberApi from "@/app/api/members/member.api";
 import React, { ReactHTMLElement } from "react"
 import toast from "react-hot-toast"
 import Image from 'next/image'
-
-import { useSession } from 'next-auth/react';
+ 
+import { useSessionData } from "@/customHook/useSessionData";
+import { memberApi } from "@/app/api/members/member.api";
 
 interface IEditableImage {
     link: string,
     setLink: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function EditableImage( {link, setLink} : IEditableImage ) {  
-
-    const { data: session } = useSession();
+export default function EditableImage( {link, setLink} : IEditableImage ) {   
 
     async function handleFileChange(ev: React.ChangeEvent<HTMLInputElement>) {  
       
@@ -20,7 +18,11 @@ export default function EditableImage( {link, setLink} : IEditableImage ) {
         if (files?.length > 0) {
             
             let message = "";  
-            const uploadPromise = memberApi.uploadImage(files[0]).then((result) => {
+ 
+            const session = await useSessionData()
+            const { uploadImage } = memberApi(session)
+
+            const uploadPromise = uploadImage(files[0]).then((result: any) => {
                 console.log(result);
                 console.log(' ------> ')
                 if (result.data.status == 200) { 

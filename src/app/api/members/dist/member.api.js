@@ -47,57 +47,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
+exports.memberApi = void 0;
 var common_axios_1 = require("@/utils/axios/common.axios");
 var axios_1 = require("axios");
-var useSessionData_1 = require("@/customHook/useSessionData");
-// const memberApi = {  
-//   register: (payload: IMember) => {
-//     return commonAxios.post<AxiosResponseData>("/api/v1/members/register.json", {
-//       ...payload,
-//     });
-//   },  
-//   getProfile: () => {
-//     const token = localStorage.getItem('token');
-//     return commonAxios.post<AxiosResponseData>("/api/v1/members/getProfile.json", {  
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       }
-//     });
-//   },  
-//   login: (payload: ILogin) => { 
-//     payload.type = 2;
-//     return commonAxios.post<AxiosResponseData>("/api/v1/members/login.json", {
-//       ...payload
-//     });
-//   }, 
-//  // uploadImage: async (file: File, token: any) => {
-//  uploadImage: async (file: File) => {
-//     try {  
-//       if (!session.user.token) { 
-//         console.error("No session token available.");
-//         return { 'data': {"status": 999, "message": 'No session token available'} }
-//       }
-//       const formData = new FormData();
-//       formData.append("file", file);  
-//       return await axios({
-//         url: API_HOST + '/api/v1/members/uploadImage.json',
-//         method: 'POST',
-//         data: formData,
-//         headers: {
-//           Accept: 'application/json',
-//           'Content-Type': 'multipart/form-data',
-//           Language: 'en_US', 
-//           Authorization: `Bearer ${session.user.token}`,
-//         },
-//       });
-//     } catch (error: any) {
-//       console.log('Error uploading image: ', error.message)
-//     }
-//   }
-// };
-function memberApi() {
+function memberApi(session) {
     var _this = this;
-    var session = useSessionData_1.useSessionData();
     var register = function (payload) {
         return common_axios_1["default"].post("/api/v1/members/register.json", __assign({}, payload));
     };
@@ -147,5 +101,5 @@ function memberApi() {
     }); };
     return { login: login, register: register, getProfile: getProfile, uploadImage: uploadImage };
 }
+exports.memberApi = memberApi;
 ;
-exports["default"] = memberApi;

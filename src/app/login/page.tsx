@@ -4,11 +4,8 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import toast from "react-hot-toast";
+import toast from "react-hot-toast"; 
  
-
-import { jwtService } from '@/app/services/jwt'  
-
 export default function LoginPage() {
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
@@ -24,9 +21,7 @@ export default function LoginPage() {
                 toast('Login successfully!')
                 console.log (' --------- ')
                 console.log(result.data)
-                console.log (' --------- ')  
-   
-                return
+                console.log (' --------- ')   
             } else { 
                 let rel = JSON.parse(result.error)  
                 toast(rel.message)

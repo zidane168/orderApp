@@ -1,8 +1,7 @@
 import axios from "axios";
 
 import { commonConfig } from "../configs";
-import { commonHelpers } from "../helpers";  
-import { jwtService } from '@/app/services/jwt'
+import { commonHelpers } from "../helpers";   
 
 const commonAxios = axios.create({
   baseURL: `${commonConfig.API_HOST}`,
@@ -32,10 +31,9 @@ export const formatFormData = (data: Object) => {
 };
 
 commonAxios.interceptors.request.use(
-  (req) => {
-    const token = jwtService.getToken()
+  (req) => { 
     
-    if (!req.headers['Authorization']) req.headers['Authorization'] = `Bearer ${token}`
+   // if (!req.headers['Authorization']) req.headers['Authorization'] = `Bearer ${token}`
     if (
       typeof req.headers["Language"] === "undefined" &&
       typeof window !== "undefined"

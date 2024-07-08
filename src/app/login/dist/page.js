@@ -57,7 +57,6 @@ function LoginPage() {
                         console.log(' --------- ');
                         console.log(result.data);
                         console.log(' --------- ');
-                        return;
                     }
                     else {
                         var rel = JSON.parse(result.error);

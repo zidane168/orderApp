@@ -189,3 +189,59 @@ export function SessionProvider({ children }) {
     </SessionContext.Provider>
   );
 }
+
+
+# server call client component will cause
+ GET /api/auth/error?error=(0%20%2C%20_members_member_api__WEBPACK_IMPORTED_MODULE_5__.memberApi)%20is%20not%20a%20function 200 in 27ms
+ ✓ Compiled in 1327ms (965 modules)
+
+# so let solving the issue server call to client, we need to change to way to use useSession()
+Server side call: const {data: session} = useSession() (import { useSession } from 'next-auth/react')
+Client side call: const session = getSession()  (import { getSession } from 'next-auth/react')
+
+export interface ISession {
+  user?: {
+    name?: string;
+    email?: string;
+    image?: string;
+  };
+  expires: string;
+  [key: string]: any;
+}
+ 
+src/app/api/members/member.api.tsx
+export function memberApi(session: ISession | null) 
+{    
+  const register = (payload: IMember) => {
+    return commonAxios.post<AxiosResponseData>("/api/v1/members/register.json", {
+      ...payload,
+    });
+  }
+
+  const login = () => {
+
+  }
+
+   return { login, register }
+}
+
+src/app/customHook/useSessionData.ts
+import { getSession } from 'next-auth/react'
+export function useSessionData() = async() => {
+  const session = await getSession();
+  return session
+}
+ 
+//----- used ------
+import { memberApi } from '@app/api/members/member.api';
+import { useSessionData } from '@app/customHook/useSessionData'
+async authorize(credentials, req) {  
+   const session = await useSessionData()
+   const { login } = memberApi(session) 
+
+   const res = await login({
+    email: credential.email,
+    password: credential.password,
+   })
+   ...
+}
