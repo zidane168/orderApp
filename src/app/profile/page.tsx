@@ -42,51 +42,79 @@ export default function ProfilePage() {
         return redirect('/login')
     }
 
+
+
+    // const response = await fetch('api/update', {
+    //     method: 'PUT',
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify({name: userName})
+    // })
+
+    // const { ok } = response
+
+    // setIsSaving(false)
+    // if ( ok ) {
+    //     setSaved(true)
+    //     resolve()
+    // } else {
+    //     reject()
+    // }
+
+
     async function handleProfileInfoUpdate(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setSaved(false)
-        setIsSaving(true)  
+        setIsSaving(true) 
         
-        const savePromise = new Promise(async(resolve, reject) => { 
+        const session = await useSessionData()
+        const { update, login } =  memberApi(session)
+
+        console.log(' ======------======> ')
+        console.log(userName)
+        console.log(' ======------======> ') 
+
+        const res =  await update({
+            name:      userName, 
+        })  
+        
+        // const res = await update({
+        //     name: userName, 
+        // })  
+
+        setIsSaving(false)
+
+        if (res?.data.status === 200) {
+            setSaved(true)
+            
+        } 
+        
+        // const savePromise = new Promise(async(resolve, reject) => { 
  
-            const session = await useSessionData()
-            const { update } = memberApi(session)
+        //     const session = await useSessionData()
+        //     const { update } =  memberApi(session)
+ 
+        //     console.log(' ======------======> ')
+        //     console.log(userName)
+        //     console.log(' ======------======> ') 
+        //     const res = await update({
+        //         name: userName, 
+        //     })  
 
-            const res = await update({
-                name:       userName, 
-            }) 
+        //     setIsSaving(false)
 
-            setIsSaving(false)
-            if (res.data.status === 200) {
-                setSaved(true)
-                resolve()
-            } else {
-                reject()
-            }
+        //     if (res?.data.status === 200) {
+        //         setSaved(true)
+        //         resolve()
+        //     } else {
+        //         reject()
+        //     }  
+        // })
 
-
-            // const response = await fetch('api/update', {
-            //     method: 'PUT',
-            //     headers: {'Content-Type': 'application/json'},
-            //     body: JSON.stringify({name: userName})
-            // })
-    
-            // const { ok } = response
-    
-            // setIsSaving(false)
-            // if ( ok ) {
-            //     setSaved(true)
-            //     resolve()
-            // } else {
-            //     reject()
-            // }
-        })
-
-        await toast.promise(savePromise, {
-            loading: 'Saving ...',
-            success: 'Profile saved!',
-            error: 'Error',
-        })
+        // await toast.promise(savePromise, {
+        //     loading: 'Saving ...',
+        //     success: 'Profile saved!',
+        //     error: 'Error',
+        // })
     } 
 
     // async function handleFileChange(e: React.FormEvent<HTMLFormElement>) {

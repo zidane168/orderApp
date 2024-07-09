@@ -27,10 +27,10 @@ export const authOptions =
                 const session = await useSessionData()
                 const { login } = memberApi(session)
 
-                const res = await login({
+                const res =  await login({
                     email:      credentials.email,
                     password:   credentials.password,
-                }) 
+                })  
   
                 if (res.data.status === 200) {
                     return { status: true, user_data:  res.data.params}

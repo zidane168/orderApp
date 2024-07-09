@@ -1,5 +1,6 @@
 {
   "name": "order-app",
+  "license": "fee",
   "version": "0.1.0",
   "private": true,
   "scripts": {

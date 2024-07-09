@@ -1,8 +1,7 @@
 import axios from "axios";
 
 import { commonConfig } from "../configs";  
-import { useSessionData } from "@/customHook/useSessionData";
-import { ISession } from "@/types/sessions";
+import { useSessionData } from "@/customHook/useSessionData"; 
 
 const commonAxios = axios.create({
   baseURL: `${commonConfig.API_HOST}`,
@@ -32,15 +31,12 @@ export const formatFormData = (data: Object) => {
 };
 
 commonAxios.interceptors.request.use(
-  (req) => { 
+  async (req) => { 
      
-    // if (!req.headers['Authorization']) req.headers['Authorization'] = `Bearer ${token}`
-    if (
-      typeof req.headers["Language"] === "undefined" &&
-      typeof window !== "undefined"
-    )
-      req.headers["Language"] = 'en_US'; //window.NextPublic.lang.replace("-", "_");
-      req.headers["Authorization"] = 'en_US'; //window.NextPublic.lang.replace("-", "_");
+    const session = await useSessionData() 
+    if (session && session?.user?.token) {
+      req.headers.Authorization = `Bearer ${session?.user?.token}`;
+    }
     
     switch ((req.method as string).toUpperCase()) {
       case "GET": {
@@ -48,7 +44,9 @@ commonAxios.interceptors.request.use(
         break;
       }
       case "POST": {   
-      
+        console.log(' ----- POST ----- ')
+        console.log( req )
+        console.log(' ----------- ')
         if (!(req.data instanceof FormData) && !!req.data) {
           req.data = formatFormData(req.data);    
         }
@@ -72,11 +70,7 @@ commonAxios.interceptors.request.use(
 );
 
 commonAxios.interceptors.response.use(
-  (res) => {
-    // if (!["", null, undefined].includes(res?.data?.error_code)) {
-    // 	// helpers.axios.allocateRoute(res.data.error_code)
-    // }
-
+  (res) => {  
     return res;
   },
   (err) => {

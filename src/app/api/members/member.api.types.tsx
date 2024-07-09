@@ -12,8 +12,8 @@ export type IMember = {
 export type IUpdateMember = {   
   name: string,
   phone?: string,
-  password?: string,
-  type: number,     // 1: google, 2: credentials
+  password?: string, 
+  avatar_id?: number,
 }
 
 

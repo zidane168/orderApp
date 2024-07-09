@@ -43,7 +43,6 @@ var Tabs_1 = require("@/components/layout/Tabs");
 var react_1 = require("next-auth/react");
 var navigation_1 = require("next/navigation");
 var react_2 = require("react");
-var react_hot_toast_1 = require("react-hot-toast");
 var member_api_1 = require("../api/members/member.api");
 var EditableImage_1 = require("@/components/EditableImage");
 var useSessionData_1 = require("@/customHook/useSessionData");
@@ -73,48 +72,51 @@ function ProfilePage() {
     if (status === 'unauthenticated') {
         return navigation_1.redirect('/login');
     }
+    // const response = await fetch('api/update', {
+    //     method: 'PUT',
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify({name: userName})
+    // })
+    // const { ok } = response
+    // setIsSaving(false)
+    // if ( ok ) {
+    //     setSaved(true)
+    //     resolve()
+    // } else {
+    //     reject()
+    // }
     function handleProfileInfoUpdate(e) {
         return __awaiter(this, void 0, void 0, function () {
-            var savePromise;
-            var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var session, _a, update, login, res;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
                         e.preventDefault();
                         setSaved(false);
                         setIsSaving(true);
-                        savePromise = new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-                            var session, update, res;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0: return [4 /*yield*/, useSessionData_1.useSessionData()];
-                                    case 1:
-                                        session = _a.sent();
-                                        update = member_api_1.memberApi(session).update;
-                                        return [4 /*yield*/, update({
-                                                name: userName
-                                            })];
-                                    case 2:
-                                        res = _a.sent();
-                                        setIsSaving(false);
-                                        if (res.data.status === 200) {
-                                            setSaved(true);
-                                            resolve();
-                                        }
-                                        else {
-                                            reject();
-                                        }
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); });
-                        return [4 /*yield*/, react_hot_toast_1["default"].promise(savePromise, {
-                                loading: 'Saving ...',
-                                success: 'Profile saved!',
-                                error: 'Error'
-                            })];
+                        return [4 /*yield*/, useSessionData_1.useSessionData()];
                     case 1:
-                        _a.sent();
+                        session = _b.sent();
+                        _a = member_api_1.memberApi(session), update = _a.update, login = _a.login;
+                        console.log(' ======------======> ');
+                        console.log(userName);
+                        console.log(' ======------======> ');
+                        return [4 /*yield*/, update({
+                                name: userName
+                            })
+                            // const res = await update({
+                            //     name: userName, 
+                            // })  
+                        ];
+                    case 2:
+                        res = _b.sent();
+                        // const res = await update({
+                        //     name: userName, 
+                        // })  
+                        setIsSaving(false);
+                        if ((res === null || res === void 0 ? void 0 : res.data.status) === 200) {
+                            setSaved(true);
+                        }
                         return [2 /*return*/];
                 }
             });

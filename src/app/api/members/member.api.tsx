@@ -6,7 +6,7 @@ import axios from "axios";
   
 import { ISession } from "@/types/sessions";
  
-export function memberApi(session: ISession | null) 
+export function memberApi(session: ISession | null)  
 {   
 
   const register = (payload: IMember) => {
@@ -16,25 +16,19 @@ export function memberApi(session: ISession | null)
   }
 
   const getProfile = () => { 
-    return commonAxios.post<AxiosResponseData>("/api/v1/members/getProfile.json", {  
-      // headers: {
-      //   Authorization: `Bearer ${session.user.token}`,
-      // }
+    return commonAxios.post<AxiosResponseData>("/api/v1/members/getProfile.json", {   
     });
   }  
 
-  const update = (payload: IUpdateMember) => {
-    return commonAxios.post<AxiosResponseData>("/api/v1/members/update.json"), {
-      data: payload,
-      headers: {
-        Authorization: `Bearer ${session.user.token}`,
-      }
-    }
+  const update = async(payload: IUpdateMember) => {
+    return await commonAxios.post<AxiosResponseData>("/api/v1/members/update.json", {
+     ...payload,
+    })
   }
 
-  const login = (payload: ILogin) => { 
+  const login = async(payload: ILogin) => { 
     payload.type = 2;
-    return commonAxios.post<AxiosResponseData>("/api/v1/members/login.json", {
+    return await commonAxios.post<AxiosResponseData>("/api/v1/members/login.json", {
       ...payload
     });
   }
