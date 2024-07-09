@@ -1,7 +1,7 @@
 import commonAxios, { API_HOST } from "@/utils/axios/common.axios";
 
 import type { AxiosResponseData } from "@/utils/axios/axios.types";
-import { IMember, ILogin, IAvatar } from "./member.api.types"; 
+import { IMember, ILogin, IAvatar, IUpdateMember } from "./member.api.types"; 
 import axios from "axios"; 
   
 import { ISession } from "@/types/sessions";
@@ -17,11 +17,20 @@ export function memberApi(session: ISession | null)
 
   const getProfile = () => { 
     return commonAxios.post<AxiosResponseData>("/api/v1/members/getProfile.json", {  
+      // headers: {
+      //   Authorization: `Bearer ${session.user.token}`,
+      // }
+    });
+  }  
+
+  const update = (payload: IUpdateMember) => {
+    return commonAxios.post<AxiosResponseData>("/api/v1/members/update.json"), {
+      data: payload,
       headers: {
         Authorization: `Bearer ${session.user.token}`,
       }
-    });
-  }  
+    }
+  }
 
   const login = (payload: ILogin) => { 
     payload.type = 2;
@@ -60,6 +69,6 @@ export function memberApi(session: ISession | null)
    
   }
 
-  return { login, register, getProfile, uploadImage };
+  return { login, register, getProfile, uploadImage, update };
 };
  

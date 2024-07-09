@@ -1,7 +1,8 @@
 import axios from "axios";
 
-import { commonConfig } from "../configs";
-import { commonHelpers } from "../helpers";   
+import { commonConfig } from "../configs";  
+import { useSessionData } from "@/customHook/useSessionData";
+import { ISession } from "@/types/sessions";
 
 const commonAxios = axios.create({
   baseURL: `${commonConfig.API_HOST}`,
@@ -32,8 +33,8 @@ export const formatFormData = (data: Object) => {
 
 commonAxios.interceptors.request.use(
   (req) => { 
-    
-   // if (!req.headers['Authorization']) req.headers['Authorization'] = `Bearer ${token}`
+     
+    // if (!req.headers['Authorization']) req.headers['Authorization'] = `Bearer ${token}`
     if (
       typeof req.headers["Language"] === "undefined" &&
       typeof window !== "undefined"

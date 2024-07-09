@@ -44,7 +44,9 @@ var react_1 = require("next-auth/react");
 var navigation_1 = require("next/navigation");
 var react_2 = require("react");
 var react_hot_toast_1 = require("react-hot-toast");
+var member_api_1 = require("../api/members/member.api");
 var EditableImage_1 = require("@/components/EditableImage");
+var useSessionData_1 = require("@/customHook/useSessionData");
 function ProfilePage() {
     var _a, _b, _c, _d;
     var session = react_1.useSession();
@@ -82,19 +84,20 @@ function ProfilePage() {
                         setSaved(false);
                         setIsSaving(true);
                         savePromise = new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-                            var response, ok;
+                            var session, update, res;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0: return [4 /*yield*/, fetch('api/profile', {
-                                            method: 'PUT',
-                                            headers: { 'Content-Type': 'application/json' },
-                                            body: JSON.stringify({ name: userName })
-                                        })];
+                                    case 0: return [4 /*yield*/, useSessionData_1.useSessionData()];
                                     case 1:
-                                        response = _a.sent();
-                                        ok = response.ok;
+                                        session = _a.sent();
+                                        update = member_api_1.memberApi(session).update;
+                                        return [4 /*yield*/, update({
+                                                name: userName
+                                            })];
+                                    case 2:
+                                        res = _a.sent();
                                         setIsSaving(false);
-                                        if (ok) {
+                                        if (res.data.status === 200) {
                                             setSaved(true);
                                             resolve();
                                         }

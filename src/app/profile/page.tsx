@@ -7,8 +7,9 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast  from 'react-hot-toast';
-import memberApi from "../api/members/member.api";
+import { memberApi } from "../api/members/member.api";
 import EditableImage from "@/components/EditableImage";
+import { useSessionData } from "@/customHook/useSessionData";
 
 export default function ProfilePage() {
     const session = useSession();  
@@ -47,21 +48,38 @@ export default function ProfilePage() {
         setIsSaving(true)  
         
         const savePromise = new Promise(async(resolve, reject) => { 
-            const response = await fetch('api/profile', {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({name: userName})
-            })
-    
-            const { ok } = response
-    
+ 
+            const session = await useSessionData()
+            const { update } = memberApi(session)
+
+            const res = await update({
+                name:       userName, 
+            }) 
+
             setIsSaving(false)
-            if ( ok ) {
+            if (res.data.status === 200) {
                 setSaved(true)
                 resolve()
             } else {
                 reject()
             }
+
+
+            // const response = await fetch('api/update', {
+            //     method: 'PUT',
+            //     headers: {'Content-Type': 'application/json'},
+            //     body: JSON.stringify({name: userName})
+            // })
+    
+            // const { ok } = response
+    
+            // setIsSaving(false)
+            // if ( ok ) {
+            //     setSaved(true)
+            //     resolve()
+            // } else {
+            //     reject()
+            // }
         })
 
         await toast.promise(savePromise, {
