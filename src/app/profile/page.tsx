@@ -35,7 +35,7 @@ export default function ProfilePage() {
                 const session = await useSessionData()      // must use await this for make asynchoronous and useSessionData is get from a hook 
                 if (session) { 
                 
-                    const { getProfile } = memberApi(session);
+                    const { getProfile } = memberApi();
                     const res = await getProfile();  
 
                     if (res?.status === 200 && res?.data?.status === 200) {

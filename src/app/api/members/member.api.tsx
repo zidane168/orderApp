@@ -1,12 +1,9 @@
-import commonAxios, { API_HOST } from "@/utils/axios/common.axios";
+import commonAxios from "@/utils/axios/common.axios";
 
 import type { AxiosResponseData } from "@/utils/axios/axios.types";
 import { IMember, ILogin, IFile, IUpdateMember } from "./member.api.types"; 
-import axios from "axios"; 
-  
-import { ISession } from "@/types/sessions";
  
-export function memberApi(session: ISession | null)  
+export function memberApi()  
 {   
 
   const register = (payload: IMember) => {
@@ -30,8 +27,7 @@ export function memberApi(session: ISession | null)
     return await commonAxios.post<AxiosResponseData>("/api/v1/members/login.json", {
       ...payload
     });
-  } 
-
+  }  
 
  const uploadImage2 = async (file: File) => { 
   try {   
@@ -45,34 +41,34 @@ export function memberApi(session: ISession | null)
   } 
 }; 
 
-const uploadImage = async (file: File) => {
+//  const uploadImage = async (file: File) => {
    
-    try {  
-      if (!session.user.token) { 
-        console.error("No session token available.");
-        return { 'data': {"status": 999, "message": 'No session token available'} }
-      }
+//     try {  
+//       if (!session.user.token) { 
+//         console.error("No session token available.");
+//         return { 'data': {"status": 999, "message": 'No session token available'} }
+//       }
  
-      const formData = new FormData();
-      formData.append("file", file);  
+//       const formData = new FormData();
+//       formData.append("file", file);  
   
-      return await axios({
-        url: API_HOST + '/api/v1/members/uploadImage.json',
-        method: 'POST',
-        data: formData,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-          Language: 'en_US', 
-          Authorization: `Bearer ${session.user.token}`,
-        },
-      });
-    } catch (error: any) {
-      console.log('Error uploading image: ', error.message)
-    }
+//       return await axios({
+//         url: API_HOST + '/api/v1/members/uploadImage.json',
+//         method: 'POST',
+//         data: formData,
+//         headers: {
+//           Accept: 'application/json',
+//           'Content-Type': 'multipart/form-data',
+//           Language: 'en_US', 
+//           Authorization: `Bearer ${session.user.token}`,
+//         },
+//       });
+//     } catch (error: any) {
+//       console.log('Error uploading image: ', error.message)
+//     }
    
-  }
+//   }
 
-  return { login, register, getProfile, uploadImage, uploadImage2, update };
+  return { login, register, getProfile, uploadImage2, update };
 };
  
