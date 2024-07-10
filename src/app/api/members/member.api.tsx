@@ -16,8 +16,7 @@ export function memberApi(session: ISession | null)
   }
 
   const getProfile = () => { 
-    return commonAxios.post<AxiosResponseData>("/api/v1/members/getProfile.json", {   
-    });
+    return commonAxios.get<AxiosResponseData>("/api/v1/members/getProfile.json");
   }  
 
   const update = async(payload: IUpdateMember) => {
@@ -32,8 +31,7 @@ export function memberApi(session: ISession | null)
       ...payload
     });
   }
-
- // uploadImage: async (file: File, token: any) => {
+ 
 
  const uploadImage = async (file: File) => {
    

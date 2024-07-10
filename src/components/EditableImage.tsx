@@ -23,9 +23,7 @@ export default function EditableImage( {link, setLink, setAvatarId} : IEditableI
             const session = await useSessionData()
             const { uploadImage } = memberApi(session)
 
-            const uploadPromise = uploadImage(files[0]).then((result: any) => {
-                console.log(result);
-                console.log(' ------> ')
+            const uploadPromise = uploadImage(files[0]).then((result: any) => { 
                 if (result.data.status == 200) { 
  
                     console.log(result?.data?.params?.path)
@@ -49,7 +47,7 @@ export default function EditableImage( {link, setLink, setAvatarId} : IEditableI
     return (
         <>
             { link && (
-                <Image className="w-full h-full mb-1 rounded-lg" src={ link } width={ 100 } height={ 100 } alt={'avatar'} /> 
+                <Image priority={false}  className="w-full h-full mb-1 rounded-lg" src={ link } width={ 100 } height={ 100 } alt={'avatar'} /> 
             )}
 
             {

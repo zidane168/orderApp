@@ -2,20 +2,21 @@
 import InfoBox from "@/components/layout/InfoBox";
 import SuccessBox from "@/components/layout/SuccessBox";
 import UserTabs from "@/components/layout/Tabs";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
+import { useSession } from "next-auth/react"; 
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast  from 'react-hot-toast';
 import { memberApi } from "../api/members/member.api";
-import EditableImage from "@/components/EditableImage";
-import { useSessionData } from "@/customHook/useSessionData";
+import EditableImage from "@/components/EditableImage";  
+
+import { useRouter } from 'next/navigation';
+import { useSessionData } from '@/customHook/useSessionData'
 
 export default function ProfilePage() {
-    const session = useSession();  
+    const session = useSession();   
+    const router = useRouter();
     
-    const userEmail = session.data?.user?.email || '';
-    const userImage = session.data?.user?.avatar || '';
+    const userEmail = session.data?.user?.email || ''; 
  
     const [ userName, setUserName ] = useState('' as string | null | undefined )  
     const [ saved, setSaved ] = useState(false)
@@ -25,14 +26,34 @@ export default function ProfilePage() {
     const [ isAdmin, setIsAdmin ] = useState(false)
     const [ image, setImage ] = useState();
     const [ avatarId, setAvatarId ] = useState('');
+    
 
-    useEffect(() => {
-        if (status === 'authenticated') {
-            setUserName( session?.data?.user?.name )
-            setIsAdmin( session?.data?.user?.is_admin ) 
-            setImage( session?.data?.user?.avatar )
-            // call api here;
+    useEffect( () => {
+
+        const fetchData = async () => {
+            if (status === 'authenticated') { 
+                const session = await useSessionData()      // must use await this for make asynchoronous and useSessionData is get from a hook 
+                if (session) { 
+                
+                    const { getProfile } = memberApi(session);
+                    const res = await getProfile();  
+
+                    if (res?.status === 200 && res?.data?.status === 200) {
+                        const userData = res.data.params; 
+                        session.user = userData 
+
+                        const userName = userData?.name || userData?.email; 
+                        const isAdmin = userData.is_admin  
+                        const avatar = userData.avatar
+
+                        setUserName( userName )
+                        setIsAdmin( isAdmin ) 
+                        setImage( avatar )  
+                    }  
+                } 
+            }
         }
+        fetchData()
     }, [session, status])
 
     if (status === 'loading') {
@@ -42,54 +63,17 @@ export default function ProfilePage() {
     if (status === 'unauthenticated') {
         return redirect('/login')
     }
-
-
-
-    // const response = await fetch('api/update', {
-    //     method: 'PUT',
-    //     headers: {'Content-Type': 'application/json'},
-    //     body: JSON.stringify({name: userName})
-    // })
-
-    // const { ok } = response
-
-    // setIsSaving(false)
-    // if ( ok ) {
-    //     setSaved(true)
-    //     resolve()
-    // } else {
-    //     reject()
-    // }
-
+  
 
     async function handleProfileInfoUpdate(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setSaved(false)
-        setIsSaving(true) 
-        
-        // const session = await useSessionData()
-        // const { update } =  memberApi(session) 
-
-        // const res =  await update({
-        //     name:      userName, 
-        //     avatar_id: avatarId
-        // })  
-        
-        // // const res = await update({
-        // //     name: userName, 
-        // // })  
-
-        // setIsSaving(false)
-
-        // if (res?.data.status === 200) {
-        //     setSaved(true)
-            
-        // } 
+        setIsSaving(true)  
         
         const savePromise = new Promise(async(resolve, reject) => { 
 
             try   {
-                const session = await useSessionData()
+                // const session = await useSessionData()
                 const { update } =  memberApi(session) 
 
                 let res = null
@@ -104,14 +88,16 @@ export default function ProfilePage() {
                     })   
                 } 
 
-                setIsSaving(false) 
+                setIsSaving(false)  
  
                 if (res?.status == 200 && res?.data?.status === 200) {
-                    setSaved(true)
-                    resolve()
-                    
+                    setSaved(true)   
+                 
+                    session.data.user = res?.data?.params  
+                    resolve()  
+                    return router.push('/profile')   
                 }  else {
-                    reject(new Error('API call failed'))
+                    reject(new Error(res?.data))
                 }
             } catch (error) {
                 reject(error)
@@ -123,43 +109,7 @@ export default function ProfilePage() {
             success: 'Profile saved!',
             error: 'Error',
         })
-    } 
-
-    // async function handleFileChange(e: React.FormEvent<HTMLFormElement>) {
-
-    //     // toast( JSON.stringify(e?.target?.files) )
-    //     const files = e?.target?.files;  
-    //     if (files?.length > 0) {
-    //         const formData = new FormData()
-    //         formData.append('file', files[0])
-
-    //        // toast( JSON.stringify(files[0]) )
-
-    //         // toast('Uploading image:',  );
-    //        toast('Uploading image:', formData.get('file'));
-    //         await memberApi.uploadImage(formData).then((result) => {
-    //             if (result.status == 200) { 
-    //                // toast (JSON.stringify(result))
-    //               //  toast("upload succeed")
-    //             } else {
-    //                // toast("upload failed")
-    //             }
-    //         })
-    //     } 
-        
-    //     // console.log(e);
-    //     // const files = e?.target?.files;
-    //     // toast('Uploading ...')
-    //     // if (files?.length > 0) {
-    //     //     const data = new FormData
-    //     //     data.set('file', files[0])
-    //     //     await fetch('/api/upload', {
-    //     //         method: 'POST',
-    //     //         body: data,
-    //     //         // headers: {'Content-Type': 'multipart/form-data'}
-    //     //     })
-    //     // } 
-    // }
+    }  
 
     return ( 
         <section className="my-8">

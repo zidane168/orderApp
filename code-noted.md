@@ -245,3 +245,6 @@ async authorize(credentials, req) {
    })
    ...
 }
+
+
+# useSession là hook bất đồng bộ, so sometimes you get undefined the data value

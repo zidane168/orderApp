@@ -1,19 +1,45 @@
 'use client'
 
 import { signOut, useSession } from 'next-auth/react'
-import Link from 'next/link' 
-import Log from '../../utils/log'
+import Link from 'next/link'  
+import { useEffect, useState } from 'react' 
+import { memberApi } from "@/app/api/members/member.api"; 
+import { useSessionData } from '@/customHook/useSessionData'
+
 
 export default function Header() {
-    const session = useSession() 
-
+    const session = useSession()   
     const status = session.status 
-    const userData = session?.data?.user
-    let  userName  = userData?.name || userData?.email 
-    let firstName = "";
-    if (userName && userName.includes('')) {
-        firstName = userName.split(' ')[0];
-    }
+
+    const [ firstName, setFirstName ] = useState('')  
+
+
+    useEffect(() => {  
+        const fetchData = async () => {
+            try {
+                const session = await useSessionData()      // must use await this for make asynchoronous and useSessionData is get from a hook 
+              
+                if (session) { 
+                
+                    const { getProfile } = memberApi(session);
+                    const res = await getProfile();  
+
+                    if (res?.status === 200 && res?.data?.status === 200) {
+                        const userData = res.data.params;
+                        const userName = userData?.name || userData?.email; 
+                        session.user = userData
+        
+                        if (userName) {
+                            setFirstName(userName.split(' ')[0]);
+                        }
+                    }  
+                }
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            }
+        }; 
+        fetchData();
+    }, [ session ])
     
     return (
         <header className="flex items-center justify-between"> 
@@ -28,8 +54,8 @@ export default function Header() {
             <nav className="flex items-center gap-4 font-semibold text-gray-500">
                 {status == 'authenticated' && (
                     <>
-                        <div className='w-[150px]'>
-                            <Link  href={'/profile'} > Hello, { firstName } </Link>
+                        <div className='w-[150px]'>  
+                            <Link  href={'/profile'} > Hello,  { firstName } </Link>  
                         </div>
                         <button
                             onClick={() => signOut()}

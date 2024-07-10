@@ -44,9 +44,9 @@ commonAxios.interceptors.request.use(
         break;
       }
       case "POST": {   
-        console.log(' ----- POST ----- ')
+        console.log(' ----- Start POST ----- ')
         console.log( req )
-        console.log(' ----------- ')
+        console.log(' ----- End POST ----- ')
         if (!(req.data instanceof FormData) && !!req.data) {
           req.data = formatFormData(req.data);    
         }

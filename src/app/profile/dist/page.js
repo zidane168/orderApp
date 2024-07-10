@@ -43,28 +43,57 @@ var Tabs_1 = require("@/components/layout/Tabs");
 var react_1 = require("next-auth/react");
 var navigation_1 = require("next/navigation");
 var react_2 = require("react");
+var react_hot_toast_1 = require("react-hot-toast");
 var member_api_1 = require("../api/members/member.api");
 var EditableImage_1 = require("@/components/EditableImage");
+var navigation_2 = require("next/navigation");
 var useSessionData_1 = require("@/customHook/useSessionData");
 function ProfilePage() {
-    var _a, _b, _c, _d;
+    var _this = this;
+    var _a, _b;
     var session = react_1.useSession();
+    var router = navigation_2.useRouter();
     var userEmail = ((_b = (_a = session.data) === null || _a === void 0 ? void 0 : _a.user) === null || _b === void 0 ? void 0 : _b.email) || '';
-    var userImage = ((_d = (_c = session.data) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? void 0 : _d.avatar) || '';
-    var _e = react_2.useState(''), userName = _e[0], setUserName = _e[1];
-    var _f = react_2.useState(false), saved = _f[0], setSaved = _f[1];
-    var _g = react_2.useState(false), isSaving = _g[0], setIsSaving = _g[1];
+    var _c = react_2.useState(''), userName = _c[0], setUserName = _c[1];
+    var _d = react_2.useState(false), saved = _d[0], setSaved = _d[1];
+    var _e = react_2.useState(false), isSaving = _e[0], setIsSaving = _e[1];
     var status = session.status;
-    var _h = react_2.useState(false), isAdmin = _h[0], setIsAdmin = _h[1];
-    var _j = react_2.useState(), image = _j[0], setImage = _j[1];
+    var _f = react_2.useState(false), isAdmin = _f[0], setIsAdmin = _f[1];
+    var _g = react_2.useState(), image = _g[0], setImage = _g[1];
+    var _h = react_2.useState(''), avatarId = _h[0], setAvatarId = _h[1];
     react_2.useEffect(function () {
-        var _a, _b, _c, _d, _e, _f;
-        if (status === 'authenticated') {
-            setUserName((_b = (_a = session === null || session === void 0 ? void 0 : session.data) === null || _a === void 0 ? void 0 : _a.user) === null || _b === void 0 ? void 0 : _b.name);
-            setIsAdmin((_d = (_c = session === null || session === void 0 ? void 0 : session.data) === null || _c === void 0 ? void 0 : _c.user) === null || _d === void 0 ? void 0 : _d.is_admin);
-            setImage((_f = (_e = session === null || session === void 0 ? void 0 : session.data) === null || _e === void 0 ? void 0 : _e.user) === null || _f === void 0 ? void 0 : _f.avatar);
-            // call api here;
-        }
+        var fetchData = function () { return __awaiter(_this, void 0, void 0, function () {
+            var session_1, getProfile, res, userData, userName_1, isAdmin_1, avatar;
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!(status === 'authenticated')) return [3 /*break*/, 3];
+                        return [4 /*yield*/, useSessionData_1.useSessionData()]; // must use await this for make asynchoronous and useSessionData is get from a hook 
+                    case 1:
+                        session_1 = _b.sent() // must use await this for make asynchoronous and useSessionData is get from a hook 
+                        ;
+                        if (!session_1) return [3 /*break*/, 3];
+                        getProfile = member_api_1.memberApi(session_1).getProfile;
+                        return [4 /*yield*/, getProfile()];
+                    case 2:
+                        res = _b.sent();
+                        if ((res === null || res === void 0 ? void 0 : res.status) === 200 && ((_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.status) === 200) {
+                            userData = res.data.params;
+                            session_1.user = userData;
+                            userName_1 = (userData === null || userData === void 0 ? void 0 : userData.name) || (userData === null || userData === void 0 ? void 0 : userData.email);
+                            isAdmin_1 = userData.is_admin;
+                            avatar = userData.avatar;
+                            setUserName(userName_1);
+                            setIsAdmin(isAdmin_1);
+                            setImage(avatar);
+                        }
+                        _b.label = 3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); };
+        fetchData();
     }, [session, status]);
     if (status === 'loading') {
         return 'Loading ...';
@@ -72,87 +101,71 @@ function ProfilePage() {
     if (status === 'unauthenticated') {
         return navigation_1.redirect('/login');
     }
-    // const response = await fetch('api/update', {
-    //     method: 'PUT',
-    //     headers: {'Content-Type': 'application/json'},
-    //     body: JSON.stringify({name: userName})
-    // })
-    // const { ok } = response
-    // setIsSaving(false)
-    // if ( ok ) {
-    //     setSaved(true)
-    //     resolve()
-    // } else {
-    //     reject()
-    // }
     function handleProfileInfoUpdate(e) {
         return __awaiter(this, void 0, void 0, function () {
-            var session, _a, update, login, res;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var savePromise;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         e.preventDefault();
                         setSaved(false);
                         setIsSaving(true);
-                        return [4 /*yield*/, useSessionData_1.useSessionData()];
+                        savePromise = new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
+                            var update, res, error_1;
+                            var _a, _b;
+                            return __generator(this, function (_c) {
+                                switch (_c.label) {
+                                    case 0:
+                                        _c.trys.push([0, 5, , 6]);
+                                        update = member_api_1.memberApi(session).update;
+                                        res = null;
+                                        if (!avatarId) return [3 /*break*/, 2];
+                                        return [4 /*yield*/, update({
+                                                name: userName,
+                                                avatar_id: avatarId
+                                            })];
+                                    case 1:
+                                        res = _c.sent();
+                                        return [3 /*break*/, 4];
+                                    case 2: return [4 /*yield*/, update({
+                                            name: userName
+                                        })];
+                                    case 3:
+                                        res = _c.sent();
+                                        _c.label = 4;
+                                    case 4:
+                                        setIsSaving(false);
+                                        if ((res === null || res === void 0 ? void 0 : res.status) == 200 && ((_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.status) === 200) {
+                                            setSaved(true);
+                                            session.data.user = (_b = res === null || res === void 0 ? void 0 : res.data) === null || _b === void 0 ? void 0 : _b.params;
+                                            resolve();
+                                            return [2 /*return*/, router.push('/profile')];
+                                        }
+                                        else {
+                                            reject(new Error(res === null || res === void 0 ? void 0 : res.data));
+                                        }
+                                        return [3 /*break*/, 6];
+                                    case 5:
+                                        error_1 = _c.sent();
+                                        reject(error_1);
+                                        return [3 /*break*/, 6];
+                                    case 6: return [2 /*return*/];
+                                }
+                            });
+                        }); });
+                        return [4 /*yield*/, react_hot_toast_1["default"].promise(savePromise, {
+                                loading: 'Saving ...',
+                                success: 'Profile saved!',
+                                error: 'Error'
+                            })];
                     case 1:
-                        session = _b.sent();
-                        _a = member_api_1.memberApi(session), update = _a.update, login = _a.login;
-                        console.log(' ======------======> ');
-                        console.log(userName);
-                        console.log(' ======------======> ');
-                        return [4 /*yield*/, update({
-                                name: userName
-                            })
-                            // const res = await update({
-                            //     name: userName, 
-                            // })  
-                        ];
-                    case 2:
-                        res = _b.sent();
-                        // const res = await update({
-                        //     name: userName, 
-                        // })  
-                        setIsSaving(false);
-                        if ((res === null || res === void 0 ? void 0 : res.data.status) === 200) {
-                            setSaved(true);
-                        }
+                        _a.sent();
                         return [2 /*return*/];
                 }
             });
         });
     }
-    // async function handleFileChange(e: React.FormEvent<HTMLFormElement>) {
-    //     // toast( JSON.stringify(e?.target?.files) )
-    //     const files = e?.target?.files;  
-    //     if (files?.length > 0) {
-    //         const formData = new FormData()
-    //         formData.append('file', files[0])
-    //        // toast( JSON.stringify(files[0]) )
-    //         // toast('Uploading image:',  );
-    //        toast('Uploading image:', formData.get('file'));
-    //         await memberApi.uploadImage(formData).then((result) => {
-    //             if (result.status == 200) { 
-    //                // toast (JSON.stringify(result))
-    //               //  toast("upload succeed")
-    //             } else {
-    //                // toast("upload failed")
-    //             }
-    //         })
-    //     } 
-    //     // console.log(e);
-    //     // const files = e?.target?.files;
-    //     // toast('Uploading ...')
-    //     // if (files?.length > 0) {
-    //     //     const data = new FormData
-    //     //     data.set('file', files[0])
-    //     //     await fetch('/api/upload', {
-    //     //         method: 'POST',
-    //     //         body: data,
-    //     //         // headers: {'Content-Type': 'multipart/form-data'}
-    //     //     })
-    //     // } 
-    // }
     return (React.createElement("section", { className: "my-8" },
         React.createElement(Tabs_1["default"], { isAdmin: isAdmin }),
         React.createElement("div", { className: 'max-w-lg p-4 mx-auto border' },
@@ -160,7 +173,7 @@ function ProfilePage() {
             isSaving && (React.createElement(InfoBox_1["default"], null, " Saving ... ")),
             React.createElement("div", { className: "flex items-center gap-4 mt-2" },
                 React.createElement("div", { className: "p-4 bg-gray-600 rounded-md" },
-                    React.createElement(EditableImage_1["default"], { link: image, setLink: setImage })),
+                    React.createElement(EditableImage_1["default"], { link: image, setLink: setImage, setAvatarId: setAvatarId })),
                 React.createElement("form", { className: "grow", onSubmit: handleProfileInfoUpdate },
                     React.createElement("input", { type: "text", value: userName, onChange: function (e) { return setUserName(e.target.value); } }),
                     React.createElement("input", { type: "email", disabled: true, value: userEmail }),
