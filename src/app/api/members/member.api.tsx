@@ -1,7 +1,7 @@
 import commonAxios, { API_HOST } from "@/utils/axios/common.axios";
 
 import type { AxiosResponseData } from "@/utils/axios/axios.types";
-import { IMember, ILogin, IAvatar, IUpdateMember } from "./member.api.types"; 
+import { IMember, ILogin, IFile, IUpdateMember } from "./member.api.types"; 
 import axios from "axios"; 
   
 import { ISession } from "@/types/sessions";
@@ -30,17 +30,29 @@ export function memberApi(session: ISession | null)
     return await commonAxios.post<AxiosResponseData>("/api/v1/members/login.json", {
       ...payload
     });
-  }
- 
+  } 
 
- const uploadImage = async (file: File) => {
+
+ const uploadImage2 = async (file: File) => { 
+  try {   
+    let payload:IFile = { isFile: true, file: file }; 
+    return await commonAxios.post<AxiosResponseData>("/api/v1/members/uploadImage.json", {
+      ...payload
+    }); 
+    
+  } catch (error: any) {
+    console.log('Error uploading image: ', error.message)
+  } 
+}; 
+
+const uploadImage = async (file: File) => {
    
     try {  
       if (!session.user.token) { 
         console.error("No session token available.");
         return { 'data': {"status": 999, "message": 'No session token available'} }
       }
-
+ 
       const formData = new FormData();
       formData.append("file", file);  
   
@@ -61,6 +73,6 @@ export function memberApi(session: ISession | null)
    
   }
 
-  return { login, register, getProfile, uploadImage, update };
+  return { login, register, getProfile, uploadImage, uploadImage2, update };
 };
  

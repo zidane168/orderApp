@@ -23,6 +23,11 @@ export type ILogin = {
   type: number
 }
 
+export type IFile = {
+  file: File,
+  isFile: boolean,
+}
+
 export type IAvatar = {
   file: any
 }

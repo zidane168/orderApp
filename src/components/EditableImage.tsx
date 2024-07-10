@@ -21,9 +21,9 @@ export default function EditableImage( {link, setLink, setAvatarId} : IEditableI
             let message = "";  
  
             const session = await useSessionData()
-            const { uploadImage } = memberApi(session)
+            const { uploadImage2 } = memberApi(session)
 
-            const uploadPromise = uploadImage(files[0]).then((result: any) => { 
+            const uploadPromise = uploadImage2(files[0]).then((result: any) => { 
                 if (result.data.status == 200) { 
  
                     console.log(result?.data?.params?.path)

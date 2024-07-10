@@ -95,7 +95,7 @@ export default function ProfilePage() {
                  
                     session.data.user = res?.data?.params  
                     resolve()  
-                    return router.push('/profile')   
+                    return router.push('/profile')   // nothing happen
                 }  else {
                     reject(new Error(res?.data))
                 }

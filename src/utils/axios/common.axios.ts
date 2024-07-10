@@ -1,17 +1,17 @@
 import axios from "axios";
 
-import { commonConfig } from "../configs";  
-import { useSessionData } from "@/customHook/useSessionData"; 
+import { commonConfig } from "../configs";
+import { useSessionData } from "@/customHook/useSessionData";
 
 const commonAxios = axios.create({
   baseURL: `${commonConfig.API_HOST}`,
   headers: {
-    Language: 'en_US', 
-    'Content-Type': 'application/json' 
+    Language: 'en_US',
+    'Content-Type':  'application/json'
   }
 });
 
-export const API_HOST = `${commonConfig.API_HOST}` 
+export const API_HOST = `${commonConfig.API_HOST}`
 
 export const formatFormData = (data: Object) => {
   const fd = new FormData();
@@ -31,33 +31,40 @@ export const formatFormData = (data: Object) => {
 };
 
 commonAxios.interceptors.request.use(
-  async (req) => { 
-     
-    const session = await useSessionData() 
+  async (req) => {
+
+    const session = await useSessionData()
     if (session && session?.user?.token) {
       req.headers.Authorization = `Bearer ${session?.user?.token}`;
     }
-    
+ 
+    if (req.data?.isFile) { 
+      req.headers["Content-Type"] = 'multipart/form-data'; 
+    }
+
     switch ((req.method as string).toUpperCase()) {
       case "GET": {
-        req.params = req.params || {}; 
+        req.params = req.params || {};
         break;
       }
-      case "POST": {   
-        console.log(' ----- Start POST ----- ')
-        console.log( req )
-        console.log(' ----- End POST ----- ')
-        if (!(req.data instanceof FormData) && !!req.data) {
-          req.data = formatFormData(req.data);    
-        }
- 
+      case "POST": { 
+        if (req.data?.isFile) {
+          const formData = new FormData();
+          formData.append("file", req.data.file);  
+          req.data = formData
+        } else {
+          if (!(req.data instanceof FormData) && !!req.data) {
+            req.data = formatFormData(req.data);
+          }
+        }  
+
         break;
       }
       case "PUT": {
         if (!(req.data instanceof FormData) && !!req.data) {
-          req.data = formatFormData(req.data);  
+          req.data = formatFormData(req.data);
           // req.data = commonHelpers.formatFormData(req.data);
-        } 
+        }
         break;
       }
     }
@@ -70,7 +77,7 @@ commonAxios.interceptors.request.use(
 );
 
 commonAxios.interceptors.response.use(
-  (res) => {  
+  (res) => {
     return res;
   },
   (err) => {
