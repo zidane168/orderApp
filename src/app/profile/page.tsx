@@ -24,6 +24,7 @@ export default function ProfilePage() {
 
     const [ isAdmin, setIsAdmin ] = useState(false)
     const [ image, setImage ] = useState();
+    const [ avatarId, setAvatarId ] = useState('');
 
     useEffect(() => {
         if (status === 'authenticated') {
@@ -66,55 +67,62 @@ export default function ProfilePage() {
         setSaved(false)
         setIsSaving(true) 
         
-        const session = await useSessionData()
-        const { update, login } =  memberApi(session)
+        // const session = await useSessionData()
+        // const { update } =  memberApi(session) 
 
-        console.log(' ======------======> ')
-        console.log(userName)
-        console.log(' ======------======> ') 
-
-        const res =  await update({
-            name:      userName, 
-        })  
-        
-        // const res = await update({
-        //     name: userName, 
+        // const res =  await update({
+        //     name:      userName, 
+        //     avatar_id: avatarId
         // })  
-
-        setIsSaving(false)
-
-        if (res?.data.status === 200) {
-            setSaved(true)
-            
-        } 
         
-        // const savePromise = new Promise(async(resolve, reject) => { 
+        // // const res = await update({
+        // //     name: userName, 
+        // // })  
+
+        // setIsSaving(false)
+
+        // if (res?.data.status === 200) {
+        //     setSaved(true)
+            
+        // } 
+        
+        const savePromise = new Promise(async(resolve, reject) => { 
+
+            try   {
+                const session = await useSessionData()
+                const { update } =  memberApi(session) 
+
+                let res = null
+                if (avatarId) {
+                    res =  await update({
+                        name:      userName, 
+                        avatar_id: avatarId
+                    })   
+                } else {
+                    res =  await update({
+                        name:      userName,  
+                    })   
+                } 
+
+                setIsSaving(false) 
  
-        //     const session = await useSessionData()
-        //     const { update } =  memberApi(session)
- 
-        //     console.log(' ======------======> ')
-        //     console.log(userName)
-        //     console.log(' ======------======> ') 
-        //     const res = await update({
-        //         name: userName, 
-        //     })  
+                if (res?.status == 200 && res?.data?.status === 200) {
+                    setSaved(true)
+                    resolve()
+                    
+                }  else {
+                    reject(new Error('API call failed'))
+                }
+            } catch (error) {
+                reject(error)
+            }
+        })
 
-        //     setIsSaving(false)
-
-        //     if (res?.data.status === 200) {
-        //         setSaved(true)
-        //         resolve()
-        //     } else {
-        //         reject()
-        //     }  
-        // })
-
-        // await toast.promise(savePromise, {
-        //     loading: 'Saving ...',
-        //     success: 'Profile saved!',
-        //     error: 'Error',
-        // })
+        await toast.promise(savePromise, {
+            loading: 'Saving ...',
+            success: 'Profile saved!',
+            error: 'Error',
+        })
     } 
 
     // async function handleFileChange(e: React.FormEvent<HTMLFormElement>) {
@@ -169,7 +177,7 @@ export default function ProfilePage() {
                 
                 <div className="flex items-center gap-4 mt-2">
                     <div className="p-4 bg-gray-600 rounded-md">
-                        <EditableImage link={ image } setLink={ setImage } /> 
+                        <EditableImage link={ image } setLink={ setImage } setAvatarId={ setAvatarId }  /> 
                     </div>
                     <form className="grow" onSubmit={ handleProfileInfoUpdate }>
                         <input type="text"  value= { userName }  onChange={ e => setUserName(e.target.value) }/>

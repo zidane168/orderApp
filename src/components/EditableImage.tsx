@@ -8,9 +8,10 @@ import { memberApi } from "@/app/api/members/member.api";
 interface IEditableImage {
     link: string,
     setLink: React.Dispatch<React.SetStateAction<string>>
+    setAvatarId: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function EditableImage( {link, setLink} : IEditableImage ) {   
+export default function EditableImage( {link, setLink, setAvatarId} : IEditableImage ) {   
 
     async function handleFileChange(ev: React.ChangeEvent<HTMLInputElement>) {  
       
@@ -29,6 +30,7 @@ export default function EditableImage( {link, setLink} : IEditableImage ) {
  
                     console.log(result?.data?.params?.path)
                     setLink(result?.data?.params?.path)
+                    setAvatarId(result?.data?.params.id)
                 } else {
                     message = result.data.message
                     throw new Error(message)
