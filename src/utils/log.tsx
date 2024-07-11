@@ -1,15 +1,9 @@
+import { CURRENT_ENV } from "./configs/constants"
+
 export default function Log(content: string): void { 
-
-    const currentEnv= 'local' 
-    if ("local" == currentEnv) {
-        if (typeof content == 'object') {
-            console.log(JSON.stringify(content))
-        
-        } else if (Array.isArray(content)) {
-            console.log(JSON.stringify(content))
-
-        } else {
-            console.log(content)
-        }
+ 
+    console.log( CURRENT_ENV  ) 
+    if ("local" == CURRENT_ENV) { 
+        console.log( (content)) 
     }
 }

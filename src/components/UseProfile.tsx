@@ -20,7 +20,7 @@ export function useProfile() {
             const res = await getProfile() 
 
             if (res.data.status == 200) {
-                setData(data);
+                setData(res.data.params);
                 setLoading(false)
             }
         } 

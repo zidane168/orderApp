@@ -62,10 +62,13 @@ commonAxios.interceptors.request.use(
       }
       case "PUT": {
         if (!(req.data instanceof FormData) && !!req.data) {
-          req.data = formatFormData(req.data);
-          // req.data = commonHelpers.formatFormData(req.data);
+          req.data = formatFormData(req.data); 
         }
         break;
+      }
+
+      case "DELETE": {
+        req.data = JSON.stringify(req.data)
       }
     }
     return req;

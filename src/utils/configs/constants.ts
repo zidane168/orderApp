@@ -1,0 +1,1 @@
+export const CURRENT_ENV = process.env.ENV 
