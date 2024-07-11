@@ -17,11 +17,11 @@ export default function Categories(): any {
     }, [])
 
     async function fetchCategories() {
-        await fetch('api/categories').then(res => {
-            res.json().then(categories => {
-                setCategories(categories)
-            })
-        })
+        // await fetch('api/categories').then(res => {
+        //     res.json().then(categories => {
+        //         setCategories(categories)
+        //     })
+        // })
     }
 
     if (profileLoading) {
