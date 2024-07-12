@@ -127,7 +127,7 @@ export default function ProfilePage() {
                 
                 <div className="flex items-center gap-4 mt-2">
                     <div className="p-4 bg-gray-600 rounded-md">
-                        <EditableImage link={ image } setLink={ setImage } setAvatarId={ setAvatarId }  /> 
+                        <EditableImage link={ image } setLink={ setImage } setAvatarId={ setAvatarId } typeUpload={ 1 } /> 
                     </div>
                     <form className="grow" onSubmit={ handleProfileInfoUpdate }>
                         <input type="text"  value= { userName }  onChange={ e => setUserName(e.target.value) }/>

@@ -4,36 +4,52 @@ import Image from 'next/image'
  
 import { useSessionData } from "@/customHook/useSessionData";
 import { memberApi } from "@/app/api/members/member.api";
+import { productApi } from "@/app/api/product/product.api";
 
 interface IEditableImage {
     link: string,
     setLink: React.Dispatch<React.SetStateAction<string>>
-    setAvatarId: React.Dispatch<React.SetStateAction<string>>
+    setAvatarId: React.Dispatch<React.SetStateAction<string>>,
+    typeUpload: number,
 }
 
-export default function EditableImage( {link, setLink, setAvatarId} : IEditableImage ) {   
+export default function EditableImage( {link, setLink, setAvatarId, typeUpload = 1} : IEditableImage ) {   
 
     async function handleFileChange(ev: React.ChangeEvent<HTMLInputElement>) {  
       
         const files = ev.target.files;
+        console.log(files)
         if (files?.length > 0) {
             
             let message = "";  
  
             const session = await useSessionData()
-            const { uploadImage2 } = memberApi(session)
 
-            const uploadPromise = uploadImage2(files[0]).then((result: any) => { 
-                if (result.data.status == 200) { 
- 
-                    console.log(result?.data?.params?.path)
-                    setLink(result?.data?.params?.path)
-                    setAvatarId(result?.data?.params.id)
-                } else {
-                    message = result.data.message
-                    throw new Error(message)
-                } 
-            })
+            let uploadPromise = null; 
+            if (typeUpload == 1) {
+                const { uploadImage2 } = memberApi( ) 
+                uploadPromise = uploadImage2(files[0]).then((result: any) => { 
+                    if (result.data.status == 200) {  
+                        setLink(result?.data?.params?.path)
+                        setAvatarId(result?.data?.params.id)
+                    } else {
+                        message = result.data.message
+                        throw new Error(message)
+                    } 
+                }) 
+
+            } else if (typeUpload == 2) {
+                const { uploadImage } = productApi( ) 
+                uploadPromise = uploadImage(files[0]).then((result: any) => { 
+                    if (result.data.status == 200) {  
+                        setLink(result?.data?.params?.path)
+                        setAvatarId(result?.data?.params.id)
+                    } else {
+                        message = result.data.message
+                        throw new Error(message)
+                    } 
+                }) 
+            } 
                     
             await toast.promise(uploadPromise, {
                 loading: 'Uploading ...',
@@ -60,7 +76,7 @@ export default function EditableImage( {link, setLink, setAvatarId} : IEditableI
 
             <label>
                 <input type="file" className="hidden" onChange={ handleFileChange } />
-                <span className="block p-2 text-center border border-gray-300 rounded-lg cursor-pointer"> Edit </span>
+                <span className="block p-2 text-center bg-white border border-gray-300 rounded-lg cursor-pointer"> Upload { typeUpload == 1 ? 'Avatar' : 'Image' }  </span>
             </label>
         </>
     )

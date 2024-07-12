@@ -74,7 +74,7 @@ function ProfilePage() {
                         session_1 = _b.sent() // must use await this for make asynchoronous and useSessionData is get from a hook 
                         ;
                         if (!session_1) return [3 /*break*/, 3];
-                        getProfile = member_api_1.memberApi(session_1).getProfile;
+                        getProfile = member_api_1.memberApi().getProfile;
                         return [4 /*yield*/, getProfile()];
                     case 2:
                         res = _b.sent();
@@ -140,7 +140,7 @@ function ProfilePage() {
                                             setSaved(true);
                                             session.data.user = (_b = res === null || res === void 0 ? void 0 : res.data) === null || _b === void 0 ? void 0 : _b.params;
                                             resolve();
-                                            return [2 /*return*/, router.push('/profile')];
+                                            return [2 /*return*/, router.push('/profile')]; // nothing happen
                                         }
                                         else {
                                             reject(new Error(res === null || res === void 0 ? void 0 : res.data));
@@ -173,7 +173,7 @@ function ProfilePage() {
             isSaving && (React.createElement(InfoBox_1["default"], null, " Saving ... ")),
             React.createElement("div", { className: "flex items-center gap-4 mt-2" },
                 React.createElement("div", { className: "p-4 bg-gray-600 rounded-md" },
-                    React.createElement(EditableImage_1["default"], { link: image, setLink: setImage, setAvatarId: setAvatarId })),
+                    React.createElement(EditableImage_1["default"], { link: image, setLink: setImage, setAvatarId: setAvatarId, typeUpload: 1 })),
                 React.createElement("form", { className: "grow", onSubmit: handleProfileInfoUpdate },
                     React.createElement("input", { type: "text", value: userName, onChange: function (e) { return setUserName(e.target.value); } }),
                     React.createElement("input", { type: "email", disabled: true, value: userEmail }),
