@@ -248,3 +248,65 @@ async authorize(credentials, req) {
 
 
 # useSession là hook bất đồng bộ, so sometimes you get undefined the data value
+
+
+# nếu sử dụng { thì phải có return () khi dùng map
+# CÚ PHẢP NHỚ: KHÔNG tròn THÌ cần return
+  { 
+    sizes?.length > 0 &&  
+      sizes.map( (s, index) => { 
+          return (
+              <div   key={  index  } > 
+                  <input type="text" placeholder="Size name" value={ s.name } />
+                  <input type="number" placeholder="Extra price" value={ s.price } />
+              </div>
+          ) 
+      })  
+  }
+
+# nếu sử dụng dấu ngoăc tròn thì ko cần RETURN khi dùng map
+# CÚ PHẢP NHỚ: đã tròn ko cần return
+      sizes.map( (s, index) =>   
+        (
+          <div  className="flex items-center justify-around gap-4" key={  index  } > 
+              <div className="flex items-center gap-2 grow">
+                  <input type="text" className="font-bold text-red-600" placeholder="Size name" value={ s.name } />
+                  <input type="number" className="p-2 rounded-md" placeholder="Extra price" value={ s.price } />
+              </div>
+              <div className="">
+                  <button className="transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110"> 
+                      <DeleteIcon className="w-8 h-8"/>
+                  </button>
+              </div>
+          </div>
+      )  
+  )  
+
+
+# Thiếu dấu =
+const ComboBox: React.FC<ComboboxProps> = ({ list } : ComboboxProps) => {}
+ 
+# need compare this one
+const [selectedKeys, setSelectedKeys] = React.useState(new Set(["-- Please Select --"]));   
+export type IListItem = {
+  id: number,
+  name: string, 
+}
+const selectedItems = list?.filter((item: any) => selectedKeys.has( String(item.id) )); 
+
+# cách truyền param
+<input type="file" className="hidden" onChange={ handleFileChange } />
+
+# define func
+async function handleFileChange(ev: React.ChangeEvent<HTMLInputElement>) {   
+  const files = ev.target.files;
+  console.log(files)
+  if (files?.length > 0) { ...  }
+}
+ 
+onChange={ e => setValue(e.target.value) }
+
+# JSX
+{ link && (
+  <Image priority={false}  className="w-full h-full mb-1 rounded-lg" src={ link } width={ 100 } height={ 100 } alt={'avatar'} /> 
+)}

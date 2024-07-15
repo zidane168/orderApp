@@ -27,7 +27,11 @@ export function productApi()
             console.log('Error uploading image: ', error.message)
         } 
     }; 
+
+    const getAllSize = async() => {
+        return commonAxios.get<AxiosResponseData>("/api/v1/sizes/getAll.json")
+    }
        
-    return { create, update, uploadImage };
+    return { create, update, uploadImage, getAllSize };
 };
  

@@ -6,9 +6,13 @@ export type IProduct = {
     category_id: number,
     description: string,
 }
-
-
+ 
 export type IFile = {
     file: File,
     isFile: boolean,
-  }
+}
+
+export type ISize = {
+    name: string, 
+    price: number,
+}

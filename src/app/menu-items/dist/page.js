@@ -42,35 +42,98 @@ var UseProfile_1 = require("@/components/UseProfile");
 var Tabs_1 = require("@/components/layout/Tabs");
 var react_1 = require("react");
 var react_hot_toast_1 = require("react-hot-toast");
+var product_api_1 = require("../api/product/product.api");
+var DeleteIcon_1 = require("@/components/icons/DeleteIcon");
+var Combobox_1 = require("@/components/Combobox");
+var category_api_1 = require("../api/categories/category.api");
 function MenuItemsPage() {
     var _a = UseProfile_1.useProfile(), loading = _a.loading, data = _a.data;
-    var _b = react_1.useState(), image = _b[0], setImage = _b[1];
-    var _c = react_1.useState(), name = _c[0], setName = _c[1];
-    var _d = react_1.useState(), description = _d[0], setDescription = _d[1];
-    var _e = react_1.useState(), basePrice = _e[0], setBasePrice = _e[1];
+    var _b = react_1.useState(), name = _b[0], setName = _b[1];
+    var _c = react_1.useState(), description = _c[0], setDescription = _c[1];
+    var _d = react_1.useState(), basePrice = _d[0], setBasePrice = _d[1];
+    var _e = react_1.useState(''), image = _e[0], setImage = _e[1];
+    var _f = react_1.useState(''), imageId = _f[0], setImageId = _f[1];
+    var _g = react_1.useState(), sizes = _g[0], setSizes = _g[1];
+    var _h = react_1.useState(), category = _h[0], setCategories = _h[1];
+    var _j = react_1.useState({ id: 0, name: '-- Please Select --' }), selectedItem = _j[0], setSelectedItem = _j[1];
+    react_1.useEffect(function () {
+        fetchSizes();
+        fetchCategories();
+    }, []);
+    function fetchSizes() {
+        return __awaiter(this, void 0, void 0, function () {
+            var getAllSize, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        getAllSize = product_api_1.productApi().getAllSize;
+                        return [4 /*yield*/, getAllSize()];
+                    case 1:
+                        res = _a.sent();
+                        if (res.data.status === 200) {
+                            setSizes(res.data.params);
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    }
+    function fetchCategories() {
+        return __awaiter(this, void 0, void 0, function () {
+            var getAll, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        getAll = category_api_1.categoryApi().getAll;
+                        return [4 /*yield*/, getAll()];
+                    case 1:
+                        res = _a.sent();
+                        if (res.data.status === 200) {
+                            setCategories(res.data.params);
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    }
+    function setSizeName() {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
+        });
+    }
+    function setSizePrice() {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
+        });
+    }
     function handleSubmit(ev) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, savingPromise;
+            var savingPromise;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         ev.preventDefault();
-                        data = { image: image, name: name, description: description, basePrice: basePrice };
                         savingPromise = new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-                            var response;
+                            var create, response;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0: return [4 /*yield*/, fetch('/api/menu-items', {
-                                            method: 'POST',
-                                            body: JSON.stringify({
-                                                data: data
-                                            }),
-                                            headers: { 'Content-Type': 'application/json' }
-                                        })];
+                                    case 0:
+                                        create = product_api_1.productApi().create;
+                                        return [4 /*yield*/, create({
+                                                name: name,
+                                                description: description,
+                                                base_price: basePrice,
+                                                // category_id: 
+                                                image_id: setImageId
+                                            })];
                                     case 1:
                                         response = _a.sent();
-                                        if (response.ok) {
+                                        if (response.data.status == 200) {
                                             resolve();
                                         }
                                         else {
@@ -95,7 +158,7 @@ function MenuItemsPage() {
     if (loading) {
         return 'Loading user info ...';
     }
-    if (!data.admin) {
+    if (!data.is_admin) {
         return 'Not an admin ...';
     }
     return (React.createElement("section", { className: "mt-8" },
@@ -104,14 +167,44 @@ function MenuItemsPage() {
             React.createElement("div", { className: "grid items-start gap-4" },
                 React.createElement("div", { className: "grid items-start gap-4", style: { gridTemplateColumns: '.3fr, .7fr' } },
                     React.createElement("div", null,
-                        React.createElement(EditableImage_1["default"], { link: image, setLink: setImage }))),
+                        React.createElement(EditableImage_1["default"], { link: image, setLink: setImage, setAvatarId: setImageId, typeUpload: 2 }))),
+                React.createElement(Combobox_1["default"], { name: 'Category', list: category, selectedItem: selectedItem }),
                 React.createElement("div", { className: "grow" },
                     React.createElement("label", null, " Item name "),
                     React.createElement("input", { type: "text", value: name, onChange: function (ev) { return setName(ev.target.value); } }),
                     React.createElement("label", null, " Description "),
                     React.createElement("input", { type: "text", value: description, onChange: function (ev) { return setDescription(ev.target.value); } }),
                     React.createElement("label", null, " Base price "),
-                    React.createElement("input", { type: "text", value: basePrice, onChange: function (ev) { return setBasePrice(ev.target.value); } }),
+                    React.createElement("input", { type: "text", value: basePrice, onChange: function (ev) { return setBasePrice(ev.target.value); } })),
+                React.createElement("div", { className: "p-2 mb-2 bg-gray-100 rounded-md" },
+                    React.createElement("label", null, " Sizes "),
+                    (sizes === null || sizes === void 0 ? void 0 : sizes.length) === 0 && React.createElement("div", null, " No sizes "),
+                    (sizes === null || sizes === void 0 ? void 0 : sizes.length) > 0 &&
+                        // sizes.map( (s, index) => {   // MUST return khi dấu {}
+                        //     return (
+                        //         <div  className="flex items-center justify-around gap-4" key={  index  } > 
+                        //             <div className="flex items-center gap-2 grow">
+                        //                 <input type="text" className="font-bold text-red-600" placeholder="Size name" value={ s.name } />
+                        //                 <input type="number" className="p-2 rounded-md" placeholder="Extra price" value={ s.price } />
+                        //             </div>
+                        //             <div className="">
+                        //                 <button className="transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110"> 
+                        //                     <DeleteIcon className="w-8 h-8"/>
+                        //                 </button>
+                        //             </div>
+                        //         </div>
+                        //     ) 
+                        // })  
+                        sizes.map(function (s, index) {
+                            return (React.createElement("div", { className: "flex items-center justify-around gap-4", key: index },
+                                React.createElement("div", { className: "flex items-center gap-2 grow" },
+                                    React.createElement("input", { type: "text", className: "font-bold text-red-600", onChange: setSizeName, placeholder: "Size name", value: s.name }),
+                                    React.createElement("input", { type: "number", className: "p-2 rounded-md", onChange: setSizePrice, placeholder: "Extra price", value: s.price })),
+                                React.createElement("div", { className: "" },
+                                    React.createElement("button", { className: "transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110" },
+                                        React.createElement(DeleteIcon_1["default"], { className: "w-8 h-8" })))));
+                        })),
+                React.createElement("div", null,
                     React.createElement("button", { type: "submit" }, " Save "))))));
 }
 exports["default"] = MenuItemsPage;
