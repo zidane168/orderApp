@@ -123,13 +123,16 @@ function MenuItemsPage() {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
+                                        console.log(' --------- ');
+                                        console.log(selectedItem);
+                                        console.log(' --------- ');
                                         create = product_api_1.productApi().create;
                                         return [4 /*yield*/, create({
                                                 name: name,
                                                 description: description,
                                                 base_price: basePrice,
-                                                // category_id: 
-                                                image_id: setImageId
+                                                category_id: selectedItem.id,
+                                                image_id: imageId
                                             })];
                                     case 1:
                                         response = _a.sent();
@@ -168,14 +171,14 @@ function MenuItemsPage() {
                 React.createElement("div", { className: "grid items-start gap-4", style: { gridTemplateColumns: '.3fr, .7fr' } },
                     React.createElement("div", null,
                         React.createElement(EditableImage_1["default"], { link: image, setLink: setImage, setAvatarId: setImageId, typeUpload: 2 }))),
-                React.createElement(Combobox_1["default"], { name: 'Category', list: category, selectedItem: selectedItem }),
+                React.createElement(Combobox_1["default"], { name: 'Category', list: category, setSelectedItem: setSelectedItem }),
                 React.createElement("div", { className: "grow" },
                     React.createElement("label", null, " Item name "),
                     React.createElement("input", { type: "text", value: name, onChange: function (ev) { return setName(ev.target.value); } }),
                     React.createElement("label", null, " Description "),
                     React.createElement("input", { type: "text", value: description, onChange: function (ev) { return setDescription(ev.target.value); } }),
                     React.createElement("label", null, " Base price "),
-                    React.createElement("input", { type: "text", value: basePrice, onChange: function (ev) { return setBasePrice(ev.target.value); } })),
+                    React.createElement("input", { type: "number", className: "form-control", value: basePrice, onChange: function (ev) { return setBasePrice(ev.target.value); } })),
                 React.createElement("div", { className: "p-2 mb-2 bg-gray-100 rounded-md" },
                     React.createElement("label", null, " Sizes "),
                     (sizes === null || sizes === void 0 ? void 0 : sizes.length) === 0 && React.createElement("div", null, " No sizes "),

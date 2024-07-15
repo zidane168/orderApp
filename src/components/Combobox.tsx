@@ -9,26 +9,31 @@ export type IListItem = {
 interface ComboboxProps {
   name: string,   // combobox name
   list: IListItem[] | undefined,
-  selectItem: IListItem,
+  setSelectedItem: React.Dispatch<React.SetStateAction<IListItem>>,
 }
 
-const ComboBox: React.FC<ComboboxProps> = ({ name, list, selectedItem } : ComboboxProps) => {
+const ComboBox: React.FC<ComboboxProps> = ({ name, list, setSelectedItem } : ComboboxProps) => {
  
   const defaultItem = { id: 0, name: "-- Please Select --" };
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([ String(defaultItem.id) ]));   
 
   const selectedValue = React.useMemo(() => { 
-    const selectedItems = list?.filter((item: any) => selectedKeys.has( String(item.id) ));  
-
+    const selectedItems = list?.filter((item: any) => selectedKeys.has( String(item.id) ));   
+    
     if (selectedItems?.length == 0) {
       return defaultItem.name
     }
  
     return selectedItems?.map((item) => item.name).join(", ") || "";
   }, [selectedKeys, list]);
+ 
+  function handleSelectionChange(newSelectedKeys: Set<string>) {
+    setSelectedKeys(newSelectedKeys)
 
-  function setInputValue(ev: React.FormEvent<HTMLFormElement>) { 
-    selectedItem = ev.target.value 
+    const selectedItems = list?.filter((item) => newSelectedKeys.has(String(item.id)))
+
+    setSelectedItem(selectedItems[0]);
+    return (selectedItems?.map((item) => item.name).join(", ") || "")
   }
 
   return (
@@ -54,15 +59,15 @@ const ComboBox: React.FC<ComboboxProps> = ({ name, list, selectedItem } : Combob
           disallowEmptySelection
           selectionMode="single"
           selectedKeys={selectedKeys}
-          onSelectionChange={setSelectedKeys}
+          // onSelectionChange={setSelectedKeys}
+          onSelectionChange={ handleSelectionChange }
         >
   
           { list?.map( (item ) => {  
             return ( 
               <DropdownItem className="hover:text-white hover:font-semibold hover:cursor-pointer hover:bg-orange-300" 
                 key={ item.id }
-                textValue={item.name}   
-                onChange={   setInputValue }
+                textValue={item.name}    
                 > { item.name } 
               </DropdownItem>
             )

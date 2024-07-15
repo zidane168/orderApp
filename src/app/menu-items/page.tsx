@@ -59,15 +59,18 @@ export default function MenuItemsPage() {
     async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
 
         ev.preventDefault() 
-        const savingPromise = new Promise(async (resolve, reject) => { 
-
+        const savingPromise = new Promise(async (resolve, reject) => {  
+            console.log(' --------- ')
+            console.log(selectedItem)
+            console.log(' --------- ')
+            
             const { create } = productApi(); 
             const response = await create({
                 name: name,
                 description: description,
                 base_price: basePrice,
-                // category_id: 
-                image_id: setImageId, 
+                category_id: selectedItem.id,
+                image_id: imageId, 
             })
 
             if (response.data.status == 200) {
@@ -103,14 +106,14 @@ export default function MenuItemsPage() {
                             <EditableImage link={ image } setLink={ setImage } setAvatarId={ setImageId } typeUpload={ 2 } /> 
                         </div>
                     </div>
-                    <Combobox name={ 'Category' } list={ category } selectedItem={ selectedItem } />
+                    <Combobox name={ 'Category' } list={ category } setSelectedItem={ setSelectedItem } />
                     <div className="grow">
                         <label> Item name </label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
                         <label> Description </label>
                         <input type="text" value={ description } onChange={ ev => setDescription(ev.target.value)}  />
                         <label> Base price </label>
-                        <input type="text" value={ basePrice } onChange={ ev => setBasePrice(ev.target.value)}  />
+                        <input type="number" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(ev.target.value)}  />
 
                     </div>
 
