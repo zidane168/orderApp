@@ -10,6 +10,7 @@ import DeleteIcon from "@/components/icons/DeleteIcon"
 import Combobox, { IListItem } from "@/components/Combobox"
 import { categoryApi } from "../api/categories/category.api"
 import { ICategory } from "../api/categories"
+import { Button } from "@nextui-org/react"
 
 export default function MenuItemsPage() {
 
@@ -21,23 +22,14 @@ export default function MenuItemsPage() {
     const [ image, setImage ] = useState<string>('') 
     const [ imageId, setImageId ] = useState<string>('')
 
-    const [ sizes, setSizes ] = useState<ISize[]>(); 
+    const [ sizes, setSizes ] = useState<ISize[]>([]); 
     const [ category, setCategories ] = useState<ICategory[]>();
     const [ selectedItem, setSelectedItem ] = useState<IListItem>({id: 0, name:'-- Please Select --'});
 
-    useEffect(() => {   
-        fetchSizes() 
+    useEffect(() => {    
         fetchCategories()
-    }, [])
-
-    async function fetchSizes() {
-        const { getAllSize  } = productApi()
-        const res = await getAllSize();
-     
-        if (res.data.status === 200) { 
-            setSizes(res.data.params)
-        }
-    }  
+    }, []) 
+    
 
     async function fetchCategories() {
         const { getAll } = categoryApi()
@@ -56,14 +48,36 @@ export default function MenuItemsPage() {
         
     }
 
+    // ------- LOGIC THÊM MỚI 1 dòng,
+    async function addSize() {  // them 1 dòng mới
+        setSizes(oldSizes => {
+            return [ ...oldSizes, { name: '', price: 0} ]
+        })
+    }
+
+    // ------- LOGIC delete mot cai dùng filter
+    async function deleteSize(index: Number) {
+
+        let newSizes = [...sizes]
+        newSizes = newSizes.filter( (_, i) => i != index )
+        setSizes(newSizes) 
+    }
+
+    // ------- LOGIC EDIT SIZE 
+    async function editSize(ev, index, prop = 'name') {
+        const newValue  = ev.target.value 
+        setSizes(prevSizes => {
+            const newSizes = [...prevSizes]
+            newSizes[index][prop] = newValue
+            return newSizes;
+        })
+    }
+
     async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
 
-        ev.preventDefault() 
-        const savingPromise = new Promise(async (resolve, reject) => {  
-            console.log(' --------- ')
-            console.log(selectedItem)
-            console.log(' --------- ')
-            
+        ev.preventDefault()  
+        
+        try { 
             const { create } = productApi(); 
             const response = await create({
                 name: name,
@@ -71,21 +85,23 @@ export default function MenuItemsPage() {
                 base_price: basePrice,
                 category_id: selectedItem.id,
                 image_id: imageId, 
+                product_sizes: sizes,
             })
 
             if (response.data.status == 200) {
-                resolve();
-            } else {
-                reject();
-            } 
-        }) 
-
-        await toast.promise(savingPromise, {
-            success: 'Data is saved',
-            loading: 'Saving',
-            error: 'Error',
-        })
-        
+                await toast.promise(Promise.resolve(), {
+                    success: 'Data is saved',
+                    loading: 'Saving',
+                })
+                
+            } else { 
+                await toast.promise(Promise.reject(response.data.message), {
+                    error: response.data.message
+                })
+            }  
+        } catch (error) {
+            // console.error('An unexpected error occurred: ', error)
+        }
     }
 
     if (loading) {
@@ -145,26 +161,38 @@ export default function MenuItemsPage() {
                                     <div  className="flex items-center justify-around gap-4" key={  index  } > 
                                         <div className="flex items-center gap-2 grow">
                                             <input type="text" className="font-bold text-red-600" 
-                                                onChange={ setSizeName } 
+                                                onChange={ev => editSize(ev, index, 'name') } 
                                                 placeholder="Size name" value={ s.name } />
-                                            <input type="number" className="p-2 rounded-md" 
-                                                onChange={ setSizePrice } 
+
+                                            <input type="number" className="p-2 rounded-md"  
+                                                onChange={ev => editSize(ev, index, 'price') } 
                                                 placeholder="Extra price" value={ s.price } />
+
                                         </div>
                                         <div className="">
-                                            <button className="transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110"> 
+                                            <Button 
+                                            
+                                                onClick={ ev => deleteSize(index) }
+                                                className="transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110"> 
                                                 <DeleteIcon className="w-8 h-8"/>
-                                            </button>
+                                            </Button>
                                         </div>
                                     </div>
                                 )  
                             )  
                         }
+
+                        <Button 
+                            type="button"
+                            className="bg-white"
+                            onClick={ addSize }>
+                                Add Item Size
+                        </Button>
                         
                     </div>
 
                     <div>
-                        <button type="submit"> Save </button>
+                        <Button type="submit"> Save </Button>
                     </div> 
                 </div>
             </form>

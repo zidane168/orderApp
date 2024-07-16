@@ -36,6 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 exports.__esModule = true;
 var EditableImage_1 = require("@/components/EditableImage");
 var UseProfile_1 = require("@/components/UseProfile");
@@ -46,6 +53,7 @@ var product_api_1 = require("../api/product/product.api");
 var DeleteIcon_1 = require("@/components/icons/DeleteIcon");
 var Combobox_1 = require("@/components/Combobox");
 var category_api_1 = require("../api/categories/category.api");
+var react_2 = require("@nextui-org/react");
 function MenuItemsPage() {
     var _a = UseProfile_1.useProfile(), loading = _a.loading, data = _a.data;
     var _b = react_1.useState(), name = _b[0], setName = _b[1];
@@ -53,31 +61,12 @@ function MenuItemsPage() {
     var _d = react_1.useState(), basePrice = _d[0], setBasePrice = _d[1];
     var _e = react_1.useState(''), image = _e[0], setImage = _e[1];
     var _f = react_1.useState(''), imageId = _f[0], setImageId = _f[1];
-    var _g = react_1.useState(), sizes = _g[0], setSizes = _g[1];
+    var _g = react_1.useState([]), sizes = _g[0], setSizes = _g[1];
     var _h = react_1.useState(), category = _h[0], setCategories = _h[1];
     var _j = react_1.useState({ id: 0, name: '-- Please Select --' }), selectedItem = _j[0], setSelectedItem = _j[1];
     react_1.useEffect(function () {
-        fetchSizes();
         fetchCategories();
     }, []);
-    function fetchSizes() {
-        return __awaiter(this, void 0, void 0, function () {
-            var getAllSize, res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        getAllSize = product_api_1.productApi().getAllSize;
-                        return [4 /*yield*/, getAllSize()];
-                    case 1:
-                        res = _a.sent();
-                        if (res.data.status === 200) {
-                            setSizes(res.data.params);
-                        }
-                        return [2 /*return*/];
-                }
-            });
-        });
-    }
     function fetchCategories() {
         return __awaiter(this, void 0, void 0, function () {
             var getAll, res;
@@ -110,50 +99,85 @@ function MenuItemsPage() {
             });
         });
     }
+    // ------- LOGIC THÊM MỚI 1 dòng,
+    function addSize() {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                setSizes(function (oldSizes) {
+                    return __spreadArrays(oldSizes, [{ name: '', price: 0 }]);
+                });
+                return [2 /*return*/];
+            });
+        });
+    }
+    // ------- LOGIC delete mot cai dùng filter
+    function deleteSize(index) {
+        return __awaiter(this, void 0, void 0, function () {
+            var newSizes;
+            return __generator(this, function (_a) {
+                newSizes = __spreadArrays(sizes);
+                newSizes = newSizes.filter(function (_, i) { return i != index; });
+                setSizes(newSizes);
+                return [2 /*return*/];
+            });
+        });
+    }
+    // ------- LOGIC EDIT SIZE 
+    function editSize(ev, index, prop) {
+        if (prop === void 0) { prop = 'name'; }
+        return __awaiter(this, void 0, void 0, function () {
+            var newValue;
+            return __generator(this, function (_a) {
+                newValue = ev.target.value;
+                setSizes(function (prevSizes) {
+                    var newSizes = __spreadArrays(prevSizes);
+                    newSizes[index][prop] = newValue;
+                    return newSizes;
+                });
+                return [2 /*return*/];
+            });
+        });
+    }
     function handleSubmit(ev) {
         return __awaiter(this, void 0, void 0, function () {
-            var savingPromise;
-            var _this = this;
+            var create, response, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         ev.preventDefault();
-                        savingPromise = new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-                            var create, response;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
-                                    case 0:
-                                        console.log(' --------- ');
-                                        console.log(selectedItem);
-                                        console.log(' --------- ');
-                                        create = product_api_1.productApi().create;
-                                        return [4 /*yield*/, create({
-                                                name: name,
-                                                description: description,
-                                                base_price: basePrice,
-                                                category_id: selectedItem.id,
-                                                image_id: imageId
-                                            })];
-                                    case 1:
-                                        response = _a.sent();
-                                        if (response.data.status == 200) {
-                                            resolve();
-                                        }
-                                        else {
-                                            reject();
-                                        }
-                                        return [2 /*return*/];
-                                }
-                            });
-                        }); });
-                        return [4 /*yield*/, react_hot_toast_1["default"].promise(savingPromise, {
-                                success: 'Data is saved',
-                                loading: 'Saving',
-                                error: 'Error'
-                            })];
+                        _a.label = 1;
                     case 1:
+                        _a.trys.push([1, 7, , 8]);
+                        create = product_api_1.productApi().create;
+                        return [4 /*yield*/, create({
+                                name: name,
+                                description: description,
+                                base_price: basePrice,
+                                category_id: selectedItem.id,
+                                image_id: imageId,
+                                product_sizes: sizes
+                            })];
+                    case 2:
+                        response = _a.sent();
+                        if (!(response.data.status == 200)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, react_hot_toast_1["default"].promise(Promise.resolve(), {
+                                success: 'Data is saved',
+                                loading: 'Saving'
+                            })];
+                    case 3:
                         _a.sent();
-                        return [2 /*return*/];
+                        return [3 /*break*/, 6];
+                    case 4: return [4 /*yield*/, react_hot_toast_1["default"].promise(Promise.reject(response.data.message), {
+                            error: response.data.message
+                        })];
+                    case 5:
+                        _a.sent();
+                        _a.label = 6;
+                    case 6: return [3 /*break*/, 8];
+                    case 7:
+                        error_1 = _a.sent();
+                        return [3 /*break*/, 8];
+                    case 8: return [2 /*return*/];
                 }
             });
         });
@@ -201,13 +225,14 @@ function MenuItemsPage() {
                         sizes.map(function (s, index) {
                             return (React.createElement("div", { className: "flex items-center justify-around gap-4", key: index },
                                 React.createElement("div", { className: "flex items-center gap-2 grow" },
-                                    React.createElement("input", { type: "text", className: "font-bold text-red-600", onChange: setSizeName, placeholder: "Size name", value: s.name }),
-                                    React.createElement("input", { type: "number", className: "p-2 rounded-md", onChange: setSizePrice, placeholder: "Extra price", value: s.price })),
+                                    React.createElement("input", { type: "text", className: "font-bold text-red-600", onChange: function (ev) { return editSize(ev, index, 'name'); }, placeholder: "Size name", value: s.name }),
+                                    React.createElement("input", { type: "number", className: "p-2 rounded-md", onChange: function (ev) { return editSize(ev, index, 'price'); }, placeholder: "Extra price", value: s.price })),
                                 React.createElement("div", { className: "" },
-                                    React.createElement("button", { className: "transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110" },
+                                    React.createElement(react_2.Button, { onClick: function (ev) { return deleteSize(index); }, className: "transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110" },
                                         React.createElement(DeleteIcon_1["default"], { className: "w-8 h-8" })))));
-                        })),
+                        }),
+                    React.createElement(react_2.Button, { type: "button", className: "bg-white", onClick: addSize }, "Add Item Size")),
                 React.createElement("div", null,
-                    React.createElement("button", { type: "submit" }, " Save "))))));
+                    React.createElement(react_2.Button, { type: "submit" }, " Save "))))));
 }
 exports["default"] = MenuItemsPage;

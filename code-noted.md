@@ -310,3 +310,6 @@ onChange={ e => setValue(e.target.value) }
 { link && (
   <Image priority={false}  className="w-full h-full mb-1 rounded-lg" src={ link } width={ 100 } height={ 100 } alt={'avatar'} /> 
 )}
+
+# cú pháp filter
+let arr = arr.filter( (value, index) => index != indexCanRemove )

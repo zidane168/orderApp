@@ -52,11 +52,11 @@ const ComboBox: React.FC<ComboboxProps> = ({ name, list, setSelectedItem } : Com
         )
       }
       <Dropdown 
-       classNames={{
-        base: "before:bg-default-200", // change arrow background
-        content: "p-0 border-small border-divider bg-background",
-      }}
-         // className="combo-box"
+      //  classNames={{
+      //   base: "before:bg-default-200", // change arrow background
+      //   content: "p-0 border-small border-divider bg-background",
+      // }}
+         className="combo-box"
         >
         <DropdownTrigger>
           <div 
