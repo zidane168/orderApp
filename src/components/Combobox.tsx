@@ -1,6 +1,6 @@
 import React from "react";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@nextui-org/react";
-
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, ButtonGroup} from "@nextui-org/react";
+ 
 export type IListItem = {
   id: number,
   name: string, 
@@ -36,36 +36,51 @@ const ComboBox: React.FC<ComboboxProps> = ({ name, list, setSelectedItem } : Com
     return (selectedItems?.map((item) => item.name).join(", ") || "")
   }
 
+  const variants = ["Solid", "Bordered", "Light", "Flat", "Faded", "Shadow"]
+  const variant = variants[1]
+  const color = ["Default", "Primary", "Secondary", "Success", "Warning", "Danger"]
+
   return (
     <>
+   <Button color="success">
+      Button
+    </Button>
+
       {
         name && (
           <label> {name} </label>
         )
       }
-      <Dropdown className="combo-box">
+      <Dropdown 
+       classNames={{
+        base: "before:bg-default-200", // change arrow background
+        content: "p-0 border-small border-divider bg-background",
+      }}
+         // className="combo-box"
+        >
         <DropdownTrigger>
           <div 
-            variant="bordered" 
+            variant={ variant }
             className="p-2 border rounded-md"
           >
             {selectedValue}
           </div>
         </DropdownTrigger>
         <DropdownMenu 
-          className="w-[300px] p-2 leading-[2em]  bg-white shadow-lg"
-          aria-label="Single selection example"
-          variant="flat"
+          className="w-[300px] p-2 leading-[2em]  bg-gray-200 shadow-lg rounded-lg"
+          aria-label=""
+          variant={ variant }
+          color={ color[3] }
           disallowEmptySelection
           selectionMode="single"
           selectedKeys={selectedKeys}
-          // onSelectionChange={setSelectedKeys}
           onSelectionChange={ handleSelectionChange }
         >
-  
           { list?.map( (item ) => {  
             return ( 
-              <DropdownItem className="hover:text-white hover:font-semibold hover:cursor-pointer hover:bg-orange-300" 
+              <DropdownItem 
+                className="hover:text-white hover:font-semibold hover:cursor-pointer hover:bg-orange-300" 
+               //  startContent={<RightIcon className='w-8 h-8' /> }
                 key={ item.id }
                 textValue={item.name}    
                 > { item.name } 
