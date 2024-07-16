@@ -6,11 +6,11 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { productApi } from "../api/product/product.api"
 import { ISize } from "../api/product"
-import DeleteIcon from "@/components/icons/DeleteIcon"
 import Combobox, { IListItem } from "@/components/Combobox"
 import { categoryApi } from "../api/categories/category.api"
 import { ICategory } from "../api/categories"
 import { Button } from "@nextui-org/react"
+import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps"
 
 export default function MenuItemsPage() {
 
@@ -23,6 +23,8 @@ export default function MenuItemsPage() {
     const [ imageId, setImageId ] = useState<string>('')
 
     const [ sizes, setSizes ] = useState<ISize[]>([]); 
+    const [ extras, setExtras ] = useState<ISize[]>([]); 
+
     const [ category, setCategories ] = useState<ICategory[]>();
     const [ selectedItem, setSelectedItem ] = useState<IListItem>({id: 0, name:'-- Please Select --'});
 
@@ -48,30 +50,6 @@ export default function MenuItemsPage() {
         
     }
 
-    // ------- LOGIC THÊM MỚI 1 dòng,
-    async function addSize() {  // them 1 dòng mới
-        setSizes(oldSizes => {
-            return [ ...oldSizes, { name: '', price: 0} ]
-        })
-    }
-
-    // ------- LOGIC delete mot cai dùng filter
-    async function deleteSize(index: Number) {
-
-        let newSizes = [...sizes]
-        newSizes = newSizes.filter( (_, i) => i != index )
-        setSizes(newSizes) 
-    }
-
-    // ------- LOGIC EDIT SIZE 
-    async function editSize(ev, index, prop = 'name') {
-        const newValue  = ev.target.value 
-        setSizes(prevSizes => {
-            const newSizes = [...prevSizes]
-            newSizes[index][prop] = newValue
-            return newSizes;
-        })
-    }
 
     async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
 
@@ -86,6 +64,7 @@ export default function MenuItemsPage() {
                 category_id: selectedItem.id,
                 image_id: imageId, 
                 product_sizes: sizes,
+                product_extras: extras,
             })
 
             if (response.data.status == 200) {
@@ -133,63 +112,9 @@ export default function MenuItemsPage() {
 
                     </div>
 
-                    <div className="p-2 mb-2 bg-gray-100 rounded-md">
-                        <label> Sizes </label>      
+                    <MenuItemPriceProps props={ sizes } setProps={ setSizes } labelText={'Sizes'} buttonText={ 'Add new sizes'}/>
 
-                        { sizes?.length === 0 && <div> No sizes </div> }
-                        { 
-                        sizes?.length > 0 &&  
-                            // sizes.map( (s, index) => {   // MUST return khi dấu {}
-
-                            //     return (
-                            //         <div  className="flex items-center justify-around gap-4" key={  index  } > 
-                            //             <div className="flex items-center gap-2 grow">
-                            //                 <input type="text" className="font-bold text-red-600" placeholder="Size name" value={ s.name } />
-                            //                 <input type="number" className="p-2 rounded-md" placeholder="Extra price" value={ s.price } />
-                            //             </div>
-                            //             <div className="">
-                            //                 <button className="transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110"> 
-                            //                     <DeleteIcon className="w-8 h-8"/>
-                            //                 </button>
-                            //             </div>
-                            //         </div>
-                            //     ) 
-                            // })  
-                            sizes.map( (s, index) =>    // NO NEED return khi dấu ()
-
-                                 (
-                                    <div  className="flex items-center justify-around gap-4" key={  index  } > 
-                                        <div className="flex items-center gap-2 grow">
-                                            <input type="text" className="font-bold text-red-600" 
-                                                onChange={ev => editSize(ev, index, 'name') } 
-                                                placeholder="Size name" value={ s.name } />
-
-                                            <input type="number" className="p-2 rounded-md"  
-                                                onChange={ev => editSize(ev, index, 'price') } 
-                                                placeholder="Extra price" value={ s.price } />
-
-                                        </div>
-                                        <div className="">
-                                            <Button 
-                                            
-                                                onClick={ ev => deleteSize(index) }
-                                                className="transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110"> 
-                                                <DeleteIcon className="w-8 h-8"/>
-                                            </Button>
-                                        </div>
-                                    </div>
-                                )  
-                            )  
-                        }
-
-                        <Button 
-                            type="button"
-                            className="bg-white"
-                            onClick={ addSize }>
-                                Add Item Size
-                        </Button>
-                        
-                    </div>
+                    <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={'Extras'} buttonText={ 'Add new extras'}/>
 
                     <div>
                         <Button type="submit"> Save </Button>
