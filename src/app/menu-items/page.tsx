@@ -10,13 +10,14 @@ import Combobox, { IListItem } from "@/components/Combobox"
 import { categoryApi } from "../api/categories/category.api"
 import { ICategory } from "../api/categories"
 import { Button } from "@nextui-org/react"
-import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps"
+import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps" 
+import QuillTextEditor from '@/components/AppQuillTextEditor'
 
 export default function MenuItemsPage() {
-
+  
     const { loading, data } = useProfile()
     const [ name, setName ] = useState()
-    const [ description, setDescription ] = useState()
+    const [ description, setDescription ] = useState('')
     const [ basePrice, setBasePrice ] = useState()
 
     const [ image, setImage ] = useState<string>('') 
@@ -26,7 +27,12 @@ export default function MenuItemsPage() {
     const [ extras, setExtras ] = useState<ISize[]>([]); 
 
     const [ category, setCategories ] = useState<ICategory[]>();
-    const [ selectedItem, setSelectedItem ] = useState<IListItem>({id: 0, name:'-- Please Select --'});
+    const [ selectedItem, setSelectedItem ] = useState<IListItem>({id: 0, name:'-- Please Select --'}); 
+    
+    
+    function handleEditorChange(content: string) {
+        setDescription(content)
+    } 
 
     useEffect(() => {    
         fetchCategories()
@@ -40,16 +46,7 @@ export default function MenuItemsPage() {
         if (res.data.status === 200) {  
             setCategories(res.data.params)
         }
-    }  
-
-    async function setSizeName() {
-
-    }
-
-    async function setSizePrice() {
-        
-    }
-
+    }   
 
     async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
 
@@ -105,8 +102,9 @@ export default function MenuItemsPage() {
                     <div className="grow">
                         <label> Item name </label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
-                        <label> Description </label>
-                        <input type="text" value={ description } onChange={ ev => setDescription(ev.target.value)}  />
+                        <label> Description </label> 
+                        <QuillTextEditor onChange={handleEditorChange} value={description || ''} />
+                        
                         <label> Base price </label>
                         <input type="number" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(ev.target.value)}  />
 

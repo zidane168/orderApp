@@ -47,10 +47,11 @@ var Combobox_1 = require("@/components/Combobox");
 var category_api_1 = require("../api/categories/category.api");
 var react_2 = require("@nextui-org/react");
 var MenuItemPriceProps_1 = require("@/components/layout/MenuItemPriceProps");
+var AppQuillTextEditor_1 = require("@/components/AppQuillTextEditor");
 function MenuItemsPage() {
     var _a = UseProfile_1.useProfile(), loading = _a.loading, data = _a.data;
     var _b = react_1.useState(), name = _b[0], setName = _b[1];
-    var _c = react_1.useState(), description = _c[0], setDescription = _c[1];
+    var _c = react_1.useState(''), description = _c[0], setDescription = _c[1];
     var _d = react_1.useState(), basePrice = _d[0], setBasePrice = _d[1];
     var _e = react_1.useState(''), image = _e[0], setImage = _e[1];
     var _f = react_1.useState(''), imageId = _f[0], setImageId = _f[1];
@@ -58,6 +59,9 @@ function MenuItemsPage() {
     var _h = react_1.useState([]), extras = _h[0], setExtras = _h[1];
     var _j = react_1.useState(), category = _j[0], setCategories = _j[1];
     var _k = react_1.useState({ id: 0, name: '-- Please Select --' }), selectedItem = _k[0], setSelectedItem = _k[1];
+    function handleEditorChange(content) {
+        setDescription(content);
+    }
     react_1.useEffect(function () {
         fetchCategories();
     }, []);
@@ -76,20 +80,6 @@ function MenuItemsPage() {
                         }
                         return [2 /*return*/];
                 }
-            });
-        });
-    }
-    function setSizeName() {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
-            });
-        });
-    }
-    function setSizePrice() {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/];
             });
         });
     }
@@ -156,7 +146,7 @@ function MenuItemsPage() {
                     React.createElement("label", null, " Item name "),
                     React.createElement("input", { type: "text", value: name, onChange: function (ev) { return setName(ev.target.value); } }),
                     React.createElement("label", null, " Description "),
-                    React.createElement("input", { type: "text", value: description, onChange: function (ev) { return setDescription(ev.target.value); } }),
+                    React.createElement(AppQuillTextEditor_1["default"], { onChange: handleEditorChange, value: description || '' }),
                     React.createElement("label", null, " Base price "),
                     React.createElement("input", { type: "number", className: "form-control", value: basePrice, onChange: function (ev) { return setBasePrice(ev.target.value); } })),
                 React.createElement(MenuItemPriceProps_1["default"], { props: sizes, setProps: setSizes, labelText: 'Sizes', buttonText: 'Add new sizes' }),
