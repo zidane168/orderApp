@@ -114,7 +114,7 @@ export default function MenuItemsPage() {
 
                     <MenuItemPriceProps props={ sizes } setProps={ setSizes } labelText={'Sizes'} buttonText={ 'Add new sizes'}/>
 
-                    <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={'Extras'} buttonText={ 'Add new extras'}/>
+                    <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={'Extras Ingredients'} buttonText={ 'Add new extras'}/>
 
                     <div>
                         <Button type="submit"> Save </Button>

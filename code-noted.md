@@ -1,3 +1,13 @@
+# resouces
+https://heroicons.com/
+sweetalert2
+toast
+
+# tsx
+because of have html, render
+# ts 
+just function, const thing
+
 # ------------------------------------------------------
 ## Tạo một file ra ngoài (clean code)
 # ------------------------------------------------------

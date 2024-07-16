@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { categoryApi } from "../api/categories/category.api";
 import { ICategory } from "../api/categories/category.api.types"; 
 import DeleteIcon from "@/components/icons/DeleteIcon";
+import swal from "sweetalert";
 
 export default function Categories(): any {
 
@@ -39,25 +40,44 @@ export default function Categories(): any {
 
     async function handleDelete(ev: React.FormEvent<HTMLFormElement>, id: number) {
         ev.preventDefault()
-        const deletePromise = new Promise(async(resolve, reject) => {
-            const { remove } = categoryApi()
-            let res = await remove({
-                id: id
-            })
 
-            if (res.data.status === 200) {
-                fetchCategories();
-                resolve()
-            } else {
-                reject()
-            }
+        const confirmed = await swal({
+            title: "Are you sure?",
+            text: 'You will not be able to recover this one after confirm Delete!',
+            icon: 'warning',
+            buttons: ['No, cancel it', 'Yes, I am sure'],
+            dangerMode: true,
         })
 
-        await toast.promise(deletePromise, {
-            loading: 'Deleting ...',
-            error: 'Error delete category!',
-            success: 'Category deleted successfully',
-        }) 
+        if (confirmed) {
+            
+            try {
+                const { remove } = categoryApi()
+                let res = await remove({
+                    id: id
+                })
+    
+                if (res.data.status === 200) {
+                    fetchCategories(); 
+                    await toast.promise( {
+                        loading: 'Deleting ...',
+                        success: 'Category deleted successfully',
+                    }) 
+                } else {
+                    console.error(res.data.message);
+
+                    await toast.promise( {
+                        error: 'Error delete category!',
+                    })
+                   
+                } 
+            } catch (error) {
+                
+            }
+           
+        } 
+
+      
     }
 
 

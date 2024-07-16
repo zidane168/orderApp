@@ -160,7 +160,7 @@ function MenuItemsPage() {
                     React.createElement("label", null, " Base price "),
                     React.createElement("input", { type: "number", className: "form-control", value: basePrice, onChange: function (ev) { return setBasePrice(ev.target.value); } })),
                 React.createElement(MenuItemPriceProps_1["default"], { props: sizes, setProps: setSizes, labelText: 'Sizes', buttonText: 'Add new sizes' }),
-                React.createElement(MenuItemPriceProps_1["default"], { props: extras, setProps: setExtras, labelText: 'Extras', buttonText: 'Add new extras' }),
+                React.createElement(MenuItemPriceProps_1["default"], { props: extras, setProps: setExtras, labelText: 'Extras Ingredients', buttonText: 'Add new extras' }),
                 React.createElement("div", null,
                     React.createElement(react_2.Button, { type: "submit" }, " Save "))))));
 }
