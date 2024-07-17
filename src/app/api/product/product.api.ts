@@ -4,6 +4,10 @@ import { IProduct, IFile } from "./product.api.types";
  
 export function productApi()  
 {    
+    const getAll = async() => {
+        return commonAxios.get<AxiosResponseData>("/api/v1/products/getAll.json")
+    }
+
     const create = (payload: IProduct) => {
         return commonAxios.post<AxiosResponseData>("/api/v1/products/create.json", {
             ...payload,
@@ -32,6 +36,6 @@ export function productApi()
         return commonAxios.get<AxiosResponseData>("/api/v1/sizes/getAll.json")
     }
        
-    return { create, update, uploadImage, getAllSize };
+    return { create, update, uploadImage, getAllSize, getAll };
 };
  
