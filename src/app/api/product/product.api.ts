@@ -1,9 +1,13 @@
 import commonAxios from "@/utils/axios/common.axios"; 
 import type { AxiosResponseData } from "@/utils/axios/axios.types"; 
-import { IProduct, IFile } from "./product.api.types";
+import { IProduct, IFile, IGetProduct } from "./product.api.types";
  
 export function productApi()  
 {    
+    const get = async(payload: IGetProduct) => {
+        return commonAxios.get<AxiosResponseData>("/api/v1/products/get.json?id=" + payload.id)
+    }
+
     const getAll = async() => {
         return commonAxios.get<AxiosResponseData>("/api/v1/products/getAll.json")
     }
@@ -36,6 +40,6 @@ export function productApi()
         return commonAxios.get<AxiosResponseData>("/api/v1/sizes/getAll.json")
     }
        
-    return { create, update, uploadImage, getAllSize, getAll };
+    return { create, update, uploadImage, getAllSize, getAll, get };
 };
  

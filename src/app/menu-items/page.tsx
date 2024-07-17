@@ -12,6 +12,9 @@ import { ICategory } from "../api/categories"
 import { Button } from "@nextui-org/react"
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps" 
 import QuillTextEditor from '@/components/AppQuillTextEditor'
+import RightIcon from "@/components/icons/RightIcon"
+import Link from "next/link"
+import MenuItem from "@/components/menu/MenuItem"
 
 export default function MenuItemsPage() {
   
@@ -26,7 +29,7 @@ export default function MenuItemsPage() {
     const [ sizes, setSizes ] = useState<ISize[]>([]); 
     const [ extras, setExtras ] = useState<ISize[]>([]); 
 
-    const [ category, setCategories ] = useState<ICategory[]>();
+    const [ products, setProducts ] = useState<ICategory[]>();
     const [ selectedItem, setSelectedItem ] = useState<IListItem>({id: 0, name:'-- Please Select --'}); 
     
     
@@ -34,51 +37,20 @@ export default function MenuItemsPage() {
         setDescription(content)
     } 
 
-    useEffect(() => {    
-        fetchCategories()
+    useEffect(() => {     
+        fetchProducts()
     }, []) 
     
 
-    async function fetchCategories() {
-        const { getAll } = categoryApi()
+    async function fetchProducts() {
+        const { getAll } = productApi()
         const res = await getAll();
      
         if (res.data.status === 200) {  
-            setCategories(res.data.params)
+            setProducts(res.data.params)
         }
     }   
-
-    async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
-
-        ev.preventDefault()  
-        
-        try { 
-            const { create } = productApi(); 
-            const response = await create({
-                name: name,
-                description: description,
-                base_price: basePrice,
-                category_id: selectedItem.id,
-                image_id: imageId, 
-                product_sizes: sizes,
-                product_extras: extras,
-            })
-
-            if (response.data.status == 200) {
-                await toast.promise(Promise.resolve(), {
-                    success: 'Data is saved',
-                    loading: 'Saving',
-                })
-                
-            } else { 
-                await toast.promise(Promise.reject(response.data.message), {
-                    error: response.data.message
-                })
-            }  
-        } catch (error) {
-            // console.error('An unexpected error occurred: ', error)
-        }
-    }
+  
 
     if (loading) {
         return 'Loading user info ...'
@@ -91,34 +63,26 @@ export default function MenuItemsPage() {
     return (
         <section className="mt-8">
             <UserTabs isAdmin={ true } />
-            <form className="max-w-md mx-auto mt-8" onSubmit={ handleSubmit }>
-                <div className="grid items-start gap-4"> 
-                    <div className="grid items-start gap-4" style={{ gridTemplateColumns: '.3fr, .7fr'}}>
-                        <div> 
-                            <EditableImage link={ image } setLink={ setImage } setAvatarId={ setImageId } typeUpload={ 2 } /> 
-                        </div>
-                    </div>
-                    <Combobox name={ 'Category' } list={ category } setSelectedItem={ setSelectedItem } />
-                    <div className="grow">
-                        <label> Item name </label>
-                        <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
-                        <label> Description </label> 
-                        <QuillTextEditor onChange={handleEditorChange} value={description || ''} />
-                        
-                        <label> Base price </label>
-                        <input type="number" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(ev.target.value)}  />
 
-                    </div>
+            <div className="mt-8"> 
+                <Link
+                    className="flex justify-center gap-2 p-2 border-2 rounded-md button"
+                    href={'/menu-items/new'}
+                >    
+                    Create new menu item 
+                    <RightIcon />  
 
-                    <MenuItemPriceProps props={ sizes } setProps={ setSizes } labelText={'Sizes'} buttonText={ 'Add new sizes'}/>
+                </Link>
+            </div>
 
-                    <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={'Extras Ingredients'} buttonText={ 'Add new extras'}/>
-
-                    <div>
-                        <Button type="submit"> Save </Button>
-                    </div> 
-                </div>
-            </form>
+            <div className="grid grid-cols-3 gap-4 my-4">
+            {
+                products?.length > 0 && products.map( (product, index) => (
+                    <MenuItem key={ index }  id={ product.id } path={ product.path }  name={ product.name } description={ product.description } basePrice={ product.base_price } isAddToCart={ false }/>
+                ))
+            }
+            </div>
+             
         </section>
     )
 }

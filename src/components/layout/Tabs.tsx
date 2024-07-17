@@ -10,7 +10,7 @@ export default function UserTabs({ isAdmin } : { isAdmin: boolean }) {
             {isAdmin && (
                 <>
                     <Link className={ path === '/categories' ? 'active' : ''}   href={'/categories'}> Categories </Link>
-                    <Link className={ path === '/menu-items' ? 'active' : ''}   href={'/menu-items'}> Menu Items </Link>
+                    <Link className={ path === '/menu-items' ||  path === '/menu-items/new' ? 'active' : ''}   href={'/menu-items'}> Menu Items </Link>
                     <Link className={ path === '/users' ? 'active' : ''}        href={'/users'}> Users </Link>
                 </>
             )}

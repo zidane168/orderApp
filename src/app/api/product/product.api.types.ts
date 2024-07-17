@@ -7,6 +7,10 @@ export type IProduct = {
     description: string,
 }
  
+export type IGetProduct {
+    id: string
+}
+
 export type IFile = {
     file: File,
     isFile: boolean,

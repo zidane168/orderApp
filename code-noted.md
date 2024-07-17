@@ -323,3 +323,21 @@ onChange={ e => setValue(e.target.value) }
 
 # cú pháp filter
 let arr = arr.filter( (value, index) => index != indexCanRemove )
+
+# cách nối chuỗi trong Link
+<Link href={ '/menu-items/' + id }>
+    <button className="px-6 py-2 mt-2 text-white rounded-full bg-primary"> 
+        Update ${ basePrice }
+    </button>
+</Link>
+
+
+# thêm router cho eidt
+tao thu muc 
+menu-items/page.tsx
+menu-items/new/page.tsx
+menu-items/edit/[id]/page.tsx <=> menu-items/edit/111
+
+# useParams() dể lấy id trên đường dẫn url: menu-items/edit/id 
+  const { id } = useParams()
+
