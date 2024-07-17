@@ -45,13 +45,17 @@ class Editor extends Component<EditorProps, EditorState> {
 
     render() {
         return (
-            <ReactQuill
-                onChange={this.handleChange}
-                modules={Editor.modules}
-                formats={Editor.formats}
-                bounds={'#root'}
-                value={this.state.editorHtml}
-            />
+            <div  className='mb-[50px]'>
+                <div> </div>
+                <ReactQuill
+                    className='h-[300px]'
+                    onChange={this.handleChange}
+                    modules={Editor.modules}
+                    formats={Editor.formats}
+                    bounds={'#root'}
+                    value={this.state.editorHtml}
+                />
+            </div>
         );
     }
 }

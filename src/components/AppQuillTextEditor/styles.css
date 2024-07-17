@@ -3,6 +3,10 @@ body {
   font-family: sans-serif;
 }
 
+.quill {
+  background-color: white;
+}
+
 #root .ql-container {
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
@@ -19,4 +23,8 @@ body {
 
 #root .ql-editor {
   min-height: 18em;
+}
+
+.ql-container.ql-snow {
+  border: none;
 }
