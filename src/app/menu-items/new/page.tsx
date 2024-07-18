@@ -14,12 +14,14 @@ import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps"
 import QuillTextEditor from '@/components/AppQuillTextEditor'
 import RightIcon from "@/components/icons/RightIcon"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 
 // tao new thu muc cho duong dẫn menu-items/new/page.tsx
 
 export default function MenuItemsNewPage() {
   
+    const { push } = useRouter();
     const { loading, data } = useProfile()
     const [ name, setName ] = useState()
     const [ description, setDescription ] = useState('')
@@ -58,7 +60,8 @@ export default function MenuItemsNewPage() {
         ev.preventDefault()  
         
         try { 
-            const { create } = productApi(); 
+            const { create } = productApi();  
+           
             const response = await create({
                 name: name,
                 description: description,
@@ -74,6 +77,8 @@ export default function MenuItemsNewPage() {
                     success: 'Data is saved',
                     loading: 'Saving',
                 })
+
+                push('/menu-items') 
                 
             } else { 
                 await toast.promise(Promise.reject(response.data.message), {
@@ -116,12 +121,12 @@ export default function MenuItemsNewPage() {
                     </div>
                     <Combobox name={ 'Category' } list={ category } setSelectedItem={ setSelectedItem } />
                     <div className="grow">
-                        <label> Item name </label>
+                        <label> Item name <span className="text-primary">(*) </span></label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
-                        <label> Description </label> 
+                        <label> Description <span className="text-primary">(*) </span> </label> 
                         <QuillTextEditor onChange={handleEditorChange} value={description || ''} />
                         
-                        <label> Base price </label>
+                        <label> Base price <span className="text-primary">(*) </span> </label>
                         <input type="number" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(ev.target.value)}  />
 
                     </div>

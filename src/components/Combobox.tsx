@@ -11,9 +11,13 @@ interface ComboboxProps {
   list: IListItem[] | undefined,
   setSelectedItem: React.Dispatch<React.SetStateAction<IListItem>>,
   defaultItem: IListItem,
+  isRequired: boolean,
 }
 
-const ComboBox: React.FC<ComboboxProps> = ({ name, list, setSelectedItem, defaultItem = { id: 0, name: "-- Please Select --" } } : ComboboxProps) => {
+const ComboBox: React.FC<ComboboxProps> = ({ 
+  isRequired = true,
+  name, list, setSelectedItem,
+  defaultItem = { id: 0, name: "-- Please Select --" } } : ComboboxProps) => {
   
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([ String(defaultItem.id) ]));   
 
@@ -46,16 +50,13 @@ const ComboBox: React.FC<ComboboxProps> = ({ name, list, setSelectedItem, defaul
       Button
     </Button>
 
+
       {
         name && (
-          <label> {name} </label>
+          <label> {name} { isRequired === true ? (<span className="text-primary"> (*) </span>) : '' }</label>
         )
       }
       <Dropdown 
-      //  classNames={{
-      //   base: "before:bg-default-200", // change arrow background
-      //   content: "p-0 border-small border-divider bg-background",
-      // }}
          className="combo-box"
         >
         <DropdownTrigger>

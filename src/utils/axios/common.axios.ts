@@ -42,6 +42,8 @@ commonAxios.interceptors.request.use(
       req.headers["Content-Type"] = 'multipart/form-data'; 
     }
 
+    console.log( req.method)
+
     switch ((req.method as string).toUpperCase()) {
       case "GET": {
         req.params = req.params || {};
@@ -67,8 +69,18 @@ commonAxios.interceptors.request.use(
         break;
       }
 
+      case "PATCH": {
+        if (!(req.data instanceof FormData) && !!req.data) {
+          req.data = formatFormData(req.data); 
+        }
+        break;
+      }
+
       case "DELETE": {
-        req.data = JSON.stringify(req.data)
+        req.data = JSON.stringify(req.data); 
+
+        console.log( '---- ')
+        console.log( req.data)
       }
     }
     return req;

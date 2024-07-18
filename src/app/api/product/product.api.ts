@@ -23,6 +23,14 @@ export function productApi()
             ...payload,
         });
     }
+
+    const remove = (payload: IGetProduct) => {
+        return commonAxios.delete<AxiosResponseData>("/api/v1/products/remove.json", {
+            data: {
+                id: payload.id,     // need pass the id same this on post man with {id: 18}
+            }
+        });
+    }
   
     const uploadImage = async (file: File) => { 
         try {   
@@ -40,6 +48,6 @@ export function productApi()
         return commonAxios.get<AxiosResponseData>("/api/v1/sizes/getAll.json")
     }
        
-    return { create, update, uploadImage, getAllSize, getAll, get };
+    return { create, update, remove, uploadImage, getAllSize, getAll, get };
 };
  

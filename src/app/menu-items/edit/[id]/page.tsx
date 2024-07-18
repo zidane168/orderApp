@@ -44,8 +44,7 @@ export default function MenuItemsEditPage() {
     function handleEditorChange(content: string) {
         setDescription(content)
     } 
- 
-
+  
     useEffect(() => {    
         fetchCategories()
         fetchItem( );
@@ -94,9 +93,7 @@ export default function MenuItemsEditPage() {
                 image_id: imageId, 
                 product_sizes: sizes,
                 product_extras: extras,
-            })
-
-            console.log( "imageId: " + imageId )
+            }) 
 
             if (response.data.status == 200) {
                 await toast.promise(Promise.resolve(), {

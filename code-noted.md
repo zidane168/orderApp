@@ -341,3 +341,19 @@ menu-items/edit/[id]/page.tsx <=> menu-items/edit/111
 # useParams() dể lấy id trên đường dẫn url: menu-items/edit/id 
   const { id } = useParams()
 
+
+# use import swal from "sweetalert";
+
+# import { useRouter } from "next/navigation"
+push ('/menu-items')
+
+
+# remove method
+
+  const remove = (payload: IGetProduct) => {
+      return commonAxios.delete<AxiosResponseData>("/api/v1/products/remove.json", {
+          data: {
+              id: payload.id,     // need pass the id same this on post man with {id: 18}
+          }
+      });
+  }
