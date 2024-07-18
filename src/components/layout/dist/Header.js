@@ -60,7 +60,7 @@ function Header() {
                         session_1 = _b.sent() // must use await this for make asynchoronous and useSessionData is get from a hook 
                         ;
                         if (!session_1) return [3 /*break*/, 3];
-                        getProfile = member_api_1.memberApi(session_1).getProfile;
+                        getProfile = member_api_1.memberApi().getProfile;
                         return [4 /*yield*/, getProfile()];
                     case 2:
                         res = _b.sent();
@@ -88,9 +88,9 @@ function Header() {
         React.createElement("nav", { className: "flex items-center gap-8 font-semibold text-gray-500" },
             React.createElement(link_1["default"], { className: "text-2xl font-semibold text-primary", href: '/' }, " ST PIZZA "),
             React.createElement(link_1["default"], { href: '/' }, " Home "),
-            React.createElement(link_1["default"], { href: '' }, " Menu "),
-            React.createElement(link_1["default"], { href: '' }, " About "),
-            React.createElement(link_1["default"], { href: '' }, " Contact ")),
+            React.createElement(link_1["default"], { href: '/menu' }, " Menu "),
+            React.createElement(link_1["default"], { href: '/#about' }, " About "),
+            React.createElement(link_1["default"], { href: '/#contact' }, " Contact ")),
         React.createElement("nav", { className: "flex items-center gap-4 font-semibold text-gray-500" },
             status == 'authenticated' && (React.createElement(React.Fragment, null,
                 React.createElement("div", { className: 'w-[150px]' },

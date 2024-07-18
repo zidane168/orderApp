@@ -44,5 +44,10 @@ div.tabs > * {
 div.tabs > *.active {
     @apply text-white bg-primary;
 }
+
+html {
+    scroll-behavior: smooth; /* scroll smooth */
+}
+
  
  

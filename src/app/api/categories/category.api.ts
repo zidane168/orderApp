@@ -5,6 +5,10 @@ import { IName, ICategory, IId } from "./category.api.types";
  
 export function categoryApi()  
 {       
+    const getFull = () => {
+        return commonAxios.get<AxiosResponseData>("/api/v1/categories/getFull.json");
+    } 
+
     const getAll = () => {
         return commonAxios.get<AxiosResponseData>("/api/v1/categories/getAll.json");
     }
@@ -27,6 +31,6 @@ export function categoryApi()
         });
     }
        
-    return { create, getAll, update, remove };
+    return { create, getAll, update, remove, getFull };
 };
     
