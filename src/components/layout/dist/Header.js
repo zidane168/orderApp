@@ -42,11 +42,14 @@ var link_1 = require("next/link");
 var react_2 = require("react");
 var member_api_1 = require("@/app/api/members/member.api");
 var useSessionData_1 = require("@/customHook/useSessionData");
+var AppContext_1 = require("../AppContext");
+var ShoppingCartIcon_1 = require("../icons/ShoppingCartIcon");
 function Header() {
     var _this = this;
     var session = react_1.useSession();
     var status = session.status;
     var _a = react_2.useState(''), firstName = _a[0], setFirstName = _a[1];
+    var cartProducts = react_2.useContext(AppContext_1.CartContext).cartProducts;
     react_2.useEffect(function () {
         var fetchData = function () { return __awaiter(_this, void 0, void 0, function () {
             var session_1, getProfile, res, userData, userName, error_1;
@@ -84,7 +87,7 @@ function Header() {
         }); };
         fetchData();
     }, [session]);
-    return (React.createElement("header", { className: "flex items-center justify-between" },
+    return (React.createElement("header", { className: "flex items-center justify-between w-full mt-4" },
         React.createElement("nav", { className: "flex items-center gap-8 font-semibold text-gray-500" },
             React.createElement(link_1["default"], { className: "text-2xl font-semibold text-primary", href: '/' }, " ST PIZZA "),
             React.createElement(link_1["default"], { href: '/' }, " Home "),
@@ -101,6 +104,10 @@ function Header() {
                 React.createElement("button", { onClick: function () { return react_1.signOut(); }, className: 'text-white rounded-full bg-primary' }, "Logout "))),
             status == 'unauthenticated' && (React.createElement(React.Fragment, null,
                 React.createElement(link_1["default"], { href: '/login' }, " Login "),
-                React.createElement(link_1["default"], { href: '/register', className: "px-4 py-2 text-white rounded-full bg-primary" }, "  Register "))))));
+                React.createElement(link_1["default"], { href: '/register', className: "px-4 py-2 text-white rounded-full bg-primary" }, "  Register "))),
+            React.createElement(link_1["default"], { href: '/cart' },
+                React.createElement("div", { className: "relative" },
+                    React.createElement(ShoppingCartIcon_1["default"], { className: 'w-8 h-8' }),
+                    React.createElement("div", { className: "absolute top-[-25px] right-[-5px] text-white font-semibold bg-primary p-1 rounded-full" }, cartProducts.length))))));
 }
 exports["default"] = Header;

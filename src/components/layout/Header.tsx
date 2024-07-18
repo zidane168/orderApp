@@ -2,9 +2,11 @@
 
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'  
-import { useEffect, useState } from 'react' 
+import { useContext, useEffect, useState } from 'react' 
 import { memberApi } from "@/app/api/members/member.api"; 
 import { useSessionData } from '@/customHook/useSessionData'
+import { CartContext } from '../AppContext';
+import ShoppingCartIcon from '../icons/ShoppingCartIcon';
 
 
 export default function Header() {
@@ -12,7 +14,7 @@ export default function Header() {
     const status = session.status 
 
     const [ firstName, setFirstName ] = useState('')  
-
+    const { cartProducts } = useContext(CartContext)
 
     useEffect(() => {  
         const fetchData = async () => {
@@ -41,7 +43,7 @@ export default function Header() {
     }, [ session ])
     
     return (
-        <header className="flex items-center justify-between"> 
+        <header className="flex items-center justify-between w-full mt-4"> 
             <nav className="flex items-center gap-8 font-semibold text-gray-500" >
                 <Link className="text-2xl font-semibold text-primary" href={'/'}> ST PIZZA </Link>
                 <Link href={'/'}> Home </Link>
@@ -68,6 +70,16 @@ export default function Header() {
                         <Link href={'/register'} className = "px-4 py-2 text-white rounded-full bg-primary">  Register </Link> 
                     </> 
                 )} 
+
+                
+                <Link href={'/cart'}> 
+                    <div className="relative">
+                        <ShoppingCartIcon className={'w-8 h-8'}/> 
+                        <div className="absolute top-[-25px] right-[-5px] text-white font-semibold bg-primary p-1 rounded-full"> 
+                            {cartProducts.length} 
+                        </div> 
+                    </div>
+                </Link>  
             </nav>
         </header>
     )
