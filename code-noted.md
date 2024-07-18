@@ -357,3 +357,6 @@ push ('/menu-items')
           }
       });
   }
+
+# use this one for reload current page
+ window.location.reload()

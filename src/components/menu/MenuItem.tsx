@@ -16,7 +16,7 @@ interface IMenuItem {
 
 export default function MenuItem({ id, path, name, description, basePrice, isAddToCart = true } : IMenuItem) {
   
-    const { redirect } = useRouter();
+    const router = useRouter();
     async function handleDeleteProduct(ev: React.ChangeEvent<HTMLFormElement>) {
         ev.preventDefault()
 
@@ -29,6 +29,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
         })
 
         if (confirmed) {
+            
             const { remove } = productApi()
             const res = await remove({
                 id
@@ -39,13 +40,14 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                     loading: 'Deleting ...',
                     success: res.data.message,
                 })
-
-                redirect ('menu-items' )
+                window.location.reload()
+              
             } else {
                 await toast.promise(Promise.reject(res.data.message), {
                     error: res.data.messsage
                 }) 
             }
+            
         }
     }
 
