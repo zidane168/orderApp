@@ -10,11 +10,11 @@ interface ComboboxProps {
   name: string,   // combobox name
   list: IListItem[] | undefined,
   setSelectedItem: React.Dispatch<React.SetStateAction<IListItem>>,
+  defaultItem: IListItem,
 }
 
-const ComboBox: React.FC<ComboboxProps> = ({ name, list, setSelectedItem } : ComboboxProps) => {
- 
-  const defaultItem = { id: 0, name: "-- Please Select --" };
+const ComboBox: React.FC<ComboboxProps> = ({ name, list, setSelectedItem, defaultItem = { id: 0, name: "-- Please Select --" } } : ComboboxProps) => {
+  
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([ String(defaultItem.id) ]));   
 
   const selectedValue = React.useMemo(() => { 
@@ -32,7 +32,7 @@ const ComboBox: React.FC<ComboboxProps> = ({ name, list, setSelectedItem } : Com
 
     const selectedItems = list?.filter((item) => newSelectedKeys.has(String(item.id)))
 
-    setSelectedItem(selectedItems[0]);
+    setSelectedItem(selectedItems[0]); 
     return (selectedItems?.map((item) => item.name).join(", ") || "")
   }
 

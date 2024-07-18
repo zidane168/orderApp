@@ -14,19 +14,22 @@ import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps"
 import QuillTextEditor from '@/components/AppQuillTextEditor'
 import RightIcon from "@/components/icons/RightIcon"
 import Link from "next/link" 
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 
 // tao new thu muc cho duong dẫn menu-items/new/page.tsx
 
 export default function MenuItemsEditPage() {
   
     const { id } = useParams()
+    const { push } = useRouter();
 
     const { loading, data } = useProfile()
     const [ name, setName ] = useState()
     const [ description, setDescription ] = useState('')
     const [ basePrice, setBasePrice ] = useState()
 
+    const [ categoryId, setCategoryId ] = useState<number>() 
+    const [ categoryName, setCategoryName ] = useState<string>('') 
     
     const [ image, setImage ] = useState<string>('') 
     const [ imageId, setImageId ] = useState<string>('')
@@ -41,6 +44,7 @@ export default function MenuItemsEditPage() {
     function handleEditorChange(content: string) {
         setDescription(content)
     } 
+ 
 
     useEffect(() => {    
         fetchCategories()
@@ -54,11 +58,14 @@ export default function MenuItemsEditPage() {
         });
         if (res.data.status === 200) {
             setName(res.data.params.name)
-            setImage(res.data.params.path)
+            setImage(res.data.params.path) 
+            setCategoryId(res.data.params.category.id)
+            setCategoryName(res.data.params.category.name)
             setDescription(res.data.params.description)
             setBasePrice(res.data.params.base_price)
             setSizes(res.data.params.product_sizes)
-            setExtras(res.data.params.product_extras)
+            setExtras(res.data.params.product_extras) 
+            setSelectedItem({id: res.data.params.category.id, name:res.data.params.category.name})
         } 
     }
     
@@ -89,11 +96,16 @@ export default function MenuItemsEditPage() {
                 product_extras: extras,
             })
 
+            console.log( "imageId: " + imageId )
+
             if (response.data.status == 200) {
                 await toast.promise(Promise.resolve(), {
                     success: 'Data is update',
                     loading: 'Saving',
                 })
+
+                // redirect to menu-items page
+                push('/menu-items')
                 
             } else { 
                 await toast.promise(Promise.reject(response.data.message), {
@@ -134,7 +146,7 @@ export default function MenuItemsEditPage() {
                             <EditableImage link={ image } setLink={ setImage } setAvatarId={ setImageId } typeUpload={ 2 } /> 
                         </div>
                     </div>
-                    <Combobox name={ 'Category' } list={ category } setSelectedItem={ setSelectedItem } />
+                    <Combobox name={ 'Category' } list={ category } setSelectedItem={ setSelectedItem } defaultItem={ {'id': categoryId, 'name':categoryName} } />
                     <div className="grow">
                         <label> Item name </label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
@@ -142,7 +154,7 @@ export default function MenuItemsEditPage() {
                         <QuillTextEditor onChange={handleEditorChange} value={description || ''} />
                         
                         <label> Base price </label>
-                        <input type="number" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(ev.target.value)}  />
+                        <input type="number"  step="0.01" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(ev.target.value)}  />
 
                     </div>
 
