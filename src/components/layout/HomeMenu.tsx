@@ -15,7 +15,7 @@ export default function HomeMenu() {
 
     async function fetchProducts() {
         try {
-            const { getAll } = await productApi()
+            const { getAll } = productApi()
             const res = await getAll();  
             if (res.data.status === 200) {
                 setProducts(res.data.params)
@@ -34,14 +34,14 @@ export default function HomeMenu() {
     return (
         <section className="">
             <div className="absolute left-0 right-0 w-full">
-                <div className="absolute -left-12 ">
+                <div className="absolute -left-12 top-[-100px]">
                     <Image src={'/salat.png'} width={'182'}  height={'182'} alt="salad" objectFit={'contain'}/>
                 </div>
-                <div className="absolute right-0 w-48 h-48 -top-24 -z-10">
+                <div className="absolute right-0 w-48 h-48 top-[-100px] -z-10">
                     <Image src={'/salat.png'} layout={'fill'} alt="salad" objectFit={'contain'}/>
                 </div>
             </div>
-            <div className="mt-4 text-center"> 
+            <div className="mt-32 text-center"> 
               <SectionHeaders subHeader={'check out'} mainHeader={'Our Best Sellers'} />
             </div>
 
@@ -49,7 +49,10 @@ export default function HomeMenu() {
             <div className="grid grid-cols-3 gap-4 my-4">
                 {
                     products?.length > 0 && products.map( (product, index) => (
-                        <MenuItem key={ index } path={ product.path }  name={ product.name } description={ product.description } basePrice={ product.base_price } />
+                        <MenuItem 
+                            sizes={ product.product_sizes }
+                            extras={ product.product_extras }
+                            key={ index } path={ product.path }  name={ product.name } description={ product.description } basePrice={ product.base_price } />
                     ))
                 } 
             </div>

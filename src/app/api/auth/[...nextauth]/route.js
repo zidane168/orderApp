@@ -23,9 +23,8 @@ export const authOptions =
                 username: { label: "Username", type: "text", placeholder: "your email address" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials, req) { 
-                const session = await useSessionData()
-                const { login } = memberApi(session)
+            async authorize(credentials, req) {  
+                const { login } = memberApi( )
 
                 const res =  await login({
                     email:      credentials.email,

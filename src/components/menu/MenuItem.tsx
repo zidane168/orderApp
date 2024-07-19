@@ -25,6 +25,10 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
 } : IMenuItem) {
   
     const [ showPopup, setShowPopup ] = useState<boolean>(false);
+    
+    const [ selectedSize, setSelectedSize ] = useState<IProductSize>({ id: 0, name: '', price: 0 });
+    const [ selectedExtras, setSelectedExtras ] = useState<IProductExtra[]>([]);
+
     const router = useRouter();
     async function handleDeleteProduct(ev: React.ChangeEvent<HTMLFormElement>) {
         ev.preventDefault()
@@ -70,45 +74,66 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
         }
     }
 
+    function handleExtraThingClick(ev: React.FormEvent<HTMLFormElement>, extraThing: IProductExtra) {
+        const checkbox = ev.target as HTMLInputElement
+        const checked = checkbox.checked;
+        if (checked) {
+            setSelectedExtras(prev => [...prev, extraThing])
+        } else {
+            setSelectedExtras(prev => (
+                prev.filter(e => e.name != extraThing.name )
+            ))
+        }
+    }
+
     return (
         <>
             {
                 showPopup && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black/80">
-                    <div className="max-w-md max-h-screen p-4 overflow-scroll bg-white rounded-lg"> 
-                        <Image 
-                            src={ path }
-                            alt={ name } 
-                            width={300} height={300}
-                            className="mx-auto"
-                        />
-                        <h2 className="mb-2 text-lg font-bold text-center"> { name }  </h2>
-                        <div className="mb-2 text-sm text-justify leading-[20px] text-gray-500" dangerouslySetInnerHTML={{ __html: description }} />
-                          { sizes?.length > 0 && (
-                            <div className="p-2 bg-gray-300 rounded-md">
-                                <h3> Pick your size </h3>
-                                { sizes?.map (size => (
-                                    <label className="block p-2 py-2 mb-1 border rounded-md"> 
-                                        <input type="radio" name="size"/> { size.name } + <span className="font-semibold text-primary"> ${ size.price } </span>
-                                    </label>
-                                ))}
-                            </div>
-                        )}
+                    <div className="max-w-lg p-2 bg-white rounded-lg"> 
+                        <div className="max-h-screen p-4 overflow-y-auto">
+                            <Image 
+                                src={ path }
+                                alt={ name } 
+                                width={300} height={300}
+                                className="mx-auto"
+                            />
+                            <h2 className="mb-2 text-lg font-bold text-center"> { name }  </h2>
+                            <div className="mb-2 text-sm text-justify leading-[20px] text-gray-500" dangerouslySetInnerHTML={{ __html: description }} />
+                            { sizes?.length > 0 && (
+                                <div className="p-2 bg-gray-300 rounded-md">
+                                    <h3> Pick your size </h3>
+                                    { sizes?.map (size => (
+                                        <label className="block p-2 py-2 mb-1 border rounded-md"> 
+                                            <input 
+                                                type="radio" 
+                                                onClick={ () => setSelectedSize(size) } 
+                                                checked={ selectedSize.name === size.name }
+                                                name="size"/> { size.name } + <span className="font-semibold text-primary"> ${ size.price } </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
 
-                        { extras?.length > 0 && (
-                            <div className="p-2 mt-4 bg-gray-300 rounded-md">
-                                <h3> Pick your Extras </h3>
-                                { extras?.map (extra => (
-                                    <label className="block p-2 py-2 mb-1 border rounded-md"> 
-                                        <input type="checkbox" name="extra"/> { extra.name } +<span className="font-semibold text-primary"> ${ extra.price } </span>
-                                    </label>
-                                ))}
-                            </div>
-                        )}
+                            { extras?.length > 0 && (
+                                <div className="p-2 mt-4 bg-gray-300 rounded-md">
+                                    <h3> Any Extras? </h3>
+                                    { JSON.stringify(selectedExtras) }
+                                    { extras?.map (extra => (
+                                        <label className="block p-2 py-2 mb-1 border rounded-md"> 
+                                            <input
+                                                onClick={ (ev) => handleExtraThingClick(ev, extra) }
+                                                type="checkbox" name="extra"/> { extra.name } +<span className="font-semibold text-primary"> ${ extra.price } </span>
+                                        </label>
+                                    ))}
+                                </div>
+                            )}
 
-                        <Button className="mt-4 text-white bg-primary" type="button">
-                            Add to cart "Selected price"
-                        </Button>
+                            <Button className="mt-4 text-white bg-primary" type="button">
+                                Add to cart "Selected price"
+                            </Button>
+                        </div>
                     </div>
                 </div>
                 )

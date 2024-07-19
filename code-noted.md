@@ -360,3 +360,22 @@ push ('/menu-items')
 
 # use this one for reload current page
  window.location.reload()
+
+
+# neu co loi
+1. TypeError: prev is not iterable
+phai coi lai cai init la mot cai array nhu sau
+const [ selectedExtras, setSelectedExtras ] = useState<IProductExtra[]>([]);
+
+la array thi moi lai dc chuyen nay
+function handleExtraThingClick(ev: React.FormEvent<HTMLFormElement>, extraThing: IProductExtra) {
+    const checkbox = ev.target as HTMLInputElement
+    const checked = checkbox.checked;
+    if (checked) {
+        setSelectedExtras(prev => [...prev, extraThing])
+    } else {
+        setSelectedExtras(prev => (
+            prev.filter(e => e.name != extraThing.name )
+        ))
+    }
+}
