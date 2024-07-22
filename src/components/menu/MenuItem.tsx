@@ -83,8 +83,11 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
             newSelectedExtras.push(index.id)
         )) 
 
-        addToCart({product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras});
-        toast.success('Added to cart!');
+        const memberTempCart = {product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras};
+
+        console.log(memberTempCart)
+        addToCart(  {product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras} );
+       
         setShowPopup(false) 
     }
 
@@ -192,7 +195,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                         onClick={ handleAddToCartButtonClick }
                     >    
                         { 
-                            (sizes?.length > 0 || extras?.length > 0) ? (
+                            (extras?.length > 0) ? (
                                 <div className="flex items-center gap-2 justify-evenly"> 
                                     <div className="flex">
                                         <div> Add to </div>

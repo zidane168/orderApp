@@ -15,8 +15,12 @@ export function memberCartApi()
     return commonAxios.post<AxiosResponseData>("/api/v1/memberTempCarts/clearCart.json");
   }  
 
-  const removeCart = () => { 
-    return commonAxios.post<AxiosResponseData>("/api/v1/memberTempCarts/removeCart.json");
+  const removeCart = (id: number) => { 
+    return commonAxios.delete<AxiosResponseData>("/api/v1/memberTempCarts/removeCart.json", {
+      data: {
+        member_temp_cart_id: id
+      } 
+    });
   }   
 
   const showCart = async() => {

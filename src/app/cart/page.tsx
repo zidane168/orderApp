@@ -5,10 +5,22 @@ import SectionHeaders from "@/components/layout/SectionHeaders";
 import { ICategoryAndProducts } from "../api/product";
 import MenuItem from "@/components/menu/MenuItem"; 
 import { CartContext } from "@/components/AppContext";
+import Image from "next/image";
+import DeleteIcon from "@/components/icons/DeleteIcon";
+import { Button } from "@nextui-org/react";
 
 export default function CartPage() {
 
     const { cartProducts } = useContext(CartContext);
+    const { showCarts, removeCart } = useContext(CartContext)
+
+    useEffect(() => {
+        fetchCartItems()
+    }, [])
+
+    async function fetchCartItems() {
+        await showCarts();
+    }
  
    return (
         <section className="mt-8">
@@ -24,9 +36,46 @@ export default function CartPage() {
                             <div className=""> No products in your shopping cart </div>
                         )
                     }
-                    { cartProducts?.length > 0 && cartProducts.map(product => (
-                        <div>
-                            { product.name }
+                    { cartProducts?.length > 0 && cartProducts.map(cart => (
+                        <div key={ cart.id } className="flex items-center gap-4 py-4 mb-4 border-b">
+                            <div className="w-24"> 
+                                <Image src={ cart.product.image } width={240} height={240} alt={ cart.product.name} />
+                            </div>
+                            <div className="grow">
+                                <h3 className="font-semibold">
+                                    { cart.product.name }
+                                </h3> 
+                                {
+                                    cart.product_size && (
+                                        <div className="text-sm text-gray-700"> 
+                                            <div> Size: <span> { cart.product_size.name } </span> </div>
+                                        </div>
+                                    )
+                                }
+
+                                {
+                                    cart.product_extra?.length > 0 && (
+                                        <div className="text-sm text-gray-500"> 
+                                            <ul>
+                                            { cart.product_extra.map( extra => (
+                                                <li> { extra.name } ${extra.price}</li>
+                                            )) }
+                                            </ul>
+                                        </div>
+                                    ) 
+                                }
+                            </div>
+                            <div>
+                                <span className="font-semibold text-primary"> ${ cart.total_price } </span>
+                            </div>
+
+                            <div>
+                                <Button
+                                    onClick={ () => handleRemoveCartItem() }
+                                    > 
+                                    <DeleteIcon className="w-6 h-6"/> 
+                                </Button>
+                            </div>
                         </div>
                     )) }
                 </div>

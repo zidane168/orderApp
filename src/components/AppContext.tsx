@@ -1,35 +1,41 @@
 'use client'
 
-import { IMemberTempCart } from "@/app/api/member-carts";
+import { ICartItem, IMemberTempCart } from "@/app/api/member-carts";
 import { memberCartApi } from "@/app/api/member-carts/member-cart.api";
 import { IProduct } from "@/app/api/product";
 import { SessionProvider } from "next-auth/react";
 import { createContext, ReactNode, useEffect, useState } from "react"; 
+import toast from 'react-hot-toast' 
 
 export const CartContext = createContext({ });
 
+// TRUNCATE   `member_temp_carts`;
+// TRUNCATE   `member_temp_cart_extras`;
+
+// dung mo hinh nay de save duoi local storage và dùng chung dc các module với nhau
+
 export function AppProvider({ children } : {children : ReactNode}) {
-    const [ cartProducts, setCartProducts ] = useState([]) 
-    const [ singleCartProduct, setSingleCartProduct ] = useState<IMemberTempCart>({ product_id: 0, quantity: 0, product_size_id: 0, product_extra_ids: []}) 
- 
-    async function saveSingleCartProductToServer() {
+    const [ cartProducts, setCartProducts ] = useState<ICartItem[]>([]) 
+   
+    async function saveSingleCartProductToServer( {product_id, quantity, product_size_id, product_extra_ids=[]}: IMemberTempCart ) {
         try {
             const { addToCart } = memberCartApi(); 
             const res = await addToCart({
-                product_id: singleCartProduct.product_id,
-                quantity: singleCartProduct.quantity,
-                product_size_id: singleCartProduct.product_size_id,
-                product_extra_ids: singleCartProduct.product_extra_ids
+                product_id: product_id,
+                quantity:  quantity,
+                product_size_id:  product_size_id,
+                product_extra_ids:  product_extra_ids
             }) 
-            if (res.data.status) {
-                console.log(res.data.message)
-            } else {
-                console.log(res.data.message)
+            if (res.data.status === 200) { 
+                setCartProducts(res.data.params)
+                toast.success( res.data.message); 
+
+            } else { 
+                toast.error(res.data.message);
             }
         } catch(error) {
 
-        } 
- 
+        }  
     }
 
     async function clearCartProductOnServer() {
@@ -39,30 +45,51 @@ export function AppProvider({ children } : {children : ReactNode}) {
 
     function addToCart( {product_id, quantity, product_size_id, product_extra_ids=[]}: IMemberTempCart) { 
         const cartProduct = { product_id: product_id, quantity: quantity, product_size_id: product_size_id, product_extra_ids: product_extra_ids }
-        setSingleCartProduct(cartProduct)
-
-        setCartProducts(prevProducts => {   
-            const newProducts = [...prevProducts, cartProduct ] 
-            return newProducts
-        }) 
-        saveSingleCartProductToServer()
+        saveSingleCartProductToServer( cartProduct )   
     }
 
-    function removeCartProduct(indexToRemove) {
+    async function removeCart(idNeedToRemove) {
         setCartProducts(prevProducts => {
-            const newCartProducts = prevProducts.filter((_, index) => index !== indexToRemove)
+            const newCartProducts = prevProducts.filter((value, _) => value.id !== idNeedToRemove)
             return newCartProducts
         })
+
+        const { removeCart } = memberCartApi()
+        const res = await removeCart({
+            idNeedToRemove
+        });
+
+        if (res.data.status === 200) {
+            toast.success(res.data.message)
+        } else {
+            toast.error(res.data.message)
+        }
     }
 
     function clearCart() {
         setCartProducts([])
     }
 
+    async function showCarts() {
+        try {
+            const { showCart } = memberCartApi();
+            const res = await showCart();
+
+            if (res.data.status === 200) { 
+
+                console.log(res.data.params )
+                setCartProducts(res.data.params);
+            }
+
+        } catch (error) {
+
+        }
+    }
+
     return (
         <SessionProvider> 
             <CartContext.Provider value={{
-                cartProducts, setCartProducts, addToCart, clearCart
+                cartProducts, setCartProducts, addToCart, clearCart, showCarts, removeCart
             }}>
                 { children }
             </CartContext.Provider> 

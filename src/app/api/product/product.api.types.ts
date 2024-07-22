@@ -1,6 +1,7 @@
 export type IProduct = {
     id?: number
     name: string,
+    quantity?: number,
     image_id: number,
     image?: string, 
     base_price: number,
