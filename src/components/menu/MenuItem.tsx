@@ -9,6 +9,7 @@ import { IProductExtra, IProductSize } from "@/app/api/product"
 import { useContext, useState } from "react"
 import { CartContext } from "../AppContext"
 import Image from "next/image"
+import ShoppingCartIcon from "../icons/ShoppingCartIcon"
 interface IMenuItem {
     id: number,
     path: string, 
@@ -26,7 +27,11 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
   
     const [ showPopup, setShowPopup ] = useState<boolean>(false);
     
-    const [ selectedSize, setSelectedSize ] = useState<IProductSize>({ id: 0, name: '', price: 0 });
+    const [ selectedSize, setSelectedSize ] = useState<IProductSize>(
+        sizes?.length > 0 ?   
+            { id: sizes[0].id, name: sizes[0].name, price: sizes[0].price } : 
+            { id: 0, name: '', price: 0 }
+        );  // init first sizes value
     const [ selectedExtras, setSelectedExtras ] = useState<IProductExtra[]>([]);
 
     const router = useRouter();
@@ -66,19 +71,24 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
     const { addToCart } = useContext(CartContext)
 
     function handleAddToCartButtonClick() {
-        if (sizes?.length === 0 && extras?.length === 0) {
-            addToCart(id, 1, sizes, extras);
-            toast.success('Added to cart');
-        } else {
+
+        const hasOptions = sizes?.length > 0 && extras?.length > 0
+        if (hasOptions && !showPopup) {
             setShowPopup(true)
-        }
+            return
+        } 
+
+        addToCart(id, 1, selectedSize, selectedExtras);
+        toast.success('Added to cart!');
+        setShowPopup(false)
+            
     }
 
     function handleExtraThingClick(ev: React.FormEvent<HTMLFormElement>, extraThing: IProductExtra) {
         const checkbox = ev.target as HTMLInputElement
         const checked = checkbox.checked;
         if (checked) {
-            setSelectedExtras(prev => [...prev, extraThing])
+            setSelectedExtras(prev => [...prev, extraThing])        // luc init useState thi no phải là array moi su dung dc: const [ selectedExtras, setSelectedExtras ] = useState<IProductExtra[]>([]);
         } else {
             setSelectedExtras(prev => (
                 prev.filter(e => e.name != extraThing.name )
@@ -86,54 +96,77 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
         }
     }
 
+    let selectedPrice:number =  Number(basePrice)
+    if (selectedPrice) {
+        selectedPrice += Number(selectedSize.price)
+    }
+
+    if (selectedExtras?.length > 0) {
+        for (const extra of selectedExtras) {
+            selectedPrice += Number(extra.price)
+        }
+    } 
+
     return (
         <>
             {
                 showPopup && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black/80">
-                    <div className="max-w-lg p-2 bg-white rounded-lg"> 
-                        <div className="max-h-screen p-4 overflow-y-auto">
-                            <Image 
-                                src={ path }
-                                alt={ name } 
-                                width={300} height={300}
-                                className="mx-auto"
-                            />
-                            <h2 className="mb-2 text-lg font-bold text-center"> { name }  </h2>
-                            <div className="mb-2 text-sm text-justify leading-[20px] text-gray-500" dangerouslySetInnerHTML={{ __html: description }} />
-                            { sizes?.length > 0 && (
-                                <div className="p-2 bg-gray-300 rounded-md">
-                                    <h3> Pick your size </h3>
-                                    { sizes?.map (size => (
-                                        <label className="block p-2 py-2 mb-1 border rounded-md"> 
-                                            <input 
-                                                type="radio" 
-                                                onClick={ () => setSelectedSize(size) } 
-                                                checked={ selectedSize.name === size.name }
-                                                name="size"/> { size.name } + <span className="font-semibold text-primary"> ${ size.price } </span>
-                                        </label>
-                                    ))}
-                                </div>
-                            )}
+                <div 
+                    onClick={ () => setShowPopup(false) }
+                    className="fixed inset-0 flex items-center justify-center bg-black/80">
+                    <div 
+                        onClick={ev => ev.stopPropagation() }
+                        className="max-w-lg p-2 bg-white rounded-lg"> 
+                        <div  
+                            className="p-4 my-8">
+                            <div 
+                                className="max-h-screen overflow-y-auto">
+                                <Image 
+                                    src={ path }
+                                    alt={ name } 
+                                    width={300} height={300}
+                                    className="mx-auto"
+                                />
+                                <h2 className="mb-2 text-lg font-bold text-center"> { name }  </h2>
+                                <div className="mb-2 text-sm text-justify leading-[20px] text-gray-500" dangerouslySetInnerHTML={{ __html: description }} />
+                                
+                               
+                                { sizes?.length > 0 && (
+                                    <div className="p-2 bg-gray-300 rounded-md">
+                                        <h3> Pick your size </h3>
+                                        { sizes?.map (size => (
+                                            <label className="block p-2 py-2 mb-1 border rounded-md"> 
+                                                <input 
+                                                    type="radio" 
+                                                    onClick={ () => setSelectedSize(size) } 
+                                                    checked={ selectedSize.name === size.name }
+                                                    name="size"/> { size.name } + <span className="font-semibold text-primary"> ${ size.price } </span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
 
-                            { extras?.length > 0 && (
-                                <div className="p-2 mt-4 bg-gray-300 rounded-md">
-                                    <h3> Any Extras? </h3>
-                                    { /* This line is show debug state */ }
-                                    { JSON.stringify(selectedExtras) } 
-                                    { extras?.map (extra => (
-                                        <label className="block p-2 py-2 mb-1 border rounded-md"> 
-                                            <input
-                                                onClick={ (ev) => handleExtraThingClick(ev, extra) }
-                                                type="checkbox" name="extra"/> { extra.name } +<span className="font-semibold text-primary"> ${ extra.price } </span>
-                                        </label>
-                                    ))}
-                                </div>
-                            )}
+                                { extras?.length > 0 && (
+                                    <div className="p-2 mt-4 bg-gray-300 rounded-md">
+                                        <h3> Any Extras? </h3>
+                                        { /* This line is show debug state */ } 
+                                        { /* JSON.stringify(selectedExtras) */  } 
+                                        { extras?.map (extra => (
+                                            <label className="block p-2 py-2 mb-1 border rounded-md"> 
+                                                <input
+                                                    onClick={ (ev) => handleExtraThingClick(ev, extra) }
+                                                    type="checkbox" name="extra"/> { extra.name } +<span className="font-semibold text-primary"> ${ extra.price } </span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                )}
 
-                            <Button className="mt-4 text-white bg-primary" type="button">
-                                Add to cart "Selected price"
-                            </Button>
+                                <Button 
+                                    onClick={ handleAddToCartButtonClick }
+                                    className="sticky mt-4 text-white bg-primary bottom-2" type="button">
+                                    Add to cart ${basePrice} 
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -149,8 +182,25 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                 { isAddToCart === true && (
                     <button className="px-6 py-2 mt-2 text-white rounded-full bg-primary"
                         onClick={ handleAddToCartButtonClick }
-                    > 
-                        Add to cart ${ basePrice } 
+                    >    
+                        { 
+                            (sizes?.length > 0 || extras?.length > 0) ? (
+                                <div className="flex items-center gap-2 justify-evenly"> 
+                                    <div className="flex">
+                                        <div> Add to </div>
+                                        <ShoppingCartIcon className="w-6 h-6"/> 
+                                    </div>
+                                    <div> (from ${basePrice}) </div> 
+                                </div>
+                            ) : 
+                                <div className="flex items-center gap-2 justify-evenly"> 
+                                    <div className="flex">
+                                        <div> Add to </div>
+                                        <ShoppingCartIcon className="w-6 h-6"/>  
+                                    </div>
+                                    <div> ${basePrice} </div>
+                                </div>
+                        }
                     </button>
                 )}
 

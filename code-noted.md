@@ -379,3 +379,21 @@ function handleExtraThingClick(ev: React.FormEvent<HTMLFormElement>, extraThing:
         ))
     }
 }
+
+# position: sticky, bottom-2 = bottom: 0.2rem 
+it mean will always sticky on bottom position
+
+
+# click ngoai cai module se đóng lai
+ta sẽ set cái trang thí showPopup: false --> đóng lai, và khi true: sẽ mở popup, 
+và dúng cái ev.stopPropagation() để chăn cái event tác động len tren setShowPopup o trên
+    { 
+    showPopup && ( <div 
+      onClick={ () => setShowPopup(false) }
+      className="fixed inset-0 flex items-center justify-center bg-black/80">
+      <div 
+          onClick={ev => ev.stopPropagation() }
+      </div>
+    ...
+  </div> )
+  }
