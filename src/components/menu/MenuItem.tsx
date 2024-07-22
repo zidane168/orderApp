@@ -145,6 +145,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                                 <input 
                                                     type="radio" 
                                                     onChange={ () => setSelectedSize(size) } 
+                                                    // onClick={ () => setSelectedSize(size) } 
                                                     checked={ selectedSize.name === size.name }
                                                     name="size"/> { size.name } + <span className="font-semibold text-primary"> ${ size.price } </span>
                                             </label>
@@ -161,6 +162,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                             <label className="block p-2 py-2 mb-1 border rounded-md" key={ extra.id }> 
                                                 <input
                                                     onChange={ (ev) => handleExtraThingClick(ev, extra) }
+                                                    // onClick={ (ev) => handleExtraThingClick(ev, extra) }
                                                     type="checkbox" name="extra"/> { extra.name } +<span className="font-semibold text-primary"> ${ extra.price } </span>
                                             </label>
                                         ))}
@@ -170,7 +172,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                 <Button 
                                     onClick={ handleAddToCartButtonClick }
                                     className="sticky mt-4 text-white bg-primary bottom-2" type="button">
-                                    Add to cart ${basePrice} 
+                                    Add to cart ${selectedPrice} 
                                 </Button>
                             </div>
                         </div>
