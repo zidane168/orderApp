@@ -119,7 +119,8 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                             { extras?.length > 0 && (
                                 <div className="p-2 mt-4 bg-gray-300 rounded-md">
                                     <h3> Any Extras? </h3>
-                                    { JSON.stringify(selectedExtras) }
+                                    { /* This line is show debug state */ }
+                                    { JSON.stringify(selectedExtras) } 
                                     { extras?.map (extra => (
                                         <label className="block p-2 py-2 mb-1 border rounded-md"> 
                                             <input
