@@ -75,7 +75,7 @@ export default function Header() {
                 <Link href={'/cart'}> 
                     <div className="relative">
                         <ShoppingCartIcon className={'w-8 h-8'}/> 
-                        <div className="absolute top-[-25px] right-[-5px] text-white font-semibold bg-primary p-1 rounded-full"> 
+                        <div className="absolute top-[-15px] right-[-5px] text-white font-semibold bg-primary p-1 leading-3 rounded-full"> 
                             {cartProducts.length} 
                         </div> 
                     </div>

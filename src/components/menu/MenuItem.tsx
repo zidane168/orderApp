@@ -70,21 +70,27 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
 
     const { addToCart } = useContext(CartContext)
 
-    function handleAddToCartButtonClick() {
+    function handleAddToCartButtonClick() { 
 
         const hasOptions = sizes?.length > 0 && extras?.length > 0
         if (hasOptions && !showPopup) {
             setShowPopup(true)
             return
         } 
+   
+        let newSelectedExtras:number[] = [];
+        selectedExtras.map((index, value) =>(
+            newSelectedExtras.push(index.id)
+        )) 
 
-        addToCart(id, 1, selectedSize, selectedExtras);
+        addToCart({product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras});
         toast.success('Added to cart!');
-        setShowPopup(false)
-            
+        setShowPopup(false) 
     }
 
     function handleExtraThingClick(ev: React.FormEvent<HTMLFormElement>, extraThing: IProductExtra) {
+
+        console.log('click into extras')
         const checkbox = ev.target as HTMLInputElement
         const checked = checkbox.checked;
         if (checked) {
@@ -135,10 +141,10 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                     <div className="p-2 bg-gray-300 rounded-md">
                                         <h3> Pick your size </h3>
                                         { sizes?.map (size => (
-                                            <label className="block p-2 py-2 mb-1 border rounded-md"> 
+                                            <label className="block p-2 py-2 mb-1 border rounded-md" key={ size.id }> 
                                                 <input 
                                                     type="radio" 
-                                                    onClick={ () => setSelectedSize(size) } 
+                                                    onChange={ () => setSelectedSize(size) } 
                                                     checked={ selectedSize.name === size.name }
                                                     name="size"/> { size.name } + <span className="font-semibold text-primary"> ${ size.price } </span>
                                             </label>
@@ -150,11 +156,11 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                     <div className="p-2 mt-4 bg-gray-300 rounded-md">
                                         <h3> Any Extras? </h3>
                                         { /* This line is show debug state */ } 
-                                        { /* JSON.stringify(selectedExtras) */  } 
+                                        {   JSON.stringify(selectedExtras)    } 
                                         { extras?.map (extra => (
-                                            <label className="block p-2 py-2 mb-1 border rounded-md"> 
+                                            <label className="block p-2 py-2 mb-1 border rounded-md" key={ extra.id }> 
                                                 <input
-                                                    onClick={ (ev) => handleExtraThingClick(ev, extra) }
+                                                    onChange={ (ev) => handleExtraThingClick(ev, extra) }
                                                     type="checkbox" name="extra"/> { extra.name } +<span className="font-semibold text-primary"> ${ extra.price } </span>
                                             </label>
                                         ))}
@@ -176,7 +182,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                 <div className="text-center">
                     <img src={ path } alt="pizza" className="block mx-auto max-h-auto max-h-24" />
                 </div>
-                <h4 className="my-3 text-xl font-semibold"> { id ? "(" + id + ")" : ''}  { name } </h4>
+                <h4 className="my-3 text-xl font-semibold text-primary "> { /* id ? "(" + id + ")" : '' */ }  { name } </h4>
                 <div className="text-sm text-gray-500 truncate max-h-16" dangerouslySetInnerHTML={{ __html: description }} />
                 
                 { isAddToCart === true && (

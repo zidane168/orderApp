@@ -52,7 +52,9 @@ export default function HomeMenu() {
                         <MenuItem 
                             sizes={ product.product_sizes }
                             extras={ product.product_extras }
-                            key={ index } path={ product.path }  name={ product.name } description={ product.description } basePrice={ product.base_price } />
+                            key={ index } path={ product.path }  
+                            id={ product.id }
+                            name={ product.name } description={ product.description } basePrice={ product.base_price } />
                     ))
                 } 
             </div>

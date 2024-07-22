@@ -397,3 +397,5 @@ và dúng cái ev.stopPropagation() để chăn cái event tác động len tren
     ...
   </div> )
   }
+
+# using leading-3 for down side the number of cart

@@ -108,6 +108,6 @@ function Header() {
             React.createElement(link_1["default"], { href: '/cart' },
                 React.createElement("div", { className: "relative" },
                     React.createElement(ShoppingCartIcon_1["default"], { className: 'w-8 h-8' }),
-                    React.createElement("div", { className: "absolute top-[-25px] right-[-5px] text-white font-semibold bg-primary p-1 rounded-full" }, cartProducts.length))))));
+                    React.createElement("div", { className: "absolute top-[-15px] right-[-5px] text-white font-semibold bg-primary p-1 leading-3 rounded-full" }, cartProducts.length))))));
 }
 exports["default"] = Header;
