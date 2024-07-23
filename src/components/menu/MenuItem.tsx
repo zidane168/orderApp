@@ -10,6 +10,7 @@ import { useContext, useState } from "react"
 import { CartContext } from "../AppContext"
 import Image from "next/image"
 import ShoppingCartIcon from "../icons/ShoppingCartIcon"
+import FlyingButton from 'react-flying-item';
 interface IMenuItem {
     id: number,
     path: string, 
@@ -144,8 +145,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                             <label className="block p-2 py-2 mb-1 border rounded-md" key={ size.id }> 
                                                 <input 
                                                     type="radio" 
-                                                    onChange={ () => setSelectedSize(size) } 
-                                                    // onClick={ () => setSelectedSize(size) } 
+                                                    onChange={ () => setSelectedSize(size) }  
                                                     checked={ selectedSize.name === size.name }
                                                     name="size"/> { size.name } + <span className="font-semibold text-primary"> ${ size.price } </span>
                                             </label>
@@ -161,19 +161,23 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                         { extras?.map (extra => (
                                             <label className="block p-2 py-2 mb-1 border rounded-md" key={ extra.id }> 
                                                 <input
-                                                    onChange={ (ev) => handleExtraThingClick(ev, extra) }
-                                                    // onClick={ (ev) => handleExtraThingClick(ev, extra) }
+                                                    onChange={ (ev) => handleExtraThingClick(ev, extra) } 
                                                     type="checkbox" name="extra"/> { extra.name } +<span className="font-semibold text-primary"> ${ extra.price } </span>
                                             </label>
                                         ))}
                                     </div>
                                 )}
 
-                                <Button 
-                                    onClick={ handleAddToCartButtonClick }
-                                    className="sticky mt-4 text-white bg-primary bottom-2" type="button">
-                                    Add to cart ${selectedPrice} 
-                                </Button>
+                                <div className="flying-button-parent"  onClick={ handleAddToCartButtonClick }>
+                                    <FlyingButton 
+                                        src={ path }
+                                        targetLeft={'80%'}
+                                        targetTop={'5%'}
+                                       
+                                        className="sticky mt-4 text-white bg-primary bottom-2" type="button">
+                                        Add to cart ${selectedPrice} 
+                                    </FlyingButton>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -187,30 +191,41 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                 <h4 className="my-3 text-xl font-semibold text-primary "> { /* id ? "(" + id + ")" : '' */ }  { name } </h4>
                 <div className="text-sm text-gray-500 truncate max-h-16" dangerouslySetInnerHTML={{ __html: description }} />
                 
-                { isAddToCart === true && (
-                    <button className="px-6 py-2 mt-2 text-white rounded-full bg-primary"
-                        onClick={ handleAddToCartButtonClick }
-                    >    
-                        { 
-                            (extras?.length > 0) ? (
+                 
+                      
+                { isAddToCart === true && (  
+                    (extras?.length > 0) ?  
+                        <button 
+                            className="px-6 py-2 mt-2 text-white rounded-full bg-primary"
+                            onClick={ handleAddToCartButtonClick }
+                            >    
+                            <div className="flex items-center gap-2 justify-evenly"> 
+                                <div className="flex">
+                                    <div> Add to </div>
+                                    <ShoppingCartIcon className="w-6 h-6"/> 
+                                </div>
+                                <div> (from ${basePrice}) </div> 
+                            </div>
+                        </button>
+                        :  
+                        <div className="flying-button-parent"> 
+                            <FlyingButton  
+                                targetTop={'5%'}
+                                targetLeft={'80%'}
+                                src={ path }
+                                onClick={ handleAddToCartButtonClick }
+                                >    
                                 <div className="flex items-center gap-2 justify-evenly"> 
                                     <div className="flex">
                                         <div> Add to </div>
                                         <ShoppingCartIcon className="w-6 h-6"/> 
                                     </div>
-                                    <div> (from ${basePrice}) </div> 
+                                    <div> ( ${basePrice}) </div> 
                                 </div>
-                            ) : 
-                                <div className="flex items-center gap-2 justify-evenly"> 
-                                    <div className="flex">
-                                        <div> Add to </div>
-                                        <ShoppingCartIcon className="w-6 h-6"/>  
-                                    </div>
-                                    <div> ${basePrice} </div>
-                                </div>
-                        }
-                    </button>
-                )}
+                            </FlyingButton> 
+                        </div>
+                    )
+                }
 
                 { isAddToCart === false && (
                     <div className="flex items-center gap-4 mt-2">

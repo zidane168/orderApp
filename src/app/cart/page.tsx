@@ -10,10 +10,18 @@ import { ICartItem } from "../api/member-carts";
 export default function CartPage() {
  
     const { showCarts, removeCart, cartProducts } = useContext(CartContext)
+    
+    let total = 0;
+    for (const product of cartProducts) {
+        total += Number(product.total_price)
+    } 
 
     useEffect(() => {
-        fetchCartItems()
+        fetchCartItems() 
+      
+      
     }, [])
+ 
 
     async function fetchCartItems() {
         await showCarts();
@@ -29,7 +37,7 @@ export default function CartPage() {
                 <SectionHeaders mainHeader="Cart"> </SectionHeaders>
             </div>
             
-            <h1> Checkout </h1>
+            <h1 className="text-2xl font-bold"> Checkout </h1>
             <div className="grid grid-cols-2 gap-4">
                 <div> 
                     {
@@ -44,12 +52,12 @@ export default function CartPage() {
                             </div>
                             <div className="grow">
                                 <h3 className="font-semibold">
-                                    { cart.product.name }
+                                    { cart.product?.name }
                                 </h3> 
                                 {
                                     cart.product_size && (
                                         <div className="text-sm text-gray-700"> 
-                                            <div> Size: <span> { cart.product_size.name } </span> </div>
+                                            <div> Size: <span> { cart.product_size?.name } </span> </div>
                                         </div>
                                     )
                                 }
@@ -58,7 +66,7 @@ export default function CartPage() {
                                     cart.product_extra?.length > 0 && (
                                         <div className="text-sm text-gray-500"> 
                                             <ul >
-                                            { cart.product_extra.map( extra => (
+                                            { cart.product_extra?.map( extra => (
                                                 <li key={ extra.id }> { extra.name } ${extra.price}</li>
                                             )) }
                                             </ul>
@@ -67,7 +75,7 @@ export default function CartPage() {
                                 }
                             </div>
                             <div>
-                                <span className="font-semibold text-primary"> ${ cart.total_price } </span>
+                                <span className="font-semibold text-primary"> ${ cart?.total_price } </span>
                             </div>
 
                             <div>
@@ -79,8 +87,12 @@ export default function CartPage() {
                             </div>
                         </div>
                     )) }
+                    <div className="pr-20 text-right">
+                        <span className="text-gray-500"> Subtotal: </span>
+                        <span className="text-lg font-semibold"> ${total} </span>
+                    </div>
                 </div>
-                <div> right </div>
+                <div className="p-2 bg-gray-300 rounded-lg"> right </div>
             </div>
         </section>
    )

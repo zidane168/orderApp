@@ -2,6 +2,7 @@
 https://heroicons.com/
 sweetalert2
 toast
+react-flying-item: yarn add react-flying-item
 
 # tsx
 because of have html, render
