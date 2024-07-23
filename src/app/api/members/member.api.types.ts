@@ -4,6 +4,7 @@ export type IMember = {
   email: string,
   name: string,
   phone?: string,
+  is_admin?: boolean,
   password: string,
   type: number,     // 1: google, 2: credentials
 }

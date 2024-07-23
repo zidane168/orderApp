@@ -1,5 +1,4 @@
-import { ISize } from "@/app/api/product";
-import { Button } from "@nextui-org/react"; 
+import { ISize } from "@/app/api/product"; 
 import DeleteIcon from "@/components/icons/DeleteIcon"
 import ChevronDown from "../icons/ChevronDown";
 import { useState } from "react";
@@ -96,25 +95,24 @@ export default function MenuItemPriceProps({ props, setProps, buttonText, labelT
 
                                 </div>
                                 <div className="">
-                                    <Button 
-                                    
+                                    <button 
+                                        type="button"
                                         onClick={ ev => deleteSize(index) }
                                         className="transition bg-white border-none shadow-lg hover:cursor-pointer hover:scale-110"> 
                                         <DeleteIcon className="w-8 h-8"/>
-                                    </Button>
+                                    </button>
                                 </div>
                             </div>
                         )  
                     )  
-                }
-            
+                } 
 
-                <Button 
+                <button 
                     type="button"
                     className="bg-white"
                     onClick={ addSize }>
                         { buttonText }
-                </Button>
+                </button>
                 </div>
         </div>
     )

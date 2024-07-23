@@ -2,12 +2,19 @@
 
 import { ICartItem, IMemberTempCart } from "@/app/api/member-carts";
 import { memberCartApi } from "@/app/api/member-carts/member-cart.api";
-import { IProduct } from "@/app/api/product";
-import { SessionProvider } from "next-auth/react";
+import { SessionProvider } from "next-auth/react"; 
 import { createContext, ReactNode, useEffect, useState } from "react"; 
-import toast from 'react-hot-toast' 
+import toast from 'react-hot-toast'  
 
-export const CartContext = createContext({ });
+export type CardContextType = {
+    cartProducts: ICartItem[];
+    addToCart: (memberTempCart: IMemberTempCart) => void;
+    removeCart: (id: number) => void;
+    showCarts: () => void;
+    clearCart: () => void;
+  };
+
+export const CartContext = createContext<CardContextType | null>(null);
 
 // TRUNCATE   `member_temp_carts`;
 // TRUNCATE   `member_temp_cart_extras`;
@@ -27,11 +34,10 @@ export function AppProvider({ children } : {children : ReactNode}) {
                 product_extra_ids:  product_extra_ids
             }) 
             if (res.data.status === 200) { 
-                const currentProduct = res.data.status
-                setCartProducts(previousProduct => {
-                    return  [...previousProduct, currentProduct]
-                })
-                console.log(cartProducts)
+                const currentProduct: ICartItem = res.data.params
+                setCartProducts( (previousProduct) => {
+                    return  [...previousProduct, currentProduct] 
+                }) 
                 toast.success( res.data.message); 
 
             } else { 
@@ -52,7 +58,7 @@ export function AppProvider({ children } : {children : ReactNode}) {
         saveSingleCartProductToServer( cartProduct )   
     }
 
-    async function removeCart(idNeedToRemove) {
+    async function removeCart(idNeedToRemove: number) {
         setCartProducts(prevProducts => {
             const newCartProducts = prevProducts.filter((value, _) => value.id !== idNeedToRemove)
             return newCartProducts
@@ -91,7 +97,7 @@ export function AppProvider({ children } : {children : ReactNode}) {
     return (
         <SessionProvider> 
             <CartContext.Provider value={{
-                cartProducts, setCartProducts, addToCart, clearCart, showCarts, removeCart
+                cartProducts,  addToCart, clearCart, showCarts, removeCart
             }}>
                 { children }
             </CartContext.Provider> 

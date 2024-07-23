@@ -3,8 +3,11 @@ export type IName = {
 }
 
 export type ICategory = {
-    id?: number;
+    id: number;
     name: string; 
+    path?: string;
+    description?: string;
+    base_price?: number;
 }
 
 export type IId = {

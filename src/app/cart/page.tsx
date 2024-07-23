@@ -1,27 +1,24 @@
 'use client';
-import { useContext, useEffect, useState } from "react" 
+import { useContext, useEffect } from "react" 
 import SectionHeaders from "@/components/layout/SectionHeaders"; 
-import { CartContext } from "@/components/AppContext";
+import { CardContextType, CartContext } from "@/components/AppContext";
 import Image from "next/image";
-import DeleteIcon from "@/components/icons/DeleteIcon";
-import { Button } from "@nextui-org/react";
-import { ICartItem } from "../api/member-carts";
+import DeleteIcon from "@/components/icons/DeleteIcon"; 
+
+import { ICartItem } from "@/app/api/member-carts"; 
 
 export default function CartPage() {
  
-    const { showCarts, removeCart, cartProducts } = useContext(CartContext)
+    const {  showCarts, removeCart, cartProducts } = useContext(CartContext) as CardContextType
     
     let total = 0;
     for (const product of cartProducts) {
-        total += Number(product.total_price)
+         total += Number(product.total_price)
     } 
 
     useEffect(() => {
         fetchCartItems() 
-      
-      
     }, [])
- 
 
     async function fetchCartItems() {
         await showCarts();
@@ -34,7 +31,7 @@ export default function CartPage() {
    return (
         <section className="mt-8">
             <div className="text-center">
-                <SectionHeaders mainHeader="Cart"> </SectionHeaders>
+                <SectionHeaders mainHeader="Cart"  />
             </div>
             
             <h1 className="text-2xl font-bold"> Checkout </h1>
@@ -48,7 +45,9 @@ export default function CartPage() {
                     { cartProducts?.length > 0 && cartProducts.map( (cart:ICartItem, _) => (
                         <div key={ cart.id } className="flex items-center gap-4 py-4 mb-4 border-b">
                             <div className="w-24"> 
-                                <Image src={ cart.product?.image } width={240} height={240} alt={ cart.product?.name} />
+                                { 
+                                    cart.product?.image ?  <Image src={ cart.product.image } width={240} height={240} alt={ cart.product?.name} />  : '' 
+                                }
                             </div>
                             <div className="grow">
                                 <h3 className="font-semibold">
@@ -79,11 +78,12 @@ export default function CartPage() {
                             </div>
 
                             <div>
-                                <Button
+                                <button
+                                    type="button"
                                     onClick={ () => handleRemoveCartItem(cart.id) }
                                     > 
                                     <DeleteIcon className="w-6 h-6"/> 
-                                </Button>
+                                </button>
                             </div>
                         </div>
                     )) }

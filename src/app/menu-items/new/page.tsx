@@ -8,8 +8,7 @@ import { productApi } from "../../api/product/product.api"
 import { ISize } from "../../api/product"
 import Combobox, { IListItem } from "@/components/Combobox"
 import { categoryApi } from "../../api/categories/category.api"
-import { ICategory } from "../../api/categories"
-import { Button } from "@nextui-org/react"
+import { ICategory } from "../../api/categories" 
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps" 
 import QuillTextEditor from '@/components/AppQuillTextEditor'
 import RightIcon from "@/components/icons/RightIcon"
@@ -23,9 +22,9 @@ export default function MenuItemsNewPage() {
   
     const { push } = useRouter();
     const { loading, data } = useProfile()
-    const [ name, setName ] = useState()
+    const [ name, setName ] = useState<string>()
     const [ description, setDescription ] = useState('')
-    const [ basePrice, setBasePrice ] = useState()
+    const [ basePrice, setBasePrice ] = useState<number>()
 
     const [ image, setImage ] = useState<string>('') 
     const [ imageId, setImageId ] = useState<string>('')
@@ -63,11 +62,11 @@ export default function MenuItemsNewPage() {
             const { create } = productApi();  
            
             const response = await create({
-                name: name,
+                name: name ?? '',
                 description: description,
-                base_price: basePrice,
+                base_price: basePrice ?? 0,
                 category_id: selectedItem.id,
-                image_id: imageId, 
+                image_id: Number(imageId), 
                 product_sizes: sizes,
                 product_extras: extras,
             })
@@ -76,12 +75,15 @@ export default function MenuItemsNewPage() {
                 await toast.promise(Promise.resolve(), {
                     success: 'Data is saved',
                     loading: 'Saving',
+                    error :'',
                 })
 
                 push('/menu-items') 
                 
             } else { 
                 await toast.promise(Promise.reject(response.data.message), {
+                    success: ' ',
+                    loading: ' ',
                     error: response.data.message
                 })
             }  
@@ -94,9 +96,11 @@ export default function MenuItemsNewPage() {
         return 'Loading user info ...'
     }
 
-    if (!data.is_admin) {
-        return 'Not an admin ...'
-    }
+    if (data) {
+        if (!data.is_admin) {
+            return 'Not an admin ...'
+        }
+    } 
 
     return (
         <section className="mt-8">
@@ -119,7 +123,8 @@ export default function MenuItemsNewPage() {
                             <EditableImage link={ image } setLink={ setImage } setAvatarId={ setImageId } typeUpload={ 2 } /> 
                         </div>
                     </div>
-                    <Combobox name={ 'Category' } list={ category } setSelectedItem={ setSelectedItem } />
+                    <Combobox  
+                        isRequired={ true } name={ 'Category' } list={ category } setSelectedItem={ setSelectedItem } />
                     <div className="grow">
                         <label> Item name <span className="text-primary">(*) </span></label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
@@ -127,7 +132,7 @@ export default function MenuItemsNewPage() {
                         <QuillTextEditor onChange={handleEditorChange} value={description || ''} />
                         
                         <label> Base price <span className="text-primary">(*) </span> </label>
-                        <input type="number" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(ev.target.value)}  />
+                        <input type="number" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(Number(ev.target.value))}  />
 
                     </div>
 
@@ -136,7 +141,7 @@ export default function MenuItemsNewPage() {
                     <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={'Extras Ingredients'} buttonText={ 'Add new extras'}/>
 
                     <div>
-                        <Button type="submit"> Save </Button>
+                        <button type="submit"> Save </button>
                     </div> 
                 </div>
             </form>

@@ -1,19 +1,13 @@
+import { IMember } from "@/app/api/members"
 import { memberApi } from "@/app/api/members/member.api"
 import { useEffect, useState } from "react"
 
 export function useProfile() {
-    const [ data, setData ] = useState({})
+    const [ data, setData ] = useState<IMember>()
     const [ loading, setLoading ] = useState(true)
     
     useEffect(() => {
-        setLoading(true) 
-
-        // fetch('/api/profile').then(response => {
-        //     response.json().then(data => {
-        //         setData(data);
-        //         setLoading(false)
-        //     }) 
-        // })
+        setLoading(true)   
 
         const fetchData = async () => { 
             const { getProfile } = memberApi()

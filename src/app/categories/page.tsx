@@ -34,11 +34,14 @@ export default function Categories(): any {
         return "Loading user info ..."
     }  
 
-    if (!profileData.is_admin) {
-        return 'Not an admin';
+    if (profileData) {
+        if (!profileData.is_admin) {
+            return 'Not an admin';
+        }
     }
+   
 
-    async function handleDelete(ev: React.FormEvent<HTMLFormElement>, id: number) {
+    async function handleDelete(ev: React.MouseEvent<Element>, id: number) {
         ev.preventDefault()
 
         const confirmed = await swal({
@@ -59,14 +62,16 @@ export default function Categories(): any {
     
                 if (res.data.status === 200) {
                     fetchCategories(); 
-                    await toast.promise( {
+                    await toast.promise(Promise.resolve(), {
                         loading: 'Deleting ...',
                         success: 'Category deleted successfully',
+                        error:'',
                     }) 
-                } else {
-                    console.error(res.data.message);
+                } else { 
 
-                    await toast.promise( {
+                    await toast.promise(Promise.reject(res.data.message), {
+                        loading: ' ',
+                        success: ' ',
                         error: 'Error delete category!',
                     })
                    
@@ -87,11 +92,13 @@ export default function Categories(): any {
             const { create, update } = categoryApi() 
             
             let res:any = null;
-            if (editCategory?.id > 0) { 
+            if (editCategory && editCategory.id > 0) { 
                 res = await update({
                     id: editCategory.id,
-                    name: categoryName
-                })  
+                    name: categoryName,
+                    
+                })   
+            
                 
             } else {
                 res = await create({
@@ -103,9 +110,19 @@ export default function Categories(): any {
                 setCategoryName('')
                 fetchCategories();
                 setEditCategory({id: 0, name: ''});  // fix bug when edit xong se con luu lai va them moi vo tinh se edit
-                resolve()
+                await toast.promise(Promise.resolve(), {
+                    loading: editCategory?.id > 0 ?  'Updating category' : 'Creating your new category ...',
+                    error: 'Error while creating category!',
+                    success: '',
+                }) 
             }
-            else reject()  
+            else {
+                await toast.promise(Promise.reject(res.data.message), {
+                    loading:  '',
+                    error: '',
+                    success: editCategory?.id > 0 ? 'Congrats, Category updated succeed' : 'Congrats, Category created succeed!',
+                }) 
+            }
              
         })
  

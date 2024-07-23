@@ -400,3 +400,16 @@ và dúng cái ev.stopPropagation() để chăn cái event tác động len tren
   }
 
 # using leading-3 for down side the number of cart
+
+
+# ghi chu khi build
+khi gap mot tinh huong khó, khi build gap lỗi ko biết lỗi gì, 
+cố gắng tìm từ khoá trên mang, như useContext typescript, vd mình tìm ra bên duói nên sẽ có thể biet dc nó thiếu type và đinh nghia lai
+https://blog.logrocket.com/how-to-use-react-context-typescript/
+
+# dùng import '@nextui-org/react' se bi lỗi nên se ko dùng nhé
+@nextui-org/dropdown'
+
+id ko nen để ? vì build se có loi trong truong hop edit, can check edit.id? > 0 la sai
+async function handleDelete(ev: React.MouseEvent<Element>, id: number) // de mouse event
+ const { id } = useParams<{id: string}>() 

@@ -1,5 +1,5 @@
 import React from "react";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button, ButtonGroup} from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem  } from "@nextui-org/dropdown";
  
 export type IListItem = {
   id: number,
@@ -8,9 +8,9 @@ export type IListItem = {
 
 interface ComboboxProps {
   name: string,   // combobox name
-  list: IListItem[] | undefined,
+  list: IListItem[],
   setSelectedItem: React.Dispatch<React.SetStateAction<IListItem>>,
-  defaultItem: IListItem,
+  defaultItem?: IListItem,
   isRequired: boolean,
 }
 
@@ -34,10 +34,10 @@ const ComboBox: React.FC<ComboboxProps> = ({
   function handleSelectionChange(newSelectedKeys: Set<string>) {
     setSelectedKeys(newSelectedKeys)
 
-    const selectedItems = list?.filter((item) => newSelectedKeys.has(String(item.id)))
+    const selectedItems: any = list?.filter((item) => newSelectedKeys.has(String(item.id)))
 
     setSelectedItem(selectedItems[0]); 
-    return (selectedItems?.map((item) => item.name).join(", ") || "")
+    return (selectedItems?.map((item: any) => item.name).join(", ") || "")
   }
 
   const variants = ["Solid", "Bordered", "Light", "Flat", "Faded", "Shadow"]
@@ -46,9 +46,9 @@ const ComboBox: React.FC<ComboboxProps> = ({
 
   return (
     <>
-   <Button color="success">
+   <button type="button">
       Button
-    </Button>
+    </button>
 
 
       {
@@ -61,7 +61,7 @@ const ComboBox: React.FC<ComboboxProps> = ({
         >
         <DropdownTrigger>
           <div 
-            variant={ variant }
+            // variant={ variant }
             className="p-2 border rounded-md"
           >
             {selectedValue}
@@ -70,18 +70,17 @@ const ComboBox: React.FC<ComboboxProps> = ({
         <DropdownMenu 
           className="w-[300px] p-2 leading-[2em]  bg-gray-200 shadow-lg rounded-lg"
           aria-label=""
-          variant={ variant }
-          color={ color[3] }
+          // variant={ variant }
+          // color={ color[3] }
           disallowEmptySelection
           selectionMode="single"
           selectedKeys={selectedKeys}
           onSelectionChange={ handleSelectionChange }
         >
-          { list?.map( (item ) => {  
+          { list?.map( (item: any ) => {  
             return ( 
               <DropdownItem 
-                className="hover:text-white hover:font-semibold hover:cursor-pointer hover:bg-orange-300" 
-               //  startContent={<RightIcon className='w-8 h-8' /> }
+                className="hover:text-white hover:font-semibold hover:cursor-pointer hover:bg-orange-300"  
                 key={ item.id }
                 textValue={item.name}    
                 > { item.name } 

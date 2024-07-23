@@ -29,7 +29,7 @@ export function memberCartApi()
 
   const createInvoice = async(payload: string) => {
     return await commonAxios.post<AxiosResponseData>("/api/v1/invoices/create.json", {
-        ...payload,
+        payload,
     })
   }   
   

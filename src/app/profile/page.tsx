@@ -18,14 +18,15 @@ export default function ProfilePage() {
     
     const userEmail = session.data?.user?.email || ''; 
  
-    const [ userName, setUserName ] = useState('' as string | null | undefined )  
+    const [ userName, setUserName ] = useState<string>('')  
     const [ saved, setSaved ] = useState(false)
     const [ isSaving, setIsSaving ] = useState(false)
     const { status } = session
 
     const [ isAdmin, setIsAdmin ] = useState(false)
-    const [ image, setImage ] = useState();
+    const [ image, setImage ] = useState<string>('');
     const [ avatarId, setAvatarId ] = useState('');
+    const [ address, setAddress ] = useState<string>('')
     
 
     useEffect( () => {
@@ -51,7 +52,7 @@ export default function ProfilePage() {
                             setIsAdmin( isAdmin ) 
                             setImage( avatar )  
                         }  
-                    } catch(error) {
+                    } catch(error: any) {
                         toast.error(error.message)
                     } 
                 } 
@@ -72,47 +73,49 @@ export default function ProfilePage() {
     async function handleProfileInfoUpdate(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setSaved(false)
-        setIsSaving(true)  
-        
-        const savePromise = new Promise(async(resolve, reject) => { 
+        setIsSaving(true)   
 
-            try   {
-                // const session = await useSessionData()
-                const { update } =  memberApi(session) 
+        try   { 
+            const { update } =  memberApi() 
 
-                let res = null
-                if (avatarId) {
-                    res =  await update({
-                        name:      userName, 
-                        avatar_id: avatarId
-                    })   
-                } else {
-                    res =  await update({
-                        name:      userName,  
-                    })   
-                } 
+            let res = null
+            if (avatarId) {
+                res =  await update({
+                    name:      userName ?? '', 
+                    avatar_id: Number(avatarId) ?? null, 
+                })   
+            } else {
+                res =  await update({
+                    name:      userName ?? '',  
+                })   
+            } 
 
-                setIsSaving(false)  
- 
-                if (res?.status == 200 && res?.data?.status === 200) {
-                    setSaved(true)   
-                 
-                    session.data.user = res?.data?.params  
-                    resolve()  
-                    return router.push('/profile')   // nothing happen
-                }  else {
-                    reject(new Error(res?.data))
+            setIsSaving(false)  
+
+            if (res?.status == 200 && res?.data?.status === 200) {
+                setSaved(true)   
+                
+                if (session.data) {
+                    session.data.user = res.data.params  
                 }
-            } catch (error) {
-                reject(error)
+            
+                await toast.promise(Promise.resolve(), {
+                    loading: 'Saving ...',
+                    success: 'Profile is saved!',
+                    error: ' ',
+                })
+            
+                return router.push('/profile')   // nothing happen
+            }  else { 
+                await toast.promise(Promise.reject(res?.data.message), {
+                    loading: ' ',
+                    success: ' ',
+                    error: res?.data.message,
+                })
             }
-        })
-
-        await toast.promise(savePromise, {
-            loading: 'Saving ...',
-            success: 'Profile saved!',
-            error: 'Error',
-        })
+        } catch (error) {
+             
+        }  
     }  
 
     return ( 
@@ -131,11 +134,16 @@ export default function ProfilePage() {
                 
                 <div className="flex items-center gap-4 mt-2">
                     <div className="p-4 bg-gray-600 rounded-md">
-                        <EditableImage link={ image } setLink={ setImage } setAvatarId={ setAvatarId } typeUpload={ 1 } /> 
+                        <EditableImage 
+                            link={ image } 
+                            setLink={ setImage } 
+                            setAvatarId={ setAvatarId } 
+                            typeUpload={ 1 } /> 
                     </div>
                     <form className="grow" onSubmit={ handleProfileInfoUpdate }>
-                        <input type="text"  value= { userName }  onChange={ e => setUserName(e.target.value) }/>
+                        <input type="text"  value= { userName  }  onChange={ e => setUserName(e.target.value) }/>
                         <input type="email" disabled={ true }  value= { userEmail }  />
+                        <input type="text" value={ address } onChange={ e => setAddress(e.target.value) } />
                         <button type="submit"> Save </button>
                     </form>
                 </div>

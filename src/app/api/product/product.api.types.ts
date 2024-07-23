@@ -7,9 +7,11 @@ export type IProduct = {
     base_price: number,
     category_id: number,
     description: string,
+    product_sizes?: ISize[],
+    product_extras?: ISize[],
 }
  
-export type IGetProduct {
+export type IGetProduct = {
     id: string
 }
 

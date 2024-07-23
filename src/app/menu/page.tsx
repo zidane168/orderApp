@@ -28,13 +28,19 @@ export default function MenuPage() {
 
                     <div className="mt-8">
                         <div className="text-center">
-                            <SectionHeaders mainHeader={ item.name } subHeader={''}> </SectionHeaders>
+                            <SectionHeaders mainHeader={ item.name } subHeader={''} />
                         </div>
 
                         <div className="grid grid-cols-3 gap-4 mt-4">
                             {
                                 item.products.length > 0 && item.products.map( (p, index) => (
-                                    <MenuItem id={p.id} path={ p.image } name={ p.name } description={ p.description } basePrice={ p.base_price } />
+                                    <MenuItem 
+                                        id={p.id || 0} 
+                                        path={ p.image ?? '' } name={ p.name } 
+                                        description={ p.description } basePrice={ p.base_price }
+                                        
+                                        
+                                        />
                                 ))
                             }
                            

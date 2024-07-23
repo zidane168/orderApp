@@ -1,6 +1,5 @@
 import Link from "next/link"
-import DeleteIcon from "../icons/DeleteIcon"
-import { Button } from "@nextui-org/react"
+import DeleteIcon from "../icons/DeleteIcon" 
 import swal from 'sweetalert' 
 import toast from 'react-hot-toast' 
 import { productApi } from "@/app/api/product/product.api" 
@@ -17,7 +16,7 @@ interface IMenuItem {
     name: string,
     description: string, 
     basePrice: number, 
-    isAddToCart: boolean, 
+    isAddToCart?: boolean, 
     sizes?: IProductSize[],
     extras?: IProductExtra[],
 }
@@ -238,9 +237,9 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                         </div>
 
                         <div className="mt-2"> 
-                            <Button className="p-1 bg-white " onClick={ ev => handleDeleteProduct(ev) }>
+                            <button type="button" className="p-1 bg-white " onClick={ ev => handleDeleteProduct(ev) }>
                                 <DeleteIcon className="w-8 h-8"/>
-                            </Button>
+                            </button>
                         </div>
                    </div>
                 )} 

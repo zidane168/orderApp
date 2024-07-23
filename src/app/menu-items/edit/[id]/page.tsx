@@ -8,8 +8,7 @@ import { productApi } from "../../../api/product/product.api"
 import { ISize } from "../../../api/product"
 import Combobox, { IListItem } from "@/components/Combobox"
 import { categoryApi } from "../../../api/categories/category.api"
-import { ICategory } from "../../../api/categories"
-import { Button } from "@nextui-org/react"
+import { ICategory } from "../../../api/categories" 
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps" 
 import QuillTextEditor from '@/components/AppQuillTextEditor'
 import RightIcon from "@/components/icons/RightIcon"
@@ -20,15 +19,15 @@ import { useParams, useRouter } from "next/navigation"
 
 export default function MenuItemsEditPage() {
   
-    const { id } = useParams()
+    const { id } = useParams<{id: string}>() 
     const { push } = useRouter();
 
     const { loading, data } = useProfile()
-    const [ name, setName ] = useState()
+    const [ name, setName ] = useState<string>('')
     const [ description, setDescription ] = useState('')
-    const [ basePrice, setBasePrice ] = useState()
+    const [ basePrice, setBasePrice ] = useState<number>()
 
-    const [ categoryId, setCategoryId ] = useState<number>() 
+    const [ categoryId, setCategoryId ] = useState<number>(0) 
     const [ categoryName, setCategoryName ] = useState<string>('') 
     
     const [ image, setImage ] = useState<string>('') 
@@ -53,7 +52,7 @@ export default function MenuItemsEditPage() {
     async function fetchItem( ) {
         const { get } =  productApi();
         const res = await get({
-            id
+            id 
         });
         if (res.data.status === 200) {
             setName(res.data.params.name)
@@ -85,12 +84,12 @@ export default function MenuItemsEditPage() {
         try { 
             const { update } = productApi(); 
             const response = await update({
-                id: id, 
-                name: name,
+                id: Number(id), 
+                name: name ?? '',
                 description: description,
-                base_price: basePrice,
+                base_price: basePrice ?? 0,
                 category_id: selectedItem.id,
-                image_id: imageId, 
+                image_id: Number(imageId),
                 product_sizes: sizes,
                 product_extras: extras,
             }) 
@@ -99,6 +98,7 @@ export default function MenuItemsEditPage() {
                 await toast.promise(Promise.resolve(), {
                     success: 'Data is update',
                     loading: 'Saving',
+                    error: '',
                 })
 
                 // redirect to menu-items page
@@ -106,6 +106,8 @@ export default function MenuItemsEditPage() {
                 
             } else { 
                 await toast.promise(Promise.reject(response.data.message), {
+                    success: ' ',
+                    loading: ' ',
                     error: response.data.message
                 })
             }  
@@ -118,9 +120,11 @@ export default function MenuItemsEditPage() {
         return 'Loading user info ...'
     }
 
-    if (!data.is_admin) {
-        return 'Not an admin ...'
-    }
+    if (data) {
+        if (!data.is_admin) {
+            return 'Not an admin ...'
+        }
+    } 
 
     return (
         <section className="mt-8">
@@ -143,7 +147,12 @@ export default function MenuItemsEditPage() {
                             <EditableImage link={ image } setLink={ setImage } setAvatarId={ setImageId } typeUpload={ 2 } /> 
                         </div>
                     </div>
-                    <Combobox name={ 'Category' } list={ category } setSelectedItem={ setSelectedItem } defaultItem={ {'id': categoryId, 'name':categoryName} } />
+                    <Combobox 
+                        isRequired={ true} 
+                        name={ 'Category' } 
+                        list={ category ?? [] } 
+                        setSelectedItem={ setSelectedItem } 
+                        defaultItem={ {id: categoryId, 'name':categoryName} } />
                     <div className="grow">
                         <label> Item name </label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
@@ -151,7 +160,7 @@ export default function MenuItemsEditPage() {
                         <QuillTextEditor onChange={handleEditorChange} value={description || ''} />
                         
                         <label> Base price </label>
-                        <input type="number"  step="0.01" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(ev.target.value)}  />
+                        <input type="number"  step="0.01" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(Number(ev.target.value))}  />
 
                     </div>
 
@@ -160,7 +169,7 @@ export default function MenuItemsEditPage() {
                     <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={'Extras Ingredients'} buttonText={ 'Add new extras'}/>
 
                     <div>
-                        <Button type="submit"> Save </Button>
+                        <button type="submit"> Save </button>
                     </div> 
                 </div>
             </form>

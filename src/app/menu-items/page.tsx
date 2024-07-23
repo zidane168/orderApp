@@ -32,7 +32,7 @@ export default function MenuItemsPage() {
         return 'Loading user info ...'
     }
 
-    if (!data.is_admin) {
+    if (data && !data.is_admin) {
         return 'Not an admin ...'
     }
 
@@ -53,9 +53,9 @@ export default function MenuItemsPage() {
 
             <div className="grid grid-cols-3 gap-4 my-4">
             {
-                products?.length > 0 && products.map( (product, index) => (
+                products && products?.length > 0 && products.map( (product, index) => (
                     <MenuItem  
-                        key={ index }  id={ product.id } path={ product.path }  name={ product.name } description={ product.description } basePrice={ product.base_price } isAddToCart={ false }/>
+                        key={ index }  id={ product.id } path={ product.path ?? ''}  name={ product.name } description={ product.description ?? '' } basePrice={ product.base_price ?? 0} isAddToCart={ false }/>
                 ))
             }
             </div>
