@@ -49,7 +49,7 @@ function Header() {
     var session = react_1.useSession();
     var status = session.status;
     var _a = react_2.useState(''), firstName = _a[0], setFirstName = _a[1];
-    var cartProducts = react_2.useContext(AppContext_1.CartContext).cartProducts;
+    var _b = react_2.useContext(AppContext_1.CartContext), cartProducts = _b.cartProducts, showCarts = _b.showCarts;
     react_2.useEffect(function () {
         var fetchData = function () { return __awaiter(_this, void 0, void 0, function () {
             var session_1, getProfile, res, userData, userName, error_1;
@@ -57,31 +57,33 @@ function Header() {
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 4, , 5]);
-                        return [4 /*yield*/, useSessionData_1.useSessionData()]; // must use await this for make asynchoronous and useSessionData is get from a hook 
+                        _b.trys.push([0, 5, , 6]);
+                        return [4 /*yield*/, useSessionData_1.useSessionData()]; // must use await this for make asynchronous and useSessionData is get from a hook 
                     case 1:
-                        session_1 = _b.sent() // must use await this for make asynchoronous and useSessionData is get from a hook 
+                        session_1 = _b.sent() // must use await this for make asynchronous and useSessionData is get from a hook 
                         ;
-                        if (!session_1) return [3 /*break*/, 3];
+                        if (!session_1) return [3 /*break*/, 4];
                         getProfile = member_api_1.memberApi().getProfile;
                         return [4 /*yield*/, getProfile()];
                     case 2:
                         res = _b.sent();
-                        if ((res === null || res === void 0 ? void 0 : res.status) === 200 && ((_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.status) === 200) {
-                            userData = res.data.params;
-                            userName = (userData === null || userData === void 0 ? void 0 : userData.name) || (userData === null || userData === void 0 ? void 0 : userData.email);
-                            session_1.user = userData;
-                            if (userName) {
-                                setFirstName(userName.split(' ')[0]);
-                            }
+                        if (!((res === null || res === void 0 ? void 0 : res.status) === 200 && ((_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.status) === 200)) return [3 /*break*/, 4];
+                        return [4 /*yield*/, showCarts()];
+                    case 3:
+                        _b.sent();
+                        userData = res.data.params;
+                        userName = (userData === null || userData === void 0 ? void 0 : userData.name) || (userData === null || userData === void 0 ? void 0 : userData.email);
+                        session_1.user = userData;
+                        if (userName) {
+                            setFirstName(userName.split(' ')[0]);
                         }
-                        _b.label = 3;
-                    case 3: return [3 /*break*/, 5];
-                    case 4:
+                        _b.label = 4;
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
                         error_1 = _b.sent();
                         console.error('Error fetching profile:', error_1);
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
                 }
             });
         }); };

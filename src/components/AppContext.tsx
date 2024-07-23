@@ -27,7 +27,11 @@ export function AppProvider({ children } : {children : ReactNode}) {
                 product_extra_ids:  product_extra_ids
             }) 
             if (res.data.status === 200) { 
-                setCartProducts(res.data.params)
+                const currentProduct = res.data.status
+                setCartProducts(previousProduct => {
+                    return  [...previousProduct, currentProduct]
+                })
+                console.log(cartProducts)
                 toast.success( res.data.message); 
 
             } else { 
@@ -55,9 +59,7 @@ export function AppProvider({ children } : {children : ReactNode}) {
         })
 
         const { removeCart } = memberCartApi()
-        const res = await removeCart({
-            idNeedToRemove
-        });
+        const res = await removeCart( idNeedToRemove );
 
         if (res.data.status === 200) {
             toast.success(res.data.message)

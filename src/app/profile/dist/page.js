@@ -63,20 +63,23 @@ function ProfilePage() {
     var _h = react_2.useState(''), avatarId = _h[0], setAvatarId = _h[1];
     react_2.useEffect(function () {
         var fetchData = function () { return __awaiter(_this, void 0, void 0, function () {
-            var session_1, getProfile, res, userData, userName_1, isAdmin_1, avatar;
+            var session_1, getProfile, res, userData, userName_1, isAdmin_1, avatar, error_1;
             var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        if (!(status === 'authenticated')) return [3 /*break*/, 3];
+                        if (!(status === 'authenticated')) return [3 /*break*/, 5];
                         return [4 /*yield*/, useSessionData_1.useSessionData()]; // must use await this for make asynchoronous and useSessionData is get from a hook 
                     case 1:
                         session_1 = _b.sent() // must use await this for make asynchoronous and useSessionData is get from a hook 
                         ;
-                        if (!session_1) return [3 /*break*/, 3];
+                        if (!session_1) return [3 /*break*/, 5];
+                        _b.label = 2;
+                    case 2:
+                        _b.trys.push([2, 4, , 5]);
                         getProfile = member_api_1.memberApi().getProfile;
                         return [4 /*yield*/, getProfile()];
-                    case 2:
+                    case 3:
                         res = _b.sent();
                         if ((res === null || res === void 0 ? void 0 : res.status) === 200 && ((_a = res === null || res === void 0 ? void 0 : res.data) === null || _a === void 0 ? void 0 : _a.status) === 200) {
                             userData = res.data.params;
@@ -88,8 +91,12 @@ function ProfilePage() {
                             setIsAdmin(isAdmin_1);
                             setImage(avatar);
                         }
-                        _b.label = 3;
-                    case 3: return [2 /*return*/];
+                        return [3 /*break*/, 5];
+                    case 4:
+                        error_1 = _b.sent();
+                        react_hot_toast_1["default"].error(error_1.message);
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         }); };
@@ -112,7 +119,7 @@ function ProfilePage() {
                         setSaved(false);
                         setIsSaving(true);
                         savePromise = new Promise(function (resolve, reject) { return __awaiter(_this, void 0, void 0, function () {
-                            var update, res, error_1;
+                            var update, res, error_2;
                             var _a, _b;
                             return __generator(this, function (_c) {
                                 switch (_c.label) {
@@ -147,8 +154,8 @@ function ProfilePage() {
                                         }
                                         return [3 /*break*/, 6];
                                     case 5:
-                                        error_1 = _c.sent();
-                                        reject(error_1);
+                                        error_2 = _c.sent();
+                                        reject(error_2);
                                         return [3 /*break*/, 6];
                                     case 6: return [2 /*return*/];
                                 }

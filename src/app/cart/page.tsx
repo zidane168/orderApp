@@ -1,18 +1,15 @@
 'use client';
-import { useContext, useEffect, useState } from "react"
-import { categoryApi } from "../api/categories/category.api"
-import SectionHeaders from "@/components/layout/SectionHeaders";
-import { ICategoryAndProducts } from "../api/product";
-import MenuItem from "@/components/menu/MenuItem"; 
+import { useContext, useEffect, useState } from "react" 
+import SectionHeaders from "@/components/layout/SectionHeaders"; 
 import { CartContext } from "@/components/AppContext";
 import Image from "next/image";
 import DeleteIcon from "@/components/icons/DeleteIcon";
 import { Button } from "@nextui-org/react";
+import { ICartItem } from "../api/member-carts";
 
 export default function CartPage() {
-
-    const { cartProducts } = useContext(CartContext);
-    const { showCarts, removeCart } = useContext(CartContext)
+ 
+    const { showCarts, removeCart, cartProducts } = useContext(CartContext)
 
     useEffect(() => {
         fetchCartItems()
@@ -20,6 +17,10 @@ export default function CartPage() {
 
     async function fetchCartItems() {
         await showCarts();
+    }
+
+    async function handleRemoveCartItem(id: number) {
+        await removeCart(id)
     }
  
    return (
@@ -30,16 +31,16 @@ export default function CartPage() {
             
             <h1> Checkout </h1>
             <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div> 
                     {
                         cartProducts?.length === 0 && (
                             <div className=""> No products in your shopping cart </div>
                         )
                     }
-                    { cartProducts?.length > 0 && cartProducts.map(cart => (
+                    { cartProducts?.length > 0 && cartProducts.map( (cart:ICartItem, _) => (
                         <div key={ cart.id } className="flex items-center gap-4 py-4 mb-4 border-b">
                             <div className="w-24"> 
-                                <Image src={ cart.product.image } width={240} height={240} alt={ cart.product.name} />
+                                <Image src={ cart.product?.image } width={240} height={240} alt={ cart.product?.name} />
                             </div>
                             <div className="grow">
                                 <h3 className="font-semibold">
@@ -56,9 +57,9 @@ export default function CartPage() {
                                 {
                                     cart.product_extra?.length > 0 && (
                                         <div className="text-sm text-gray-500"> 
-                                            <ul>
+                                            <ul >
                                             { cart.product_extra.map( extra => (
-                                                <li> { extra.name } ${extra.price}</li>
+                                                <li key={ extra.id }> { extra.name } ${extra.price}</li>
                                             )) }
                                             </ul>
                                         </div>
@@ -71,7 +72,7 @@ export default function CartPage() {
 
                             <div>
                                 <Button
-                                    onClick={ () => handleRemoveCartItem() }
+                                    onClick={ () => handleRemoveCartItem(cart.id) }
                                     > 
                                     <DeleteIcon className="w-6 h-6"/> 
                                 </Button>

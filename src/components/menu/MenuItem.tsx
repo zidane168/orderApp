@@ -79,15 +79,12 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
         } 
    
         let newSelectedExtras:number[] = [];
-        selectedExtras.map((index, value) =>(
+        selectedExtras.map((index, value) => (
             newSelectedExtras.push(index.id)
         )) 
 
-        const memberTempCart = {product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras};
-
-        console.log(memberTempCart)
-        addToCart(  {product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras} );
-       
+        //const memberTempCart = {product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras};  
+        addToCart(  {product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras} ); 
         setShowPopup(false) 
     }
 
@@ -160,7 +157,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                     <div className="p-2 mt-4 bg-gray-300 rounded-md">
                                         <h3> Any Extras? </h3>
                                         { /* This line is show debug state */ } 
-                                        {   JSON.stringify(selectedExtras)    } 
+                                        { /*  JSON.stringify(selectedExtras) */ } 
                                         { extras?.map (extra => (
                                             <label className="block p-2 py-2 mb-1 border rounded-md" key={ extra.id }> 
                                                 <input

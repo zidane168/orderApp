@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast  from 'react-hot-toast';
 import { memberApi } from "../api/members/member.api";
-import EditableImage from "@/components/EditableImage";  
+import EditableImage from "@/components/EditableImage";   
 
 import { useRouter } from 'next/navigation';
 import { useSessionData } from '@/customHook/useSessionData'
@@ -35,21 +35,25 @@ export default function ProfilePage() {
                 const session = await useSessionData()      // must use await this for make asynchoronous and useSessionData is get from a hook 
                 if (session) { 
                 
-                    const { getProfile } = memberApi();
-                    const res = await getProfile();  
-
-                    if (res?.status === 200 && res?.data?.status === 200) {
-                        const userData = res.data.params; 
-                        session.user = userData 
-
-                        const userName = userData?.name || userData?.email; 
-                        const isAdmin = userData.is_admin  
-                        const avatar = userData.avatar
-
-                        setUserName( userName )
-                        setIsAdmin( isAdmin ) 
-                        setImage( avatar )  
-                    }  
+                    try {
+                        const { getProfile } = memberApi();
+                        const res = await getProfile();  
+    
+                        if (res?.status === 200 && res?.data?.status === 200) {
+                            const userData = res.data.params; 
+                            session.user = userData 
+    
+                            const userName = userData?.name || userData?.email; 
+                            const isAdmin = userData.is_admin  
+                            const avatar = userData.avatar
+    
+                            setUserName( userName )
+                            setIsAdmin( isAdmin ) 
+                            setImage( avatar )  
+                        }  
+                    } catch(error) {
+                        toast.error(error.message)
+                    } 
                 } 
             }
         }

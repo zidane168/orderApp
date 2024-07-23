@@ -14,18 +14,21 @@ export default function Header() {
     const status = session.status 
 
     const [ firstName, setFirstName ] = useState('')  
-    const { cartProducts } = useContext(CartContext)
+    const { cartProducts, showCarts } = useContext(CartContext)
 
     useEffect(() => {  
         const fetchData = async () => {
             try {
-                const session = await useSessionData()      // must use await this for make asynchoronous and useSessionData is get from a hook 
+                const session = await useSessionData()      // must use await this for make asynchronous and useSessionData is get from a hook 
               
                 if (session) {  
                     const { getProfile } = memberApi();
                     const res = await getProfile();  
 
                     if (res?.status === 200 && res?.data?.status === 200) {
+
+                        await showCarts();
+                        
                         const userData = res.data.params;
                         const userName = userData?.name || userData?.email; 
                         session.user = userData
