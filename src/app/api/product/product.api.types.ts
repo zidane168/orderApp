@@ -7,12 +7,38 @@ export type IProduct = {
     base_price: number,
     category_id: number,
     description: string,
-    product_sizes?: ISize[],
-    product_extras?: ISize[],
+    product_sizes?: IProductSize[],
+    product_extras?: IProductExtra[],
 }
+
+export type IUpdateProduct = {
+    id?: number
+    name: string,
+    quantity?: number,
+    image_id: number,
+    image?: string, 
+    base_price: number,
+    category_id: number,
+    description: string,
+    product_sizes?: ISize[],
+    product_extras?: IExtra[],
+}
+
+export type ICreateProduct = { 
+    name: string,
+    quantity?: number,
+    image_id: number,
+    image?: string, 
+    base_price: number,
+    category_id: number,
+    description: string,
+    product_sizes?: ISize[],
+    product_extras?: IExtra[],
+} 
+
  
 export type IGetProduct = {
-    id: string
+    id: number
 }
 
 export type IFile = {
@@ -21,6 +47,11 @@ export type IFile = {
 }
 
 export type ISize = {
+    name: string, 
+    price: number,
+} 
+
+export type IExtra = {
     name: string, 
     price: number,
 } 

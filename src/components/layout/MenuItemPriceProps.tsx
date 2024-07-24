@@ -31,11 +31,15 @@ export default function MenuItemPriceProps({ props, setProps, buttonText, labelT
     }
 
     // ------- LOGIC EDIT SIZE 
-    async function editSize(ev, index, prop = 'name') {
-        const newValue  = ev.target.value 
+    async function editSize(ev: React.ChangeEvent<HTMLInputElement>, index: number, prop: string = 'name') {
+        const newValue:string  = ev.target.value 
         setProps(prevSizes => {
-            const newSizes = [...prevSizes]
-            newSizes[index][prop] = newValue
+            const newSizes:ISize[] = [...prevSizes]
+            // newSizes[index][prop] = newValue
+            newSizes[index] = {
+                ...newSizes[index],
+                [prop]: newValue
+            }
             return newSizes;
         })
     }

@@ -1,8 +1,7 @@
 'use client'
 import { useProfile } from "@/components/UseProfile"
-import UserTabs from "@/components/layout/Tabs"
-import Log from "@/utils/log";
-import { ReactHTMLElement, useEffect, useState } from "react"
+import UserTabs from "@/components/layout/Tabs" 
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast";
 import { categoryApi } from "../api/categories/category.api";
 import { ICategory } from "../api/categories/category.api.types"; 

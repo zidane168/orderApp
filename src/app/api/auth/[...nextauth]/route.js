@@ -1,9 +1,7 @@
 
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
-import GoogleProvider from "next-auth/providers/google";
-import { MongoDBAdapter } from "@auth/mongodb-adapter"
-import clientPromise from '@/libs/mongoConnect' 
+import GoogleProvider from "next-auth/providers/google"; 
 import { memberApi } from '../../members/member.api';  
 
 const authOptions = 
@@ -87,7 +85,7 @@ const authOptions =
             return Promise.resolve(token);
         },
 
-        async session({ session, token }) {   
+        async session({ session, token } ) {   
             session.user = token.user_info.user_data;    
             return Promise.resolve(session);
         },

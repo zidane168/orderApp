@@ -33,16 +33,14 @@ export const formatFormData = (data: Object) => {
 commonAxios.interceptors.request.use(
   async (req) => {
 
-    const session = await useSessionData()
+    const session: any = await useSessionData()
     if (session && session?.user?.token) {
       req.headers.Authorization = `Bearer ${session?.user?.token}`;
     }
  
     if (req.data?.isFile) { 
       req.headers["Content-Type"] = 'multipart/form-data'; 
-    }
-
-    console.log( req.method)
+    } 
 
     switch ((req.method as string).toUpperCase()) {
       case "GET": {

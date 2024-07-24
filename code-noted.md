@@ -407,9 +407,37 @@ khi gap mot tinh huong khó, khi build gap lỗi ko biết lỗi gì,
 cố gắng tìm từ khoá trên mang, như useContext typescript, vd mình tìm ra bên duói nên sẽ có thể biet dc nó thiếu type và đinh nghia lai
 https://blog.logrocket.com/how-to-use-react-context-typescript/
 
-# dùng import '@nextui-org/react' se bi lỗi nên se ko dùng nhé
-@nextui-org/dropdown'
+# KINH NGHIEM BUILD: yarn build 
+- trong moi truong hop bug, nên tim tren google voi từ khoá, trang chủ cúa chinh libray đó voi typescript, vì build typescript hay bi loi do cú pháp, thieu khai báo, ko chặt chẽ trong viec dùng biến
 
-id ko nen để ? vì build se có loi trong truong hop edit, can check edit.id? > 0 la sai
-async function handleDelete(ev: React.MouseEvent<Element>, id: number) // de mouse event
- const { id } = useParams<{id: string}>() 
+- dùng import '@nextui-org/react' se bi lỗi nên se ko dùng nhé
+- @nextui-org/dropdown'
+
+- id ko nen để ? vì build se có loi trong truong hop edit, can check edit.id? > 0 la sai
+- async function handleDelete(ev: React.MouseEvent<Element>, id: number)  
+- async function handleExtraThingChecked(ev: React.FormEvent<HTMLFormElement>, id: number)  
+- const { id } = useParams<{id: string}>() 
+
+- Tuyệt chiêu: báo null null, thì lồng cái điều kiện check có trước khi su dung
+if (uploadPromise) {
+  await toast.promise(uploadPromise, {
+      loading: 'Uploading ...',
+      success: 'Upload complete',
+      error: message,
+  }) 
+} 
+- Tuyệt chieu document is not define, do đang là server side rendering, nhưng control Quill dùng client side nên phải sua lai
+const DynamicComponentWithNoSSR = dynamic(  // phai dung kieu nay de client side rendering
+    () => import('./home'),
+    { ssr: false }
+)
+
+export default function AppQuillTextEditor2( {value, setValue} : IQuill ) { 
+    return (
+        <div>
+            {/* <ReactQuill theme="snow" value={value} onChange={setValue} formats={formats} modules={ modules } />  */}
+          
+            <DynamicComponentWithNoSSR value={ value } setValue={ setValue } /> 
+        </div>
+    )
+}

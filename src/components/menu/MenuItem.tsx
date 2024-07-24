@@ -6,10 +6,11 @@ import { productApi } from "@/app/api/product/product.api"
 import { useRouter } from "next/navigation"
 import { IProductExtra, IProductSize } from "@/app/api/product"
 import { useContext, useState } from "react"
-import { CartContext } from "../AppContext"
+import { CardContextType, CartContext } from "../AppContext"
 import Image from "next/image"
 import ShoppingCartIcon from "../icons/ShoppingCartIcon"
-import FlyingButton from 'react-flying-item';
+import FlyingButton from "react-flying-item"
+
 interface IMenuItem {
     id: number,
     path: string, 
@@ -28,14 +29,14 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
     const [ showPopup, setShowPopup ] = useState<boolean>(false);
     
     const [ selectedSize, setSelectedSize ] = useState<IProductSize>(
-        sizes?.length > 0 ?   
+        sizes && sizes.length > 0 ?   
             { id: sizes[0].id, name: sizes[0].name, price: sizes[0].price } : 
             { id: 0, name: '', price: 0 }
         );  // init first sizes value
     const [ selectedExtras, setSelectedExtras ] = useState<IProductExtra[]>([]);
 
     const router = useRouter();
-    async function handleDeleteProduct(ev: React.ChangeEvent<HTMLFormElement>) {
+    async function handleDeleteProduct(ev: React.MouseEvent<Element>) {
         ev.preventDefault()
 
         const confirmed = await swal({
@@ -57,22 +58,25 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                 await toast.promise(Promise.resolve(), {
                     loading: 'Deleting ...',
                     success: res.data.message,
+                    error: '',
                 })
                 window.location.reload()
               
             } else {
                 await toast.promise(Promise.reject(res.data.message), {
-                    error: res.data.messsage
+                    loading: ' ',
+                    success: '',
+                    error: res.data.message
                 }) 
             }
         }
     }
 
-    const { addToCart } = useContext(CartContext)
+    const { addToCart } = useContext(CartContext) as CardContextType
 
     function handleAddToCartButtonClick() { 
 
-        const hasOptions = sizes?.length > 0 && extras?.length > 0
+        const hasOptions = sizes && sizes.length > 0 && extras && extras.length > 0
         if (hasOptions && !showPopup) {
             setShowPopup(true)
             return
@@ -88,9 +92,8 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
         setShowPopup(false) 
     }
 
-    function handleExtraThingClick(ev: React.FormEvent<HTMLFormElement>, extraThing: IProductExtra) {
-
-        console.log('click into extras')
+    function handleExtraThingClick(ev: React.ChangeEvent<HTMLInputElement>, extraThing: IProductExtra) {
+ 
         const checkbox = ev.target as HTMLInputElement
         const checked = checkbox.checked;
         if (checked) {
@@ -137,7 +140,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                 <div className="mb-2 text-sm text-justify leading-[20px] text-gray-500" dangerouslySetInnerHTML={{ __html: description }} />
                                 
                                
-                                { sizes?.length > 0 && (
+                                { sizes && sizes.length > 0 && (
                                     <div className="p-2 bg-gray-300 rounded-md">
                                         <h3> Pick your size </h3>
                                         { sizes?.map (size => (
@@ -152,7 +155,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                     </div>
                                 )}
 
-                                { extras?.length > 0 && (
+                                { extras && extras.length > 0 && (
                                     <div className="p-2 mt-4 bg-gray-300 rounded-md">
                                         <h3> Any Extras? </h3>
                                         { /* This line is show debug state */ } 
@@ -193,7 +196,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                  
                       
                 { isAddToCart === true && (  
-                    (extras?.length > 0) ?  
+                    (extras && extras.length > 0) ?  
                         <button 
                             className="px-6 py-2 mt-2 text-white rounded-full bg-primary"
                             onClick={ handleAddToCartButtonClick }

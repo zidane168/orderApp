@@ -1,4 +1,5 @@
-import { Component } from 'react';
+'use client';
+import { Component, useEffect, useState } from 'react';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './styles.css';
@@ -12,7 +13,8 @@ interface EditorState {
     editorHtml: string;
 }
 
-class Editor extends Component<EditorProps, EditorState> {
+class Editor extends Component<EditorProps, EditorState> { 
+
     static formats: string[];
     static modules: {
         toolbar: (
@@ -42,8 +44,10 @@ class Editor extends Component<EditorProps, EditorState> {
         this.setState({ editorHtml: html });
         this.props.onChange(html);
     }
+  
 
-    render() {
+    render() { 
+        
         return (
             <div  className='mb-[50px]'>
                 <div> </div>

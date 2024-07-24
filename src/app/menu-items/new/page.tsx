@@ -1,20 +1,19 @@
-'use client'
+'use client';
 import EditableImage from "@/components/EditableImage"
 import { useProfile } from "@/components/UseProfile"
 import UserTabs from "@/components/layout/Tabs"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { productApi } from "../../api/product/product.api"
-import { ISize } from "../../api/product"
+import { IExtra, ISize } from "../../api/product"
 import Combobox, { IListItem } from "@/components/Combobox"
 import { categoryApi } from "../../api/categories/category.api"
 import { ICategory } from "../../api/categories" 
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps" 
-import QuillTextEditor from '@/components/AppQuillTextEditor'
+import QuillTextEditor2 from '@/components/AppQuillTextEditor2'
 import RightIcon from "@/components/icons/RightIcon"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-
 
 // tao new thu muc cho duong dẫn menu-items/new/page.tsx
 
@@ -23,14 +22,14 @@ export default function MenuItemsNewPage() {
     const { push } = useRouter();
     const { loading, data } = useProfile()
     const [ name, setName ] = useState<string>()
-    const [ description, setDescription ] = useState('')
+    const [ description, setDescription ] = useState<string>('')
     const [ basePrice, setBasePrice ] = useState<number>()
 
     const [ image, setImage ] = useState<string>('') 
     const [ imageId, setImageId ] = useState<string>('')
 
     const [ sizes, setSizes ] = useState<ISize[]>([]); 
-    const [ extras, setExtras ] = useState<ISize[]>([]); 
+    const [ extras, setExtras ] = useState<IExtra[]>([]); 
 
     const [ category, setCategories ] = useState<ICategory[]>();
     const [ selectedItem, setSelectedItem ] = useState<IListItem>({id: 0, name:'-- Please Select --'}); 
@@ -88,7 +87,7 @@ export default function MenuItemsNewPage() {
                 })
             }  
         } catch (error) {
-            // console.error('An unexpected error occurred: ', error)
+           
         }
     }
 
@@ -124,12 +123,13 @@ export default function MenuItemsNewPage() {
                         </div>
                     </div>
                     <Combobox  
-                        isRequired={ true } name={ 'Category' } list={ category } setSelectedItem={ setSelectedItem } />
+                        isRequired={ true } name={ 'Category' } list={ category ?? [] } setSelectedItem={ setSelectedItem } />
                     <div className="grow">
                         <label> Item name <span className="text-primary">(*) </span></label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
                         <label> Description <span className="text-primary">(*) </span> </label> 
-                        <QuillTextEditor onChange={handleEditorChange} value={description || ''} />
+                        {/* <QuillTextEditor onChange={handleEditorChange} value={description || ''} /> */}
+                        <QuillTextEditor2   value={description || ''} setValue={ setDescription } />
                         
                         <label> Base price <span className="text-primary">(*) </span> </label>
                         <input type="number" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(Number(ev.target.value))}  />
@@ -144,7 +144,7 @@ export default function MenuItemsNewPage() {
                         <button type="submit"> Save </button>
                     </div> 
                 </div>
-            </form>
+            </form> 
         </section>
     )
 }

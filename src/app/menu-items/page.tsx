@@ -7,11 +7,12 @@ import { ICategory } from "../api/categories"
 import RightIcon from "@/components/icons/RightIcon"
 import Link from "next/link"
 import MenuItem from "@/components/menu/MenuItem" 
+import { IProduct } from "../api/product"
 
 export default function MenuItemsPage() {
   
     const { loading, data } = useProfile()  
-    const [ products, setProducts ] = useState<ICategory[]>();  
+    const [ products, setProducts ] = useState<IProduct[]>();  
 
     useEffect(() => {     
         fetchProducts()
@@ -55,7 +56,7 @@ export default function MenuItemsPage() {
             {
                 products && products?.length > 0 && products.map( (product, index) => (
                     <MenuItem  
-                        key={ index }  id={ product.id } path={ product.path ?? ''}  name={ product.name } description={ product.description ?? '' } basePrice={ product.base_price ?? 0} isAddToCart={ false }/>
+                        key={ index }  id={ product.id } path={ product.image ?? ''}  name={ product.name } description={ product.description ?? '' } basePrice={ product.base_price ?? 0} isAddToCart={ false }/>
                 ))
             }
             </div>

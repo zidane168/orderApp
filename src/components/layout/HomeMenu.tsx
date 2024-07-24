@@ -5,10 +5,11 @@ import SectionHeaders from "./SectionHeaders";
 import { useEffect, useState } from "react";
 import { productApi } from "@/app/api/product/product.api";
 import toast from 'react-hot-toast'
+import { IProduct } from "@/app/api/product";
 
 export default function HomeMenu() {
 
-    const [ products, setProducts ] = useState([])
+    const [ products, setProducts ] = useState<IProduct[]>([])
     useEffect(() => {
         fetchProducts() 
     }, [])
@@ -22,6 +23,8 @@ export default function HomeMenu() {
             
             } else {
                 await toast.promise(Promise.reject(res.data.message), {
+                    loading: '',
+                    success: '',
                     error: res.data.message
                 }) 
             }
@@ -52,8 +55,8 @@ export default function HomeMenu() {
                         <MenuItem 
                             sizes={ product.product_sizes }
                             extras={ product.product_extras }
-                            key={ index } path={ product.path }  
-                            id={ product.id }
+                            key={ index } path={ product.image ?? '' }  
+                            id={ product.id ?? 0 }
                             name={ product.name } description={ product.description } basePrice={ product.base_price } />
                     ))
                 } 

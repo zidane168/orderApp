@@ -10,7 +10,7 @@ import Combobox, { IListItem } from "@/components/Combobox"
 import { categoryApi } from "../../../api/categories/category.api"
 import { ICategory } from "../../../api/categories" 
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps" 
-import QuillTextEditor from '@/components/AppQuillTextEditor'
+import QuillTextEditor2 from '@/components/AppQuillTextEditor2'
 import RightIcon from "@/components/icons/RightIcon"
 import Link from "next/link" 
 import { useParams, useRouter } from "next/navigation"
@@ -51,8 +51,9 @@ export default function MenuItemsEditPage() {
 
     async function fetchItem( ) {
         const { get } =  productApi();
+        let idNum: number = Number(id)
         const res = await get({
-            id 
+            id: idNum
         });
         if (res.data.status === 200) {
             setName(res.data.params.name)
@@ -157,7 +158,7 @@ export default function MenuItemsEditPage() {
                         <label> Item name </label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
                         <label> Description </label> 
-                        <QuillTextEditor onChange={handleEditorChange} value={description || ''} />
+                        <QuillTextEditor2 setValue={setDescription} value={description || ''} />
                         
                         <label> Base price </label>
                         <input type="number"  step="0.01" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(Number(ev.target.value))}  />

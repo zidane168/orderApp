@@ -19,13 +19,10 @@ export default function EditableImage( {link, setLink, setAvatarId, typeUpload =
       
         const files = ev.target.files;
         console.log(files)
-        if (files?.length > 0) {
+        if (files && files.length > 0) {
             
-            let message = "";  
- 
-            const session = await useSessionData()
-
-            let uploadPromise = null; 
+            let message = "";   
+            let uploadPromise: Promise<void> | null = null;
             if (typeUpload == 1) {
                 const { uploadImage2 } = memberApi( ) 
                 uploadPromise = uploadImage2(files[0]).then((result: any) => { 
@@ -51,11 +48,13 @@ export default function EditableImage( {link, setLink, setAvatarId, typeUpload =
                 }) 
             } 
                     
-            await toast.promise(uploadPromise, {
-                loading: 'Uploading ...',
-                success: 'Upload complete',
-                error: message,
-            }) 
+            if (uploadPromise) {
+                await toast.promise(uploadPromise, {
+                    loading: 'Uploading ...',
+                    success: 'Upload complete',
+                    error: message,
+                }) 
+            } 
         }  
      
     }

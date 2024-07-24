@@ -31,7 +31,7 @@ const ComboBox: React.FC<ComboboxProps> = ({
     return selectedItems?.map((item) => item.name).join(", ") || "";
   }, [selectedKeys, list]);
  
-  function handleSelectionChange(newSelectedKeys: Set<string>) {
+  function handleSelectionChange(newSelectedKeys: any) {  //Set<string>) {
     setSelectedKeys(newSelectedKeys)
 
     const selectedItems: any = list?.filter((item) => newSelectedKeys.has(String(item.id)))

@@ -1,6 +1,6 @@
 import commonAxios from "@/utils/axios/common.axios"; 
 import type { AxiosResponseData } from "@/utils/axios/axios.types"; 
-import { IProduct, IFile, IGetProduct } from "./product.api.types";
+import { IProduct, IFile, IGetProduct, IUpdateProduct, ICreateProduct } from "./product.api.types";
  
 export function productApi()  
 {    
@@ -12,13 +12,13 @@ export function productApi()
         return commonAxios.get<AxiosResponseData>("/api/v1/products/getAll.json")
     }
 
-    const create = (payload: IProduct) => {
+    const create = (payload: ICreateProduct) => {
         return commonAxios.post<AxiosResponseData>("/api/v1/products/create.json", {
             ...payload,
         });
     }
 
-    const update = (payload: IProduct) => {
+    const update = (payload: IUpdateProduct) => {
         return commonAxios.post<AxiosResponseData>("/api/v1/products/update.json", {
             ...payload,
         });

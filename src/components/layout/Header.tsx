@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useContext, useEffect, useState } from 'react' 
 import { memberApi } from "@/app/api/members/member.api"; 
 import { useSessionData } from '@/customHook/useSessionData'
-import { CartContext } from '../AppContext';
+import { CardContextType, CartContext } from '../AppContext';
 import ShoppingCartIcon from '../icons/ShoppingCartIcon';
 
 
@@ -14,7 +14,7 @@ export default function Header() {
     const status = session.status 
 
     const [ firstName, setFirstName ] = useState('')  
-    const { cartProducts, showCarts } = useContext(CartContext)
+    const { cartProducts, showCarts } = useContext(CartContext) as CardContextType
 
     useEffect(() => {  
         const fetchData = async () => {
