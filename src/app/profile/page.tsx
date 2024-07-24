@@ -47,10 +47,12 @@ export default function ProfilePage() {
                             const userName = userData?.name || userData?.email; 
                             const isAdmin = userData.is_admin  
                             const avatar = userData.avatar
+                            const street_address = userData.street_address
     
                             setUserName( userName )
                             setIsAdmin( isAdmin ) 
                             setImage( avatar )  
+                            setAddress( street_address )
                         }  
                     } catch(error: any) {
                         toast.error(error.message)
@@ -76,17 +78,18 @@ export default function ProfilePage() {
         setIsSaving(true)   
 
         try   { 
-            const { update } =  memberApi() 
-
+            const { update } =  memberApi()  
             let res = null
             if (avatarId) {
                 res =  await update({
                     name:      userName ?? '', 
                     avatar_id: Number(avatarId) ?? null, 
+                    street_address: address ?? '',
                 })   
             } else {
                 res =  await update({
                     name:      userName ?? '',  
+                    street_address: address ?? '',
                 })   
             } 
 
@@ -143,7 +146,9 @@ export default function ProfilePage() {
                     <form className="grow" onSubmit={ handleProfileInfoUpdate }>
                         <input type="text"  value= { userName  }  onChange={ e => setUserName(e.target.value) }/>
                         <input type="email" disabled={ true }  value= { userEmail }  />
-                        <input type="text" value={ address } onChange={ e => setAddress(e.target.value) } />
+                        <input type="text" 
+                            maxLength="100"
+                            value={ address } onChange={ e => setAddress(e.target.value) } />
                         <button type="submit"> Save </button>
                     </form>
                 </div>

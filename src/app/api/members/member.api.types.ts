@@ -14,6 +14,7 @@ export type IUpdateMember = {
   phone?: string,
   password?: string, 
   avatar_id?: number,
+  street_address: string,
 }
 
 
