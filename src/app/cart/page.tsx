@@ -18,6 +18,7 @@ export default function CartPage() {
     const [ country, setCountry ] = useState('')
     const [ postalCode, setPostalCode ] = useState('')
     const [ city, setCity ] = useState('') 
+    const [ quantities, setQuantities ] = useState<number[]>([])
 
     let total = 0;
     for (const product of cartProducts) {
@@ -44,6 +45,11 @@ export default function CartPage() {
         } 
     }
  
+    async function handleQuantityChange(ev: React.ChangeEvent<HTMLInputElement>, index: number) {
+        const newQuantities = [...quantities];
+        newQuantities[index] = Number(ev.target.value)
+        setQuantities(newQuantities)
+    }
 
     async function fetchCartItems() {
         await showCarts();
@@ -69,7 +75,7 @@ export default function CartPage() {
                     }
                     { cartProducts?.length > 0 && cartProducts.map( (cart:ICartItem, index) => (
                         <div key={ index } className="flex items-center gap-4 py-4 mb-4 border-b">
-                            <div className="w-24"> 
+                            <div className="w-24 grow"> 
                                 { 
                                     cart.product?.image ?  <Image src={ cart.product.image } width={240} height={240} alt={ cart.product?.name} />  : '' 
                                 }
@@ -97,6 +103,11 @@ export default function CartPage() {
                                         </div>
                                     ) 
                                 }
+                            </div>
+                            <div>
+                                <input type="number" className="font-semibold " 
+                                        value={ quantities?.[index] ? quantities[index] : cart?.product.quantity } 
+                                        onChange={ (e) => handleQuantityChange(e, index)} /> 
                             </div>
                             <div>
                                 <span className="font-semibold text-primary"> ${ cart?.total_price } </span>

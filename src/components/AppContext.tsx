@@ -35,9 +35,9 @@ export function AppProvider({ children } : {children : ReactNode}) {
             }) 
             if (res.data.status === 200) { 
                 const currentProduct: ICartItem = res.data.params
-                setCartProducts( (previousProduct) => {
-                    return  [...previousProduct, currentProduct] 
-                }) 
+
+                // xét và giải quyết truong hop tăng số lương
+                setCartProducts( res.data.params ) 
                 toast.success( res.data.message); 
 
             } else { 
