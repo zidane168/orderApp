@@ -1,6 +1,5 @@
 import Link from "next/link"; 
 import {  usePathname } from 'next/navigation'
-import Log from "../../utils/log";
 
 export default function UserTabs({ isAdmin } : { isAdmin: boolean }) {
     const path: string = usePathname()   
@@ -16,8 +15,4 @@ export default function UserTabs({ isAdmin } : { isAdmin: boolean }) {
             )}
         </div>
     )
-}
-
-function userPathname() {
-    throw new Error("Function not implemented.");
 }

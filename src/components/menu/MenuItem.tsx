@@ -74,21 +74,21 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
 
     const { addToCart } = useContext(CartContext) as CardContextType
 
-    function handleAddToCartButtonClick() { 
+    async function handleAddToCartButtonClick() { 
 
         const hasOptions = sizes && sizes.length > 0 && extras && extras.length > 0
         if (hasOptions && !showPopup) {
             setShowPopup(true)
             return
-        } 
+        }  
    
         let newSelectedExtras:number[] = [];
         selectedExtras.map((index, value) => (
             newSelectedExtras.push(index.id)
-        )) 
+        ))  
 
-        //const memberTempCart = {product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras};  
         addToCart(  {product_id: id, quantity: 1, product_size_id: selectedSize.id, product_extra_ids: newSelectedExtras} ); 
+        await new Promise(resolve => setTimeout(resolve, 1000)) // It then waits for a 1-second delay and call setShowPopup later
         setShowPopup(false) 
     }
 
@@ -117,7 +117,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
     } 
 
     return (
-        <>
+        <>  
             {
                 showPopup && (
                 <div 
