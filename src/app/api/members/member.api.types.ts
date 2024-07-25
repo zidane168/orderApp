@@ -6,7 +6,11 @@ export type IMember = {
   phone?: string,
   is_admin?: boolean,
   password: string,
-  type: number,     // 1: google, 2: credentials
+  type?: number,     // 1: google, 2: credentials
+  postal_code?: string,
+  country?: string,
+  city?: string,
+  street_address?: string,
 }
 
 export type IUpdateMember = {   

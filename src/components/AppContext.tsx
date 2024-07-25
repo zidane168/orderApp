@@ -83,9 +83,7 @@ export function AppProvider({ children } : {children : ReactNode}) {
             const { showCart } = memberCartApi();
             const res = await showCart();
 
-            if (res.data.status === 200) { 
-
-                console.log(res.data.params )
+            if (res.data.status === 200) {  
                 setCartProducts(res.data.params);
             }
 

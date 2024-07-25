@@ -186,7 +186,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                 </div>
                 )
             }
-            <div className="p-4 text-center transition-all bg-gray-200 rounded-lg hover:bg-white hover:cursor-pointer hover:shadow-2xl">
+            <div   className="p-4 text-center transition-all bg-gray-200 rounded-lg hover:bg-white hover:cursor-pointer hover:shadow-2xl">
                 <div className="text-center">
                     <img src={ path } alt="pizza" className="block mx-auto max-h-auto max-h-24" />
                 </div>
@@ -210,12 +210,12 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                             </div>
                         </button>
                         :  
-                        <div className="flying-button-parent"> 
+                        <div className="flying-button-parent"  onClick={ handleAddToCartButtonClick }> 
                             <FlyingButton  
                                 targetTop={'5%'}
                                 targetLeft={'80%'}
                                 src={ path }
-                                onClick={ handleAddToCartButtonClick }
+                               
                                 >    
                                 <div className="flex items-center gap-2 justify-evenly"> 
                                     <div className="flex">

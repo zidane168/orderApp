@@ -26,7 +26,7 @@ export default function MenuPage() {
             { 
                 items?.length > 0 && items.map( (item, index) => (
 
-                    <div className="mt-8">
+                    <div key={ index } className="mt-8">
                         <div className="text-center">
                             <SectionHeaders mainHeader={ item.name } subHeader={''} />
                         </div>
@@ -34,13 +34,16 @@ export default function MenuPage() {
                         <div className="grid grid-cols-3 gap-4 mt-4">
                             {
                                 item.products.length > 0 && item.products.map( (p, index) => (
-                                    <MenuItem 
-                                        id={p.id || 0} 
-                                        path={ p.image ?? '' } name={ p.name } 
-                                        description={ p.description } basePrice={ p.base_price }
-                                        
-                                        
+
+                                    <div key={ p.id }>
+                                        <MenuItem  
+                                            id={p.id} 
+                                            path={ p.image ?? '' } name={ p.name } 
+                                            description={ p.description } basePrice={ p.base_price }
+                                            sizes={ p.product_sizes }
+                                            extras={ p.product_extras }
                                         />
+                                    </div>
                                 ))
                             }
                            

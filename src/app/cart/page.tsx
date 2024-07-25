@@ -1,24 +1,49 @@
 'use client';
-import { useContext, useEffect } from "react" 
+import { useContext, useEffect, useState } from "react" 
 import SectionHeaders from "@/components/layout/SectionHeaders"; 
 import { CardContextType, CartContext } from "@/components/AppContext";
 import Image from "next/image";
 import DeleteIcon from "@/components/icons/DeleteIcon"; 
 
 import { ICartItem } from "@/app/api/member-carts"; 
+import { useProfile } from "@/components/UseProfile";
+import { IMember, memberApi } from "../api/members";
 
 export default function CartPage() {
  
     const {  showCarts, removeCart, cartProducts } = useContext(CartContext) as CardContextType
-    
+
+    const [ phone, setPhone ] = useState('') 
+    const [ streetAddress, setStreetAddress ] = useState('')
+    const [ country, setCountry ] = useState('')
+    const [ postalCode, setPostalCode ] = useState('')
+    const [ city, setCity ] = useState('') 
+
     let total = 0;
     for (const product of cartProducts) {
          total += Number(product.total_price)
     } 
 
     useEffect(() => {
-        fetchCartItems() 
+        fetchCartItems()  
+        fetchProfile();
     }, [])
+
+    async function fetchProfile() {
+ 
+        const { getProfile } = memberApi()
+        const res = await getProfile() 
+
+        if (res.data.status == 200) {
+            const profileData = (res.data.params);
+            setPhone(profileData.phone ?? '')
+            setStreetAddress(profileData.street_address ?? '')
+            setCountry(profileData.country ?? '')
+            setPostalCode(profileData.postal_code ?? '')  
+            setCity(profileData.city ?? '')
+        } 
+    }
+ 
 
     async function fetchCartItems() {
         await showCarts();
@@ -42,8 +67,8 @@ export default function CartPage() {
                             <div className=""> No products in your shopping cart </div>
                         )
                     }
-                    { cartProducts?.length > 0 && cartProducts.map( (cart:ICartItem, _) => (
-                        <div key={ cart.id } className="flex items-center gap-4 py-4 mb-4 border-b">
+                    { cartProducts?.length > 0 && cartProducts.map( (cart:ICartItem, index) => (
+                        <div key={ index } className="flex items-center gap-4 py-4 mb-4 border-b">
                             <div className="w-24"> 
                                 { 
                                     cart.product?.image ?  <Image src={ cart.product.image } width={240} height={240} alt={ cart.product?.name} />  : '' 
@@ -92,7 +117,36 @@ export default function CartPage() {
                         <span className="text-lg font-semibold"> ${total} </span>
                     </div>
                 </div>
-                <div className="p-2 bg-gray-300 rounded-lg"> right </div>
+                <div className="p-4 bg-gray-300 rounded-lg">  
+                    <div>
+                        <label> Phone </label>
+                        <input  readOnly={ true } type="text" value={ phone } onChange={ e => setPhone(e.target.value) }/>
+                    </div>
+                    <div>
+                        <label> Street address </label>
+                        <input  readOnly={ true } type="text" value={ streetAddress } onChange={ e => setStreetAddress(e.target.value) }/>
+                    </div>
+                    <div className="flex gap-2">
+                        <div >
+                            <label> Postal code </label>
+                            <input readOnly={ true } type="text" value={ postalCode }  onChange={ e => setPostalCode(e.target.value) }/>
+                        </div>
+                        <div className="grow">
+                            <label> City </label>
+                            <input  readOnly={ true } type="text" value={ city } onChange={ e => setCity(e.target.value) }/>
+                        </div>
+                    </div>
+                    <div>
+                        <label> Country </label>
+                        <input  readOnly={ true } type="text" value={ country } onChange={ e => setCountry(e.target.value) }/>
+                    </div>
+
+                   <button className=""
+                        type="submit">
+                            Pay ${total}
+                   </button>
+
+                </div>
             </div>
         </section>
    )

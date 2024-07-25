@@ -54,8 +54,8 @@ export default function MyComponent({ value, setValue } : IQuill) {
         <div>
             <ReactQuill theme="snow" value={value} onChange={setValue} formats={formats} modules={ modules } />  
           
-            <p>{value}</p>
-            {parse(value)}
+            {/* <p>{value}</p>
+            {parse(value)} */}
         </div>
     )
 }

@@ -146,8 +146,7 @@ export default function ProfilePage() {
                     <form className="grow" onSubmit={ handleProfileInfoUpdate }>
                         <input type="text"  value= { userName  }  onChange={ e => setUserName(e.target.value) }/>
                         <input type="email" disabled={ true }  value= { userEmail }  />
-                        <input type="text" 
-                            maxLength="100"
+                        <input type="text"  
                             value={ address } onChange={ e => setAddress(e.target.value) } />
                         <button type="submit"> Save </button>
                     </form>
