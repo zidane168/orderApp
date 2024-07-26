@@ -12,7 +12,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 exports.__esModule = true;
-exports.capitalizeFirstLetterAllWords = exports.capitalizeFirstLetter = exports.formatParagraph = exports.randomId = exports.isExpired = exports.gotoPage = exports.getNotifyTime = exports.getHourMinute = exports.getYYYYMMDD = exports.getDDMMYYYY = exports.sleep = exports.parseStyles = exports.formatFormData = exports.decodeHTML = exports.isNumber = exports.isEmpty = exports.isIOS = exports.isMobile = void 0;
+exports.formattedPrice = exports.capitalizeFirstLetterAllWords = exports.capitalizeFirstLetter = exports.formatParagraph = exports.randomId = exports.isExpired = exports.gotoPage = exports.getNotifyTime = exports.getHourMinute = exports.getYYYYMMDD = exports.getDDMMYYYY = exports.sleep = exports.parseStyles = exports.formatFormData = exports.decodeHTML = exports.isNumber = exports.isEmpty = exports.isIOS = exports.isMobile = void 0;
 var router_1 = require("next/router");
 exports.isMobile = function () {
     return (typeof window !== "undefined" &&
@@ -165,4 +165,10 @@ exports.capitalizeFirstLetterAllWords = function (input) {
         return exports.capitalizeFirstLetter(word);
     });
     return words.join(" ");
+};
+exports.formattedPrice = function (price) {
+    return price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    });
 };

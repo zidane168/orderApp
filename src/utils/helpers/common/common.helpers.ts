@@ -183,3 +183,10 @@ export const capitalizeFirstLetterAllWords = (input: string) => {
   });
   return words.join(" ");
 };
+
+export const formattedPrice = (price: number) : string => {
+  return price.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+};
