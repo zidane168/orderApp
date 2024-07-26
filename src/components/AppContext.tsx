@@ -12,6 +12,7 @@ export type CardContextType = {
     removeCart: (id: number) => void;
     showCarts: () => void;
     clearCart: () => void;
+    assignCartProducts: (cartItems: ICartItem[]) => void
   };
 
 export const CartContext = createContext<CardContextType | null>(null);
@@ -34,7 +35,7 @@ export function AppProvider({ children } : {children : ReactNode}) {
                 product_extra_ids:  product_extra_ids
             }) 
             if (res.data.status === 200) { 
-                const currentProduct: ICartItem = res.data.params
+                // const currentProduct: ICartItem = res.data.params
 
                 // xét và giải quyết truong hop tăng số lương
                 setCartProducts( res.data.params ) 
@@ -92,10 +93,14 @@ export function AppProvider({ children } : {children : ReactNode}) {
         }
     }
 
+    function assignCartProducts(cartItems: ICartItem[]) {
+        setCartProducts(cartItems);
+    }
+
     return (
         <SessionProvider> 
             <CartContext.Provider value={{
-                cartProducts,  addToCart, clearCart, showCarts, removeCart
+                cartProducts,  addToCart, clearCart, showCarts, removeCart, assignCartProducts
             }}>
                 { children }
             </CartContext.Provider> 

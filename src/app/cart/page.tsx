@@ -10,9 +10,27 @@ import { IMember, memberApi } from "../api/members";
 import toast from 'react-hot-toast';
 import { formattedPrice } from "@/utils/helpers/common";
 
+// ----------------------- ----------------------- FLOW cart page ----------------------- -----------------------
+// 1. Loaded first time => get cartProducts from appContext.tsx 
+//    -> const {  removeCart, cartProducts, assignCartProducts } = useContext(CartContext) as CardContextType
+// 2. Click into reduce, increase, input quantity
+//    -> it will call related state with index and will index we will show or hide the button-, button+
+//       const [ reduceButtonsStatus, setReduceButtonsStatus ] = useState<boolean[]>([]);
+//       const [ increaseButtonsStatus, setIncreaseButtonsStatus ] = useState<boolean[]>([]);
+//    ->   reduceButtonsStatus.length > 0 && reduceButtonsStatus[index]  && ( <button onClick={ e => handleReduce(index) }> - </button>  )
+//    -> when click inside button, it will trigger async function handleReduce(index: number) { ...}
+//      -> it will update related index state and update the cartProducts Content by assign it
+//      ->     useEffect(() => {
+//       fetchCartItems()  
+//        fetchProfile();
+//        handleUpdatePriceEachProductWithNumberFormatted()
+//    }, [cartProducts])
+// This effect will update the Total price when any cartProducts change 
+// -------------------- -------------------- --------------------  -----------------------  ----------------------
+
 export default function CartPage() {
  
-    const {  removeCart, cartProducts } = useContext(CartContext) as CardContextType
+    const {  removeCart, cartProducts, assignCartProducts } = useContext(CartContext) as CardContextType
 
     const [ phone, setPhone ] = useState('') 
     const [ streetAddress, setStreetAddress ] = useState('')
@@ -25,19 +43,12 @@ export default function CartPage() {
 
     const [ reduceButtonsStatus, setReduceButtonsStatus ] = useState<boolean[]>([]);
     const [ increaseButtonsStatus, setIncreaseButtonsStatus ] = useState<boolean[]>([]);
-    const [ totalFormatted, setTotalFormatted ] = useState<string>('')
-    
-
-    // let total: number = 0;
-    // for (const product of cartProducts) {
-    //     total += Number(product.total_price)
-    // } 
-    // let totalDisplay: string = formattedPrice(total)
+    const [ totalFormatted, setTotalFormatted ] = useState<string>('') 
 
     useEffect(() => {
         fetchCartItems()  
         fetchProfile();
-        handleUpdateTotalPriceWithNumberFormatted()
+        handleUpdatePriceEachProductWithNumberFormatted()
     }, [cartProducts])
 
     async function fetchProfile() {
@@ -63,15 +74,25 @@ export default function CartPage() {
        
         cartProducts.map( (cart, index) => {
             qty[index] = cart.product.quantity
-            increaseBtn[index] = true
-            reduceBtn[index] = true
+            if (qty[index] <= 1) {
+                reduceBtn[index] = false
+            } else{
+                reduceBtn[index] = true
+            }
+
+            if (qty[index] >= 30){
+                increaseBtn[index] = false;
+            } else {
+                increaseBtn[index] = true
+            } 
+            
         })
         setQuantities(qty);
         setReduceButtonsStatus(reduceBtn)
         setIncreaseButtonsStatus(increaseBtn) 
     }
 
-    function handleUpdateTotalPriceWithNumberFormatted() {
+    function handleUpdatePriceEachProductWithNumberFormatted() {
 
         let total: number = 0;
         for (const product of cartProducts) {
@@ -82,8 +103,13 @@ export default function CartPage() {
     }
 
     async function handleQuantityChange(ev: React.ChangeEvent<HTMLInputElement>, index: number) {
+        const value = Number(ev.target.value)
+        if (value > 30) {
+            toast.error('Max quantity each item is 30')
+            return;
+        }
         const newQuantities = [...quantities];
-        newQuantities[index] = Number(ev.target.value)
+        newQuantities[index] = value
         setQuantities(newQuantities)
 
         const newPrices = [...prices];
@@ -94,7 +120,9 @@ export default function CartPage() {
         // call api here to update server
         const { updateQuantity } = memberCartApi();
         const res = await updateQuantity({ member_temp_cart_id:  cartProducts[index].id, quantity: Number(ev.target.value)} )
-        handleUpdateTotalPriceWithNumberFormatted()
+        if (res.data.status === 200) {
+            assignCartProducts (res.data.params); 
+        } 
     }
 
     async function handlePayButtonClick() {
@@ -108,10 +136,12 @@ export default function CartPage() {
         await removeCart(id)
     }
  
-    function handleReduce(index: number) {  
+    async function handleReduce(index: number) {  
         console.log('reduce')
         const newQuantities = [...quantities];
- 
+        newQuantities[index]--;
+        setQuantities(newQuantities)  
+        
         setReduceButtonsStatus(prev => {  
             const status = [...reduceButtonsStatus]
             status[index] = true
@@ -129,16 +159,21 @@ export default function CartPage() {
                 status[index] = false
                 return status 
             }) 
-        } 
+        }   
         
-        newQuantities[index]--;
-        setQuantities(newQuantities) 
-        handleUpdateTotalPriceWithNumberFormatted()
+        // call api here to update server
+        const { updateQuantity } = memberCartApi();
+        const res = await updateQuantity({ member_temp_cart_id:  cartProducts[index].id, quantity: newQuantities[index]} )
+        if (res.data.status === 200) {
+            assignCartProducts (res.data.params);
+            // handleUpdatePriceEachProductWithNumberFormatted()
+        } 
     } 
-    function handleIncrease(index: number) {
+    async function handleIncrease(index: number) {
         console.log('increase')
         const newQuantities = [...quantities];
         newQuantities[index]++; 
+        setQuantities(newQuantities)  
 
         setReduceButtonsStatus(prev => {  
             const status = [...reduceButtonsStatus]
@@ -156,19 +191,20 @@ export default function CartPage() {
                 status[index] = false
                 return status 
             }) 
+        }   
+        
+        const { updateQuantity } = memberCartApi();
+        const res = await updateQuantity({ member_temp_cart_id:  cartProducts[index].id, quantity: newQuantities[index]} )
+        if (res.data.status === 200) {
+            assignCartProducts (res.data.params);
+          //  handleUpdatePriceEachProductWithNumberFormatted()
         } 
-
-        setQuantities(newQuantities)  
-        handleUpdateTotalPriceWithNumberFormatted()
     }
 
     return (
     
         <section className="mt-8">
-                { reduceButtonsStatus }
-                { increaseButtonsStatus  }
-                { quantities }
-                
+            
             <div className="text-center">
                 <SectionHeaders mainHeader="Cart"  />
             </div>
