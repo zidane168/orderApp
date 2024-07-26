@@ -19,3 +19,7 @@ export type IUpdateQuantity = {
     member_temp_cart_id: number, 
     quantity: number,
 }
+
+export type IInvoice = {
+    member_temp_cart_ids: number[], 
+}

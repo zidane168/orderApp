@@ -46,8 +46,12 @@ export default function CartPage() {
     const [ totalFormatted, setTotalFormatted ] = useState<string>('') 
 
     useEffect(() => {
-        fetchCartItems()  
         fetchProfile();
+    }, [])
+
+    useEffect(() => {
+        fetchCartItems()  
+      
         handleUpdatePriceEachProductWithNumberFormatted()
     }, [cartProducts])
 
@@ -126,10 +130,16 @@ export default function CartPage() {
     }
 
     async function handlePayButtonClick() {
-        console.log(' ------- ')
-        console.log(quantities)
-        console.log(cartProducts)
-        console.log(' ------- ')
+        const { createInvoice } = memberCartApi();
+
+        const ids: number[] = [];
+        cartProducts.map( (cart) => {
+            return ids.push(cart.id);
+        })
+        const res = await createInvoice({member_temp_cart_ids: ids});
+        if (res.data.status === 200) {
+            toast.success(res.data.message)
+        }
     }
 
     async function handleRemoveCartItem(id: number) {
@@ -165,8 +175,7 @@ export default function CartPage() {
         const { updateQuantity } = memberCartApi();
         const res = await updateQuantity({ member_temp_cart_id:  cartProducts[index].id, quantity: newQuantities[index]} )
         if (res.data.status === 200) {
-            assignCartProducts (res.data.params);
-            // handleUpdatePriceEachProductWithNumberFormatted()
+            assignCartProducts (res.data.params); 
         } 
     } 
     async function handleIncrease(index: number) {
@@ -196,8 +205,7 @@ export default function CartPage() {
         const { updateQuantity } = memberCartApi();
         const res = await updateQuantity({ member_temp_cart_id:  cartProducts[index].id, quantity: newQuantities[index]} )
         if (res.data.status === 200) {
-            assignCartProducts (res.data.params);
-          //  handleUpdatePriceEachProductWithNumberFormatted()
+            assignCartProducts (res.data.params); 
         } 
     }
 

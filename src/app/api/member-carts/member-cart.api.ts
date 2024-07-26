@@ -1,7 +1,7 @@
 import commonAxios from "@/utils/axios/common.axios";
 
 import type { AxiosResponseData } from "@/utils/axios/axios.types"; 
-import { IMemberTempCart, IUpdateQuantity} from "./member-cart.api.types";
+import { IMemberTempCart, IUpdateQuantity, IInvoice } from "./member-cart.api.types";
  
 export function memberCartApi()  
 {     
@@ -28,9 +28,9 @@ export function memberCartApi()
     return await commonAxios.get<AxiosResponseData>("/api/v1/memberTempCarts/showCart.json")
   }   
 
-  const createInvoice = async(payload: string) => {
+  const createInvoice = async(payload: IInvoice) => {
     return await commonAxios.post<AxiosResponseData>("/api/v1/invoices/create.json", {
-        payload,
+      member_temp_cart_ids: payload.member_temp_cart_ids,
     })
   }   
 
