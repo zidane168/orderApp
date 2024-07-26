@@ -1,10 +1,11 @@
 import commonAxios from "@/utils/axios/common.axios";
 
 import type { AxiosResponseData } from "@/utils/axios/axios.types"; 
-import { IMemberTempCart } from "./member-cart.api.types";
+import { IMemberTempCart, IUpdateQuantity} from "./member-cart.api.types";
  
 export function memberCartApi()  
 {     
+
   const addToCart = (payload: IMemberTempCart) => { 
     return commonAxios.post<AxiosResponseData>("/api/v1/memberTempCarts/addToCart.json", {
         ...payload
@@ -32,7 +33,14 @@ export function memberCartApi()
         payload,
     })
   }   
+
+  const updateQuantity = async(payload: IUpdateQuantity) => {
+    return await commonAxios.patch<AxiosResponseData>("/api/v1/memberTempCarts/updateQuantity.json", { 
+      member_temp_cart_id: payload.member_temp_cart_id,
+      quantity: payload.quantity, 
+    })
+  }
   
-  return { addToCart, showCart, createInvoice, clearCart, removeCart };
+  return { addToCart, showCart, createInvoice, clearCart, removeCart, updateQuantity };
 };
  

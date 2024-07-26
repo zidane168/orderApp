@@ -5,9 +5,9 @@ import { CardContextType, CartContext } from "@/components/AppContext";
 import Image from "next/image";
 import DeleteIcon from "@/components/icons/DeleteIcon"; 
 
-import { ICartItem } from "@/app/api/member-carts"; 
-import { useProfile } from "@/components/UseProfile";
+import { ICartItem, memberCartApi } from "@/app/api/member-carts";  
 import { IMember, memberApi } from "../api/members";
+import toast from 'react-hot-toast';
 
 export default function CartPage() {
  
@@ -18,7 +18,9 @@ export default function CartPage() {
     const [ country, setCountry ] = useState('')
     const [ postalCode, setPostalCode ] = useState('')
     const [ city, setCity ] = useState('') 
+
     const [ quantities, setQuantities ] = useState<number[]>([])
+    const [ prices, setPrices ] = useState<number[]>([])
 
     let total = 0;
     for (const product of cartProducts) {
@@ -45,14 +47,34 @@ export default function CartPage() {
         } 
     }
  
+    async function fetchCartItems() {
+        await showCarts();
+    }
+
+
     async function handleQuantityChange(ev: React.ChangeEvent<HTMLInputElement>, index: number) {
         const newQuantities = [...quantities];
         newQuantities[index] = Number(ev.target.value)
         setQuantities(newQuantities)
+
+        const newPrices = [...prices];
+        const onePrice = cartProducts[index].total_price / cartProducts[index].product.quantity 
+        newPrices[index] = newQuantities[index] * onePrice
+        setPrices(newPrices)
+
+        // call api here to update server
+        const { updateQuantity } = memberCartApi();
+        const res = await updateQuantity({ member_temp_cart_id:  cartProducts[index].id, quantity: Number(ev.target.value)} )
+        if (res.data.status !== 200) {
+            toast.error(res.data.message)
+        }
     }
 
-    async function fetchCartItems() {
-        await showCarts();
+    async function handlePayButtonClick() {
+        console.log(' ------- ')
+        console.log(quantities)
+        console.log(cartProducts)
+        console.log(' ------- ')
     }
 
     async function handleRemoveCartItem(id: number) {
@@ -66,69 +88,70 @@ export default function CartPage() {
             </div>
             
             <h1 className="text-2xl font-bold"> Checkout </h1>
-            <div className="grid grid-cols-2 gap-4">
-                <div> 
-                    {
-                        cartProducts?.length === 0 && (
-                            <div className=""> No products in your shopping cart </div>
-                        )
-                    }
-                    { cartProducts?.length > 0 && cartProducts.map( (cart:ICartItem, index) => (
-                        <div key={ index } className="flex items-center gap-4 py-4 mb-4 border-b">
-                            <div className="w-24 grow"> 
-                                { 
-                                    cart.product?.image ?  <Image src={ cart.product.image } width={240} height={240} alt={ cart.product?.name} />  : '' 
-                                }
-                            </div>
-                            <div className="grow">
-                                <h3 className="font-semibold">
-                                    { cart.product?.name }
-                                </h3> 
-                                {
-                                    cart.product_size && (
-                                        <div className="text-sm text-gray-700"> 
-                                            <div> Size: <span> { cart.product_size?.name } </span> </div>
-                                        </div>
-                                    )
-                                }
-
-                                {
-                                    cart.product_extra?.length > 0 && (
-                                        <div className="text-sm text-gray-500"> 
-                                            <ul >
-                                            { cart.product_extra?.map( extra => (
-                                                <li key={ extra.id }> { extra.name } ${extra.price}</li>
-                                            )) }
-                                            </ul>
-                                        </div>
-                                    ) 
-                                }
-                            </div>
-                            <div>
-                                <input type="number" className="font-semibold " 
-                                        value={ quantities?.[index] ? quantities[index] : cart?.product.quantity } 
-                                        onChange={ (e) => handleQuantityChange(e, index)} /> 
-                            </div>
-                            <div>
-                                <span className="font-semibold text-primary"> ${ cart?.total_price } </span>
-                            </div>
-
-                            <div>
-                                <button
-                                    type="button"
-                                    onClick={ () => handleRemoveCartItem(cart.id) }
-                                    > 
-                                    <DeleteIcon className="w-6 h-6"/> 
-                                </button>
-                            </div>
+         
+            <div> 
+                {
+                    cartProducts?.length === 0 && (
+                        <div className=""> No products in your shopping cart </div>
+                    )
+                }
+                { cartProducts?.length > 0 && cartProducts.map( (cart:ICartItem, index) => (
+                    <div key={ index } className="flex items-center gap-4 py-4 mb-4 border-b">
+                        <div className="w-24"> 
+                            { 
+                                cart.product?.image ?  <Image src={ cart.product.image } width={240} height={240} alt={ cart.product?.name} />  : '' 
+                            }
                         </div>
-                    )) }
-                    <div className="pr-20 text-right">
-                        <span className="text-gray-500"> Subtotal: </span>
-                        <span className="text-lg font-semibold"> ${total} </span>
+                        <div className="grow">
+                            <h3 className="font-semibold">
+                                { cart.product?.name }
+                            </h3> 
+                            {
+                                cart.product_size && (
+                                    <div className="text-sm text-gray-700"> 
+                                        <div> Size: <span> { cart.product_size?.name } </span> </div>
+                                    </div>
+                                )
+                            }
+
+                            {
+                                cart.product_extra?.length > 0 && (
+                                    <div className="text-sm text-gray-500"> 
+                                        <ul >
+                                        { cart.product_extra?.map( extra => (
+                                            <li key={ extra.id }> { extra.name } ${extra.price}</li>
+                                        )) }
+                                        </ul>
+                                    </div>
+                                ) 
+                            }
+                        </div>
+                        <div className="w-[200px]">
+                            <input type="number" className="font-semibold " 
+                                    value={ quantities?.[index] ? quantities[index] : cart?.product.quantity } 
+                                    onChange={ (e) => handleQuantityChange(e, index)} /> 
+                        </div>
+                        <div>
+                            <span className="font-semibold text-primary"> ${ prices?.[index] ? prices[index] : cart?.total_price } </span>
+                        </div>
+
+                        <div>
+                            <button
+                                type="button"
+                                onClick={ () => handleRemoveCartItem(cart.id) }
+                                > 
+                                <DeleteIcon className="w-6 h-6"/> 
+                            </button>
+                        </div>
                     </div>
+                )) }
+                <div className="pr-20 text-right">
+                    <span className="text-gray-500"> Subtotal: </span>
+                    <span className="text-lg font-semibold"> ${total} </span>
                 </div>
-                <div className="p-4 bg-gray-300 rounded-lg">  
+            </div>
+                  
+            <div className="p-4 bg-gray-300 rounded-lg">  
                     <div>
                         <label> Phone </label>
                         <input  readOnly={ true } type="text" value={ phone } onChange={ e => setPhone(e.target.value) }/>
@@ -153,12 +176,12 @@ export default function CartPage() {
                     </div>
 
                    <button className=""
+                        onClick={handlePayButtonClick}
                         type="submit">
                             Pay ${total}
                    </button>
 
                 </div>
-            </div>
         </section>
    )
 }

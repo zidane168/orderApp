@@ -68,9 +68,7 @@ commonAxios.interceptors.request.use(
       }
 
       case "PATCH": {
-        if (!(req.data instanceof FormData) && !!req.data) {
-          req.data = formatFormData(req.data); 
-        }
+        req.data = JSON.stringify(req.data);  
         break;
       }
 
@@ -79,6 +77,7 @@ commonAxios.interceptors.request.use(
 
         console.log( '---- ')
         console.log( req.data)
+        break;
       }
     }
     return req;

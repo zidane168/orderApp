@@ -14,3 +14,8 @@ export type ICartItem = {
     product_size: IProductSize,
     total_price: number,
 }
+
+export type IUpdateQuantity = {
+    member_temp_cart_id: number, 
+    quantity: number,
+}
