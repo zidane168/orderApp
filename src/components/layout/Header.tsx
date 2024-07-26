@@ -27,7 +27,7 @@ export default function Header() {
 
                     if (res?.status === 200 && res?.data?.status === 200) {
 
-                        await showCarts();
+                        await showCarts();  // show cart item number
                         
                         const userData = res.data.params;
                         const userName = userData?.name || userData?.email; 
@@ -79,7 +79,7 @@ export default function Header() {
                     <div className="relative">
                         <ShoppingCartIcon className={'w-8 h-8'}/> 
                         <div className="absolute top-[-15px] right-[-5px] text-white font-semibold bg-primary p-1 leading-3 rounded-full"> 
-                            {cartProducts.length} 
+                            {cartProducts.length > 99 ? '99+' : cartProducts.length} 
                         </div> 
                     </div>
                 </Link>  
