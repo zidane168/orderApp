@@ -9,6 +9,8 @@ import { ICartItem, memberCartApi } from "@/app/api/member-carts";
 import { IMember, memberApi } from "../api/members";
 import toast from 'react-hot-toast';
 import { formattedPrice } from "@/utils/helpers/common";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 // ----------------------- ----------------------- FLOW cart page ----------------------- -----------------------
 // 1. Loaded first time => get cartProducts from appContext.tsx 
@@ -29,6 +31,8 @@ import { formattedPrice } from "@/utils/helpers/common";
 // -------------------- -------------------- --------------------  -----------------------  ----------------------
 
 export default function CartPage() {
+
+    const session = useSession()
  
     const {  removeCart, cartProducts, assignCartProducts } = useContext(CartContext) as CardContextType
 
@@ -37,6 +41,8 @@ export default function CartPage() {
     const [ country, setCountry ] = useState('')
     const [ postalCode, setPostalCode ] = useState('')
     const [ city, setCity ] = useState('') 
+
+    const { status } = session
 
     const [ quantities, setQuantities ] = useState<number[]>([])
     const [ prices, setPrices ] = useState<number[]>([]) 
@@ -55,6 +61,14 @@ export default function CartPage() {
         handleUpdatePriceEachProductWithNumberFormatted()
     }, [cartProducts])
 
+    if (status === 'loading') {
+        return 'Loading ...'
+    }
+
+    if (status === 'unauthenticated') {
+        return redirect('/login')
+    }
+
     async function fetchProfile() {
  
         const { getProfile } = memberApi()
@@ -67,7 +81,7 @@ export default function CartPage() {
             setCountry(profileData.country ?? '')
             setPostalCode(profileData.postal_code ?? '')  
             setCity(profileData.city ?? '')
-        } 
+        }  
     }
  
     function fetchCartItems() { 
@@ -139,6 +153,7 @@ export default function CartPage() {
         const res = await createInvoice({member_temp_cart_ids: ids});
         if (res.data.status === 200) {
             toast.success(res.data.message)
+            window.location.href = '/'; 
         }
     }
 
@@ -146,8 +161,7 @@ export default function CartPage() {
         await removeCart(id)
     }
  
-    async function handleReduce(index: number) {  
-        console.log('reduce')
+    async function handleReduce(index: number) {   
         const newQuantities = [...quantities];
         newQuantities[index]--;
         setQuantities(newQuantities)  
@@ -179,7 +193,7 @@ export default function CartPage() {
         } 
     } 
     async function handleIncrease(index: number) {
-        console.log('increase')
+         
         const newQuantities = [...quantities];
         newQuantities[index]++; 
         setQuantities(newQuantities)  

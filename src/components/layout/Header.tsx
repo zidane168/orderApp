@@ -58,7 +58,7 @@ export default function Header() {
             <nav className="flex items-center gap-4 font-semibold text-gray-500">
                 {status == 'authenticated' && (
                     <>
-                        <div className='w-[150px]'>  
+                        <div className='w-[200px]'>  
                             <Link  href={'/profile'} > Hello,  { firstName } </Link>  
                         </div>
                         <button
