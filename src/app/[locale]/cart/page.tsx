@@ -5,8 +5,8 @@ import { CardContextType, CartContext } from "@/components/AppContext";
 import Image from "next/image";
 import DeleteIcon from "@/components/icons/DeleteIcon"; 
 
-import { ICartItem, memberCartApi } from "@/app/api/member-carts";  
-import { IMember, memberApi } from "../../api/members";
+import { ICartItem, memberCartApi } from "@/app/[locale]/api/member-carts";  
+import { IMember, memberApi } from "../api/members";
 import toast from 'react-hot-toast';
 import { formattedPrice } from "@/utils/helpers/common";
 import { useSession } from "next-auth/react";

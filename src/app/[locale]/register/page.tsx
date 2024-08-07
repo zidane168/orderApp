@@ -10,13 +10,13 @@ export default function RegisterPage() {
 
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
-    const [ creatingUser, setCreateingUser ] =  useState(false)
+    const [ creatingUser, setCreatingUser ] =  useState(false)
     const [ userCreated, setUserCreated ] = useState(false)
     const [ error, setError ] = useState(false)
 
     async function handleFormSubmit(e: any) {
         e.preventDefault()
-        setCreateingUser(true)
+        setCreatingUser(true)
         setError(false)
         setUserCreated(false)
 
@@ -33,7 +33,7 @@ export default function RegisterPage() {
             setError(true)
         }  
  
-        setCreateingUser(false)
+        setCreatingUser(false)
     }
     
     const t = useTranslations('RegisterPage');

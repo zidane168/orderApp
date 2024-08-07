@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from "react"
-import { categoryApi } from "@/app/api/categories/category.api"
+import { categoryApi } from "@/app/[locale]/api/categories/category.api"
 import SectionHeaders from "@/components/layout/SectionHeaders";
-import { ICategoryAndProducts } from "../../api/product";
+import { ICategoryAndProducts } from "../api/product";
 import MenuItem from "@/components/menu/MenuItem"; 
 
 export default function MenuPage() {

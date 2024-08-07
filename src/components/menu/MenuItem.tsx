@@ -2,9 +2,9 @@ import Link from "next/link"
 import DeleteIcon from "../icons/DeleteIcon" 
 import swal from 'sweetalert' 
 import toast from 'react-hot-toast' 
-import { productApi } from "@/app/api/product/product.api" 
+import { productApi } from "@/app/[locale]/api/product/product.api" 
 import { useRouter } from "next/navigation"
-import { IProductExtra, IProductSize } from "@/app/api/product"
+import { IProductExtra, IProductSize } from "@/app/[locale]/api/product"
 import { useContext, useState } from "react"
 import { CardContextType, CartContext } from "../AppContext"
 import Image from "next/image"

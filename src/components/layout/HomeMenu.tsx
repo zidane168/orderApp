@@ -3,9 +3,9 @@ import Image from "next/image";
 import MenuItem from "../menu/MenuItem";
 import SectionHeaders from "./SectionHeaders";
 import { useEffect, useState } from "react";
-import { productApi } from "@/app/api/product/product.api";
+import { productApi } from "@/app/[locale]/api/product/product.api";
 import toast from 'react-hot-toast'
-import { IProduct } from "@/app/api/product";
+import { IProduct } from "@/app/[locale]/api/product";
 
 export default function HomeMenu() {
 

@@ -1,5 +1,5 @@
-import { IMember } from "@/app/api/members"
-import { memberApi } from "@/app/api/members/member.api"
+import { IMember } from "@/app/[locale]/api/members"
+import { memberApi } from "@/app/[locale]/api/members/member.api"
 import { useEffect, useState } from "react"
 
 export function useProfile() {

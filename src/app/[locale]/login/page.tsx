@@ -5,11 +5,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast"; 
+import { useTranslations } from "next-intl";
  
 export default function LoginPage() {
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ loginInProgress, setLoginInProgress ] = useState(false); 
+
+    const t = useTranslations('LoginPage');
+    const tc = useTranslations('CommonPage');
+
+    const [  ] = useState();
 
     async function handleFormSubmit(e: any) {
         e.preventDefault();
@@ -18,10 +24,7 @@ export default function LoginPage() {
         signIn('credentials', { email, password, callbackUrl: '/'}).then((result: any) => { 
         
             if (!result.error) {    // use Session and this result from api/auth/[...nextauth]
-                toast('Login successfully!')
-                console.log (' --------- ')
-                console.log(result.data)
-                console.log (' --------- ')   
+                toast( tc('loginSuccessfully')  ) 
             } else { 
                 let rel = JSON.parse(result.error)  
                 toast(rel.message)
@@ -39,13 +42,13 @@ export default function LoginPage() {
                 <input type="email" 
                     disabled={ loginInProgress }
                     name="email"
-                    placeholder="Input email here" value={ email } onChange={ e => setEmail(e.target.value) }  
+                    placeholder={ tc('inputEmailHere') } value={ email } onChange={ e => setEmail(e.target.value) }  
                 />
                 
                 <input
                     disabled={ loginInProgress }
                     name="password"
-                    type="password" placeholder="Input your password here" value={ password }  
+                    type="password" placeholder={ tc('inputPasswordHere') } value={ password }  
                     onChange={ e => setPassword(e.target.value) } />
                 
                 <button  
@@ -55,7 +58,7 @@ export default function LoginPage() {
                 </button>
 
                 <div className="my-4 text-center text-gray-400">
-                   Or login with provide
+                    { t('orLoginWithProvider') }
                 </div>
 
                 <button className="flex items-center justify-center gap-4 loginWithGoogle" 
@@ -63,11 +66,11 @@ export default function LoginPage() {
                     type="button"
                 > 
                     <Image width={'32'}  height={'32'}  src={'/google.png'} objectFit={'contain'}   alt={'google icon'} />
-                    Login with google 
+                    { t('loginWithGoogle') }
                 </button>
 
                 <div className="my-6 text-center text-gray-500 border-t text">
-                    Don't have account? <Link className="underline" href={'/register'}> Register </Link>
+                    { t('dontHaveAccount') } <Link className="underline" href={'/register'}> { t('register') } </Link>
                 </div>
  
             </form>

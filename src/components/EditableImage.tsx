@@ -3,8 +3,8 @@ import toast from "react-hot-toast"
 import Image from 'next/image'
  
 import { useSessionData } from "@/customHook/useSessionData";
-import { memberApi } from "@/app/api/members/member.api";
-import { productApi } from "@/app/api/product/product.api";
+import { memberApi } from "@/app/[locale]/api/members/member.api";
+import { productApi } from "@/app/[locale]/api/product/product.api";
 
 interface IEditableImage {
     link: string,

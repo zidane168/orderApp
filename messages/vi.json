@@ -7,7 +7,9 @@
         "inputPasswordHere": "Vui lòng nhập password tại đây",
         "anErrorHasOccurred": "Có lỗi xảy ra",
         "pleaseTryAgainLater": "Vui lòng thử lại",
-        "userCreated": "Đăng ký thành công!"
+        "userCreated": "Đăng ký thành công!",
+         "loginSuccessfully": "Đăng nhập thành công",
+        "registerSuccessfully": "Đăng ký thành công"
     },
     "RegisterPage": {
         "register": "Đăng ký", 
@@ -15,6 +17,13 @@
         "existingAccount": "Tồn tại tài khoản?",
         "login": "Đăng nhập ngay!",
         "loginWithGoogle": "Đăng nhập bằng Google"
+    },
+    "LoginPage": {
+      "dontHaveAccount": "Bạn chưa có tài khoản?",
+      "login": "Đăng nhập",
+      "register": "Đăng ký",
+      "orLoginWithProvider": "Hay đăng nhập với: ",
+      "loginWithGoogle": "Đăng nhập bằng Google"
     },
     "Error": {
       "description": "<p>Có lỗi xảy ra</p>",

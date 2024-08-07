@@ -3,7 +3,7 @@
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'  
 import { useContext, useEffect, useState } from 'react' 
-import { memberApi } from "@/app/api/members/member.api"; 
+import { memberApi } from "@/app/[locale]/api/members/member.api"; 
 import { useSessionData } from '@/customHook/useSessionData'
 import { CardContextType, CartContext } from '../AppContext';
 import ShoppingCartIcon from '../icons/ShoppingCartIcon';

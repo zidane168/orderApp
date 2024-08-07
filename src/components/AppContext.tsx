@@ -1,7 +1,7 @@
 'use client'
 
-import { ICartItem, IMemberTempCart } from "@/app/api/member-carts";
-import { memberCartApi } from "@/app/api/member-carts/member-cart.api";
+import { ICartItem, IMemberTempCart } from "@/app/[locale]/api/member-carts";
+import { memberCartApi } from "@/app/[locale]/api/member-carts/member-cart.api";
 import { SessionProvider } from "next-auth/react"; 
 import { createContext, ReactNode, useEffect, useState } from "react"; 
 import toast from 'react-hot-toast'  

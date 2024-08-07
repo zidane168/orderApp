@@ -7,7 +7,9 @@
         "inputPasswordHere": "Input password here",
         "anErrorHasOccurred": "An error has occurred",
         "pleaseTryAgainLater": "Please try again later",
-        "userCreated": "Đăng ký thành công!"
+        "userCreated": "User created!",
+        "loginSuccessfully": "Login successfully",
+        "registerSuccessfully": "Register successfully"
     },
     "RegisterPage": {
         "register": "Register", 
@@ -15,6 +17,13 @@
         "existingAccount": "Existing Account?",
         "login": "Login now!",
         "loginWithGoogle": "Login with Google"
+    },
+    "LoginPage": {
+      "dontHaveAccount": "Don't have account?",
+      "login": "Login",
+      "register": "Register",
+      "orLoginWithProvider": "Or login with Provider",
+      "loginWithGoogle": "Login with Google"
     },
     "Error": {
       "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>",

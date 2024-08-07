@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react"; 
 import { redirect } from "next/navigation"; 
 import { useEffect, useState } from "react";
-import { memberCartApi } from "../../api/member-carts";
+import { memberCartApi } from "../api/member-carts";
 import OrderDetail, { IOrderDetail } from "@/components/orderDetail/OrderDetail";
 
 export default function OrdersPage() {

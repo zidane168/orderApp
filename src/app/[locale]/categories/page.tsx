@@ -3,8 +3,8 @@ import { useProfile } from "@/components/UseProfile"
 import UserTabs from "@/components/layout/Tabs" 
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast";
-import { categoryApi } from "../../api/categories/category.api";
-import { ICategory } from "../../api/categories/category.api.types"; 
+import { categoryApi } from "../api/categories/category.api";
+import { ICategory } from "../api/categories/category.api.types"; 
 import DeleteIcon from "@/components/icons/DeleteIcon";
 import swal from "sweetalert"; 
 import { useTranslation } from 'next-i18next'

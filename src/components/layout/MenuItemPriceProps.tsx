@@ -1,4 +1,4 @@
-import { ISize } from "@/app/api/product"; 
+import { ISize } from "@/app/[locale]/api/product"; 
 import DeleteIcon from "@/components/icons/DeleteIcon"
 import ChevronDown from "../icons/ChevronDown";
 import { useState } from "react";
