@@ -56,7 +56,7 @@ export default function MenuItemsPage() {
             {
                 products && products?.length > 0 && products.map( (product, index) => (
                     <MenuItem  
-                        key={ index }  id={ product.id } path={ product.image ?? ''}  name={ product.name } description={ product.description ?? '' } basePrice={ product.base_price ?? 0} isAddToCart={ false }/>
+                        key={ index } id={ product.id ? product.id : 0 } path={ product.image ?? ''}  name={ product.name } description={ product.description ?? '' } basePrice={ product.base_price ? product.base_price : 0} isAddToCart={ false }/>
                 ))
             }
             </div>

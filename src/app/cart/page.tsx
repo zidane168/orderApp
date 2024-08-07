@@ -86,12 +86,12 @@ export default function CartPage() {
  
     function fetchCartItems() { 
 
-        const qty = [...quantities]
+        const qty:number[] = [...quantities]
         const reduceBtn = [...reduceButtonsStatus]
         const increaseBtn = [...increaseButtonsStatus]
        
         cartProducts.map( (cart, index) => {
-            qty[index] = cart.product.quantity
+            qty[index] = cart.product.quantity ?? 0
             if (qty[index] <= 1) {
                 reduceBtn[index] = false
             } else{
@@ -131,7 +131,12 @@ export default function CartPage() {
         setQuantities(newQuantities)
 
         const newPrices = [...prices];
-        const onePrice = cartProducts[index].total_price / cartProducts[index].product.quantity 
+
+        let onePrice = 0;
+        if (cartProducts[index].product.quantity &&  cartProducts[index].product.quantity > 0) {
+            onePrice = cartProducts[index].total_price / cartProducts[index].product.quantity 
+        } 
+       
         newPrices[index] = newQuantities[index] * onePrice
         setPrices(newPrices)
 

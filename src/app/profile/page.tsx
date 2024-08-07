@@ -93,7 +93,7 @@ export default function ProfilePage() {
 
         try   { 
             const { update } =  memberApi()  
-            let res = null
+             
             let obj = {
                 name:      userName ?? '', 
                 avatar_id: Number(avatarId) ?? null, 
@@ -108,7 +108,7 @@ export default function ProfilePage() {
                 obj.avatar_id = Number(avatarId) ?? null    
             } 
 
-            res =  await update( obj )   
+            let res: any =  await update( obj )   
 
             setIsSaving(false)  
 

@@ -13,16 +13,16 @@ interface ICart {
 }
 
 export interface IOrderDetail {
-    id: number, 
+    invoice_id: number, 
     total_price: number, 
     carts: ICart[],
 }
 
-export default function OrderDetail({ id, total_price, carts }: IOrderDetail) {
+export default function OrderDetail({ invoice_id, total_price, carts }: IOrderDetail) {
     return (
         <div className="mb-4">
             <div className="flex justify-between mt-4">
-                <div className="p-2 font-bold text-white rounded-md bg-primary"> Invoice Id: { id } </div>
+                <div className="p-2 font-bold text-white rounded-md bg-primary"> Invoice Id: { invoice_id } </div>
                 <div  className="text-2xl font-bold text-primary">  { total_price } </div>
             </div>
             <div className="p-2 mt-2 border rounded-md">

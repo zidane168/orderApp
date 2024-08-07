@@ -37,7 +37,7 @@ export default function MenuPage() {
 
                                     <div key={ p.id }>
                                         <MenuItem  
-                                            id={p.id} 
+                                            id={p.id ?? 0} 
                                             path={ p.image ?? '' } name={ p.name } 
                                             description={ p.description } basePrice={ p.base_price }
                                             sizes={ p.product_sizes }

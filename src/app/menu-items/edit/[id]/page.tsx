@@ -19,7 +19,13 @@ import { useParams, useRouter } from "next/navigation"
 
 export default function MenuItemsEditPage() {
   
-    const { id } = useParams<{id: string}>() 
+    const params = useParams<{id: string}>() 
+
+    let id: string = '';
+    if (params) {
+        id = params.id;
+    } 
+
     const { push } = useRouter();
 
     const { loading, data } = useProfile()

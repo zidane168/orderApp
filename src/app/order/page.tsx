@@ -35,7 +35,7 @@ export default function OrdersPage() {
             <hr />
 
             { orders.length > 0 && orders.map( (order, index) => (
-                <OrderDetail key={ index } id={ order.invoice_id } total_price={ order.total_price } carts={ order.carts } />
+                <OrderDetail key={ index } invoice_id={ order.invoice_id } total_price={ order.total_price } carts={ order.carts } />
             ))}
 
          
