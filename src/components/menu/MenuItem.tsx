@@ -10,7 +10,7 @@ import { CardContextType, CartContext } from "../AppContext"
 import Image from "next/image"
 import ShoppingCartIcon from "../icons/ShoppingCartIcon"
 import FlyingButton from "react-flying-item"
-
+import { useTranslations } from 'next-intl'
 interface IMenuItem {
     id: number,
     path: string, 
@@ -35,15 +35,17 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
         );  // init first sizes value
     const [ selectedExtras, setSelectedExtras ] = useState<IProductExtra[]>([]);
 
+    const tc = useTranslations("CommonPage"); 
+
     const router = useRouter();
     async function handleDeleteProduct(ev: React.MouseEvent<Element>) {
         ev.preventDefault()
 
         const confirmed = await swal({
-            title: "Are you sure?",
-            text: 'You will not be able to recover this one after confirm Delete!',
+            title: tc('areYouSure'),   // "Are you sure?",
+            text: tc('youWillNotBeAbleToRecoverThisOneAfterConfirmDelete'), // 
             icon: 'warning',
-            buttons: ['No, cancel it', 'Yes, I am sure'],
+            buttons: [tc('noCancelIt'), tc('yesIamSure')],
             dangerMode: true,
         })
 

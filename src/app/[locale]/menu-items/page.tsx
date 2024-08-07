@@ -2,17 +2,20 @@
 import { useProfile } from "@/components/UseProfile"
 import UserTabs from "@/components/layout/Tabs"
 import { useEffect, useState } from "react" 
-import { productApi } from "../api/product/product.api" 
-import { ICategory } from "../api/categories" 
+import { productApi } from "@/app/[locale]/api/product/product.api"  
 import RightIcon from "@/components/icons/RightIcon"
 import Link from "next/link"
 import MenuItem from "@/components/menu/MenuItem" 
-import { IProduct } from "../api/product"
+import { IProduct } from "@/app/[locale]/api/product"
+import { useTranslations } from 'next-intl';
 
 export default function MenuItemsPage() {
-  
+
     const { loading, data } = useProfile()  
     const [ products, setProducts ] = useState<IProduct[]>();  
+
+    const t = useTranslations('MenuItemPage')
+    const tc = useTranslations('CommonPage')
 
     useEffect(() => {     
         fetchProducts()
@@ -30,7 +33,7 @@ export default function MenuItemsPage() {
   
 
     if (loading) {
-        return 'Loading user info ...'
+        return tc('loadingUserInfo')
     }
 
     if (data && !data.is_admin) {
@@ -46,7 +49,7 @@ export default function MenuItemsPage() {
                     className="flex justify-center gap-2 p-2 border-2 rounded-md button"
                     href={'/menu-items/new'}
                 >    
-                    Create new menu item 
+                    { t('createNewMenuItem') }
                     <RightIcon />  
 
                 </Link>

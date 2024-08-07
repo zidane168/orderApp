@@ -4,18 +4,19 @@ import { useProfile } from "@/components/UseProfile"
 import UserTabs from "@/components/layout/Tabs"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import { productApi } from "../../api/product/product.api"
-import { IExtra, ISize } from "../../api/product"
+import { productApi } from "@/app/[locale]/api/product/product.api"
+import { IExtra, ISize } from "@/app/[locale]/api/product"
 import Combobox, { IListItem } from "@/components/Combobox"
-import { categoryApi } from "../../api/categories/category.api"
-import { ICategory } from "../../api/categories" 
+import { categoryApi } from "@/app/[locale]/api/categories/category.api"
+import { ICategory } from "@/app/[locale]/api/categories" 
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps" 
 import QuillTextEditor2 from '@/components/AppQuillTextEditor2'
 import RightIcon from "@/components/icons/RightIcon"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useTranslations } from 'next-intl'
 
-// tao new thu muc cho duong dẫn menu-items/new/page.tsx
+// tao new thu muc cho đường dẫn menu-items/new/page.tsx
 
 export default function MenuItemsNewPage() {
   
@@ -32,9 +33,12 @@ export default function MenuItemsNewPage() {
     const [ extras, setExtras ] = useState<IExtra[]>([]); 
 
     const [ category, setCategories ] = useState<ICategory[]>();
-    const [ selectedItem, setSelectedItem ] = useState<IListItem>({id: 0, name:'-- Please Select --'}); 
     
-    
+    const tc = useTranslations('CommonPage')
+    const t = useTranslations('MenuItemPage')
+
+    const [ selectedItem, setSelectedItem ] = useState<IListItem>({id: 0, name: tc('pleaseSelect')}); 
+     
     function handleEditorChange(content: string) {
         setDescription(content)
     } 
@@ -72,8 +76,8 @@ export default function MenuItemsNewPage() {
 
             if (response.data.status == 200) {
                 await toast.promise(Promise.resolve(), {
-                    success: 'Data is saved',
-                    loading: 'Saving',
+                    success: tc('dataIsSaved'),
+                    loading: tc('saving'),
                     error :'',
                 })
 
@@ -92,14 +96,16 @@ export default function MenuItemsNewPage() {
     }
 
     if (loading) {
-        return 'Loading user info ...'
+        return tc('loadingUserInfo')
     }
 
     if (data) {
         if (!data.is_admin) {
-            return 'Not an admin ...'
+            return tc('notAnAdmin')
         }
     } 
+
+    const defaultItem = { id: 0, name: tc('pleaseSelect') } 
 
     return (
         <section className="mt-8">
@@ -110,7 +116,7 @@ export default function MenuItemsNewPage() {
                     href={ '/menu-items' }
                     className="flex items-center justify-center gap-2 p-2 border-2 rounded-md button"
                 >
-                    Show all Products
+                    { t('showAllProducts') } 
                     <RightIcon />
                 </Link>
             </div>
@@ -123,25 +129,29 @@ export default function MenuItemsNewPage() {
                         </div>
                     </div>
                     <Combobox  
-                        isRequired={ true } name={ 'Category' } list={ category ?? [] } setSelectedItem={ setSelectedItem } />
+                        defaultItem={ defaultItem }
+                        isRequired={ true } 
+                        name={ 'Category' } 
+                        list={ category ?? [] } 
+                        setSelectedItem={ setSelectedItem } />
                     <div className="grow">
-                        <label> Item name <span className="text-primary">(*) </span></label>
+                        <label> {t('itemName')} <span className="text-primary">(*) </span></label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
-                        <label> Description <span className="text-primary">(*) </span> </label> 
+                        <label> {t('description')} <span className="text-primary">(*) </span> </label> 
                         {/* <QuillTextEditor onChange={handleEditorChange} value={description || ''} /> */}
                         <QuillTextEditor2   value={description || ''} setValue={ setDescription } />
                         
-                        <label> Base price <span className="text-primary">(*) </span> </label>
+                        <label> {t('basePrice')} <span className="text-primary">(*) </span> </label>
                         <input type="number" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(Number(ev.target.value))}  />
 
                     </div>
 
-                    <MenuItemPriceProps props={ sizes } setProps={ setSizes } labelText={'Sizes'} buttonText={ 'Add new sizes'}/>
+                    <MenuItemPriceProps props={ sizes } setProps={ setSizes } labelText={ t('sizes') } buttonText={ t('addNewSizes') }/>
 
-                    <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={'Extras Ingredients'} buttonText={ 'Add new extras'}/>
+                    <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={ t('extrasIngredients') } buttonText={ t('addNewExtras')}/>
 
                     <div>
-                        <button type="submit"> Save </button>
+                        <button type="submit"> { tc('saved') } </button>
                     </div> 
                 </div>
             </form> 

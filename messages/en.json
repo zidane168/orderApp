@@ -1,8 +1,17 @@
 {
     "HomePage": {
-        "ourStory": "Our Story"
+        "ourStory": "Our Story",
+        "home": "Home",
+        "about": "About",
+        "contact": "Contact",
+        "menu": "Menu"
     },
     "CommonPage": {
+        "pleaseSelect": "-- Please select --",
+        "dataIsSaved": "Data is saved",
+        "saving": "Saving...",
+        "hello": "Hello",
+        "logout": "Logout",
         "loadingUserInfo": "Loading user information ...",
         "areYouSure": "Are you sure?",
         "youWillNotBeAbleToRecoverThisOneAfterConfirmDelete": "You will not be able to recover this one after confirm Delete!",
@@ -30,6 +39,17 @@
         "uploading": "Uploading...",
         "uploadCompleted": "Upload completed",
         "noImage": "No image"
+    },
+    "MenuItemPage": {
+      "createNewMenuItem": "Create new menu item",
+      "showAllProducts": "Show all products",
+      "itemName": "Item name",
+      "description": "Description",
+      "basePrice": "Base Price",
+      "addNewSizes": "Add new sizes",
+      "addNewExtras": "Add new extras",
+      "sizes": "Sizes",
+      "extrasIngredients": "Extras Ingredients"
     },
     "CategoryPage": {
       "categoryDeletedSuccessfully": "Deleted category successfully",

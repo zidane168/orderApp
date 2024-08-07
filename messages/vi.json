@@ -1,8 +1,17 @@
 {
     "HomePage": {
-      "ourStory": "Câu chuyện của chúng tôi"
+      "ourStory": "Câu chuyện của chúng tôi",
+      "home": "Trang chủ",
+      "about": "Về chúng tôi",
+      "contact": "Liên hệ",
+      "menu": "Thực đơn"
     },
     "CommonPage": {
+        "pleaseSelect": "-- Vui lòng chọn --",
+        "dataIsSaved": "Lưu trữ dữ liệu thành công",
+        "saving": "Đang lưu trữ...",
+        "hello": "Chào",
+        "logout": "Đăng xuất",
         "loadingUserInfo": "Hiển thị thông tin tài khoản ...",
         "areYouSure": "Bạn có chắc không?",
         "youWillNotBeAbleToRecoverThisOneAfterConfirmDelete": "Một khi đã xoá Không thể phục lại dữ liệu này!",
@@ -30,6 +39,17 @@
         "uploading": "Đang uploading...",
         "uploadCompleted": "Upload hoàn tất",
         "noImage": "Không có hình ảnh"
+    }, 
+    "MenuItemPage": {
+      "createNewMenuItem": "Tạo mới Danh sách Pizza",
+      "showAllProducts": "Hiển thị toàn bộ sản phẩm",
+      "itemName": "Tên sản phẩm",
+      "description": "Mô tả",
+      "basePrice": "Giá sản phẩm",
+      "addNewSizes": "Kích thước Pizza",
+      "addNewExtras": "Món phụ ăn kèm",
+      "sizes": "Kích thước",
+      "extrasIngredients": "Món phụ"
     },
     "CategoryPage": {
       "categoryDeletedSuccessfully": "Xoá danh sách thành công!",

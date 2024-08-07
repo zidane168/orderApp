@@ -8,11 +8,16 @@ import { useSessionData } from '@/customHook/useSessionData'
 import { CardContextType, CartContext } from '../AppContext';
 import ShoppingCartIcon from '../icons/ShoppingCartIcon';
 import LocaleSwitcher from '../LocaleSwithcher';
+import { useTranslations } from 'next-intl'; 
 
 
 export default function Header() {
     const session = useSession()   
     const status = session.status 
+    const t = useTranslations('HomePage');
+    const tc = useTranslations("CommonPage")
+    const tl = useTranslations('LoginPage');
+    const tr = useTranslations("RegisterPage")
 
     const [ firstName, setFirstName ] = useState('')  
     const { cartProducts, showCarts } = useContext(CartContext) as CardContextType
@@ -52,28 +57,28 @@ export default function Header() {
             <header className="flex items-center justify-between w-full mt-4"> 
                 <nav className="flex items-center gap-8 font-semibold text-gray-500" >
                     <Link className="text-2xl font-semibold text-primary" href={'/'}> ST PIZZA </Link>
-                    <Link href={'/'}> Home </Link>
-                    <Link href={'/menu'}> Menu </Link>
-                    <Link href={'/#about'}> About </Link>
-                    <Link href={'/#contact'}> Contact </Link> 
+                    <Link href={'/'}> { t('home') } </Link>
+                    <Link href={'/menu'}> { t('menu') } </Link>
+                    <Link href={'/#about'}> { t('about') } </Link>
+                    <Link href={'/#contact'}> { t('contact') } </Link> 
                 </nav>
 
                 <nav className="flex items-center gap-4 font-semibold text-gray-500">
                     {status == 'authenticated' && (
                         <>
                             <div className='w-[200px]'>  
-                                <Link  href={'/profile'} > Hello,  { firstName } </Link>  
+                                <Link  href={'/profile'} > { tc('hello') },  { firstName } </Link>  
                             </div>
                             <button
                                 onClick={() => signOut()}
                                 className='text-white rounded-full bg-primary'
-                            >Logout </button> 
+                            >{ tc('logout') } </button> 
                         </>
                     )}
                     {status == 'unauthenticated' && (
                         <>
-                            <Link href={'/login'}> Login </Link>
-                            <Link href={'/register'} className = "px-4 py-2 text-white rounded-full bg-primary">  Register </Link> 
+                            <Link href={'/login'}> { tl('login') } </Link>
+                            <Link href={'/register'} className = "px-4 py-2 text-white rounded-full bg-primary">  { tr('register') } </Link> 
                         </> 
                     )} 
 

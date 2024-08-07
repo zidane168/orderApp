@@ -13,11 +13,12 @@ interface ComboboxProps {
   defaultItem?: IListItem,
   isRequired: boolean,
 }
+ 
 
 const ComboBox: React.FC<ComboboxProps> = ({ 
   isRequired = true,
   name, list, setSelectedItem,
-  defaultItem = { id: 0, name: "-- Please Select --" } } : ComboboxProps) => {
+  defaultItem } : ComboboxProps) => {
   
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([ String(defaultItem.id) ]));   
 

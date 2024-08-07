@@ -4,17 +4,17 @@ import { useProfile } from "@/components/UseProfile"
 import UserTabs from "@/components/layout/Tabs"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import { productApi } from "../../../api/product/product.api"
-import { ISize } from "../../../api/product"
+import { productApi } from "@/app/[locale]/api/product/product.api"
+import { ISize } from "@/app/[locale]/api/product"
 import Combobox, { IListItem } from "@/components/Combobox"
-import { categoryApi } from "../../../api/categories/category.api"
-import { ICategory } from "../../../api/categories" 
+import { categoryApi } from "@/app/[locale]/api/categories/category.api"
+import { ICategory } from "@/app/[locale]/api/categories" 
 import MenuItemPriceProps from "@/components/layout/MenuItemPriceProps" 
 import QuillTextEditor2 from '@/components/AppQuillTextEditor2'
 import RightIcon from "@/components/icons/RightIcon"
 import Link from "next/link" 
 import { useParams, useRouter } from "next/navigation"
-
+import { useTranslations } from 'next-intl'
 // tao new thu muc cho duong dẫn menu-items/new/page.tsx
 
 export default function MenuItemsEditPage() {
@@ -45,11 +45,9 @@ export default function MenuItemsEditPage() {
     const [ category, setCategories ] = useState<ICategory[]>();
     const [ selectedItem, setSelectedItem ] = useState<IListItem>({id: 0, name:'-- Please Select --'}); 
     
-    
-    function handleEditorChange(content: string) {
-        setDescription(content)
-    } 
-  
+    const tc = useTranslations('CommonPage')
+    const t = useTranslations('MenuItemPage')
+      
     useEffect(() => {    
         fetchCategories()
         fetchItem( );
@@ -103,8 +101,8 @@ export default function MenuItemsEditPage() {
 
             if (response.data.status == 200) {
                 await toast.promise(Promise.resolve(), {
-                    success: 'Data is update',
-                    loading: 'Saving',
+                    success: tc('dataIsSaved'),
+                    loading: tc('saving'),
                     error: '',
                 })
 
@@ -124,12 +122,12 @@ export default function MenuItemsEditPage() {
     }
 
     if (loading) {
-        return 'Loading user info ...'
+        return tc('loaingUserInfo')
     }
 
     if (data) {
         if (!data.is_admin) {
-            return 'Not an admin ...'
+            return tc('notAnAdmin')
         }
     } 
 
@@ -142,7 +140,7 @@ export default function MenuItemsEditPage() {
                     href={ '/menu-items' }
                     className="flex items-center justify-center gap-2 p-2 border-2 rounded-md button"
                 >
-                    Show all Products
+                    { t('showAllProducts') } 
                     <RightIcon />
                 </Link>
             </div>
@@ -161,22 +159,22 @@ export default function MenuItemsEditPage() {
                         setSelectedItem={ setSelectedItem } 
                         defaultItem={ {id: categoryId, 'name':categoryName} } />
                     <div className="grow">
-                        <label> Item name </label>
+                        <label> {t('itemName')}  </label>
                         <input type="text" value={ name } onChange={ ev => setName(ev.target.value)}  />
-                        <label> Description </label> 
+                        <label> {t('description')} </label> 
                         <QuillTextEditor2 setValue={setDescription} value={description || ''} />
                         
-                        <label> Base price </label>
+                        <label>{t('basePrice')} </label>
                         <input type="number"  step="0.01" className="form-control" value={ basePrice } onChange={ ev => setBasePrice(Number(ev.target.value))}  />
 
                     </div>
 
-                    <MenuItemPriceProps props={ sizes } setProps={ setSizes } labelText={'Sizes'} buttonText={ 'Add new sizes'}/>
+                    <MenuItemPriceProps props={ sizes } setProps={ setSizes } labelText={ t('sizes')  } buttonText={ t('addNewSizes') }/>
 
-                    <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={'Extras Ingredients'} buttonText={ 'Add new extras'}/>
+                    <MenuItemPriceProps props={ extras } setProps={ setExtras } labelText={ t('extrasIngredients') } buttonText={ t('addNewExtras') }/>
 
                     <div>
-                        <button type="submit"> Save </button>
+                        <button type="submit"> { tc('saved') } </button>
                     </div> 
                 </div>
             </form>

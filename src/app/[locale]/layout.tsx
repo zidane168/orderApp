@@ -32,7 +32,7 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={roboto.className}>
-        <main className="max-w-4xl p-4 mx-auto"> 
+        <main className="max-w-6xl p-4 mx-auto"> 
           <NextIntlClientProvider messages={messages}>
             <AppProvider> 
                 <Toaster />
