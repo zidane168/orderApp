@@ -1,0 +1,18 @@
+{
+    "HomePage": {
+        "ourStory": "Câu chuyện"
+    },
+    "Error": {
+      "description": "<p>Có lỗi xảy ra</p>",
+      "title": "Lỗi"
+    },  
+    "LocaleSwitcher": {
+      "label": "Đổi ngôn ngữ",
+      "locale": "{locale, select, vi {🇻🇳 Vietnamese} en {🇺🇸 English} other {Unknown}}"
+    }, 
+    "NotFoundPage": {
+      "description": "Vui lòng chuyển hướng sang trang tìm thấy",
+      "title": "Không tìm thấy trang"
+    }
+  }
+  

@@ -6,14 +6,19 @@ import toast from "react-hot-toast";
 import { categoryApi } from "../api/categories/category.api";
 import { ICategory } from "../api/categories/category.api.types"; 
 import DeleteIcon from "@/components/icons/DeleteIcon";
-import swal from "sweetalert";
-
+import swal from "sweetalert"; 
+import { useTranslation } from 'next-i18next'
+  
 export default function Categories(): any {
 
     const { loading: profileLoading , data: profileData } = useProfile(); // tra
     const [ categoryName, setCategoryName ] = useState<string>('')
     const [ categories, setCategories ] = useState<ICategory[]>([]);
     const [ editCategory, setEditCategory ] = useState<ICategory>({id: 0, name: ''});
+
+
+    const { t } = useTranslation();
+    
 
     useEffect(() => {
         fetchCategories();
@@ -44,7 +49,7 @@ export default function Categories(): any {
         ev.preventDefault()
 
         const confirmed = await swal({
-            title: "Are you sure?",
+            title: t('hello'),   // "Are you sure?",
             text: 'You will not be able to recover this one after confirm Delete!',
             icon: 'warning',
             buttons: ['No, cancel it', 'Yes, I am sure'],

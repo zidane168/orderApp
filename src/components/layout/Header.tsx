@@ -7,6 +7,7 @@ import { memberApi } from "@/app/api/members/member.api";
 import { useSessionData } from '@/customHook/useSessionData'
 import { CardContextType, CartContext } from '../AppContext';
 import ShoppingCartIcon from '../icons/ShoppingCartIcon';
+import LocaleSwitcher from '../LocaleSwithcher';
 
 
 export default function Header() {
@@ -46,44 +47,47 @@ export default function Header() {
     }, [ session ])
     
     return (
-        <header className="flex items-center justify-between w-full mt-4"> 
-            <nav className="flex items-center gap-8 font-semibold text-gray-500" >
-                <Link className="text-2xl font-semibold text-primary" href={'/'}> ST PIZZA </Link>
-                <Link href={'/'}> Home </Link>
-                <Link href={'/menu'}> Menu </Link>
-                <Link href={'/#about'}> About </Link>
-                <Link href={'/#contact'}> Contact </Link> 
-            </nav>
+        <>
+            <LocaleSwitcher />
+            <header className="flex items-center justify-between w-full mt-4"> 
+                <nav className="flex items-center gap-8 font-semibold text-gray-500" >
+                    <Link className="text-2xl font-semibold text-primary" href={'/'}> ST PIZZA </Link>
+                    <Link href={'/'}> Home </Link>
+                    <Link href={'/menu'}> Menu </Link>
+                    <Link href={'/#about'}> About </Link>
+                    <Link href={'/#contact'}> Contact </Link> 
+                </nav>
 
-            <nav className="flex items-center gap-4 font-semibold text-gray-500">
-                {status == 'authenticated' && (
-                    <>
-                        <div className='w-[200px]'>  
-                            <Link  href={'/profile'} > Hello,  { firstName } </Link>  
+                <nav className="flex items-center gap-4 font-semibold text-gray-500">
+                    {status == 'authenticated' && (
+                        <>
+                            <div className='w-[200px]'>  
+                                <Link  href={'/profile'} > Hello,  { firstName } </Link>  
+                            </div>
+                            <button
+                                onClick={() => signOut()}
+                                className='text-white rounded-full bg-primary'
+                            >Logout </button> 
+                        </>
+                    )}
+                    {status == 'unauthenticated' && (
+                        <>
+                            <Link href={'/login'}> Login </Link>
+                            <Link href={'/register'} className = "px-4 py-2 text-white rounded-full bg-primary">  Register </Link> 
+                        </> 
+                    )} 
+
+                    
+                    <Link href={'/cart'}> 
+                        <div className="relative">
+                            <ShoppingCartIcon className={'w-8 h-8'}/> 
+                            <div className="absolute top-[-15px] right-[-5px] text-white font-semibold bg-primary p-1 leading-3 rounded-full"> 
+                                {cartProducts.length > 99 ? '99+' : cartProducts.length} 
+                            </div> 
                         </div>
-                        <button
-                            onClick={() => signOut()}
-                            className='text-white rounded-full bg-primary'
-                        >Logout </button> 
-                    </>
-                )}
-                {status == 'unauthenticated' && (
-                    <>
-                        <Link href={'/login'}> Login </Link>
-                        <Link href={'/register'} className = "px-4 py-2 text-white rounded-full bg-primary">  Register </Link> 
-                    </> 
-                )} 
-
-                
-                <Link href={'/cart'}> 
-                    <div className="relative">
-                        <ShoppingCartIcon className={'w-8 h-8'}/> 
-                        <div className="absolute top-[-15px] right-[-5px] text-white font-semibold bg-primary p-1 leading-3 rounded-full"> 
-                            {cartProducts.length > 99 ? '99+' : cartProducts.length} 
-                        </div> 
-                    </div>
-                </Link>  
-            </nav>
-        </header>
+                    </Link>  
+                </nav>
+            </header>
+        </>
     )
 }

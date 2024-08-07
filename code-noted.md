@@ -445,4 +445,8 @@ export default function AppQuillTextEditor2( {value, setValue} : IQuill ) {
 
 # dùng dangerouslySetInnerHTML để chuyển HTML có thẻ sang không thẻ
 <div className="text-sm text-gray-500 truncate max-h-16" dangerouslySetInnerHTML={{ __html: description }} />
+
+
+# multiple language, phải tìm cho bằng được
+https://next-intl-docs.vercel.app/docs/getting-started/app-router/without-i18n-routing
                

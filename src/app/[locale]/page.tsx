@@ -1,16 +1,20 @@
 import Hero from "@/components/layout/Hero";
 import HomeMenu from "@/components/layout/HomeMenu";
 import SectionHeaders from "@/components/layout/SectionHeaders";
+import LocaleSwitcher from "@/components/LocaleSwithcher";
+import {useTranslations} from 'next-intl';
 
-export default function Home() {
+export default  function Home() { 
+ 
+  const t = useTranslations('HomePage');
   return (
    <>
-   
+    
     <Hero />
     <HomeMenu />
     <section className="my-16 text-center" id="about">
       <SectionHeaders 
-        subHeader={'Our story'}
+        subHeader={ t('ourStory') }
         mainHeader={'About us'}
       />
       <div className="flex flex-col max-w-md gap-4 mx-auto mt-4 text-gray-500">
@@ -34,3 +38,4 @@ export default function Home() {
    </>
   );
 }
+  

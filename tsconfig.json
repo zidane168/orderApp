@@ -35,7 +35,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/app/api/auth/[...nextauth]/route.js"
-  ],
+, "next-i18next.config.mjs"  ],
   "exclude": [
     "node_modules"
   ]
