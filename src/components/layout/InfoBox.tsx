@@ -1,6 +1,6 @@
-export default function InfoBox( { children } : { children : String } ) {
+export default function InfoBox( { children } : { children : React.ReactNode } ) {
     return (
-        <div className="text-center bg-blue-200 p-4 rounded-lg border-4 border-blue-500"> 
+        <div className="p-4 text-center bg-blue-200 border-4 border-blue-500 rounded-lg"> 
             { children } 
         </div>
     )

@@ -3,13 +3,45 @@
       "ourStory": "Câu chuyện của chúng tôi"
     },
     "CommonPage": {
+        "loadingUserInfo": "Hiển thị thông tin tài khoản ...",
+        "areYouSure": "Bạn có chắc không?",
+        "youWillNotBeAbleToRecoverThisOneAfterConfirmDelete": "Một khi đã xoá Không thể phục lại dữ liệu này!",
+        "warning": "Chú ý",
+        "noCancelIt": "Huỷ bỏ",
+        "yesIamSure": "Đồng ý!", 
+        "notAnAdmin": "Không phải là Admin", 
+        "deleting": "Đang xoá...", 
+        "update": "Cập nhật", 
+        "create": "Tạo mới", 
+        "profile": "Thông tin tài khoản",
+        "categories": "Danh sách Pizza",
+        "menuItems": "Thực đơn",
+        "orders": "Các đơn hàng", 
         "inputEmailHere": "Vui lòng nhập email tại đây",
         "inputPasswordHere": "Vui lòng nhập password tại đây",
         "anErrorHasOccurred": "Có lỗi xảy ra",
         "pleaseTryAgainLater": "Vui lòng thử lại",
         "userCreated": "Đăng ký thành công!",
          "loginSuccessfully": "Đăng nhập thành công",
-        "registerSuccessfully": "Đăng ký thành công"
+        "registerSuccessfully": "Đăng ký thành công",
+        "saved": "Lưu trữ",
+        "uploadAvatar": "Upload Avatar",
+        "uploadImage": "Upload Hình ảnh",
+        "uploading": "Đang uploading...",
+        "uploadCompleted": "Upload hoàn tất",
+        "noImage": "Không có hình ảnh"
+    },
+    "CategoryPage": {
+      "categoryDeletedSuccessfully": "Xoá danh sách thành công!",
+      "errorDeletedCategory": "Có lỗi trong quá trình xoá danh sách",
+      "updatingCategory": "Đang cập nhật danh sách...",
+      "updateCategory": "Cập nhật danh sách",
+      "creatingCategory": "Đang khởi tạo danh sách...",
+      "errorWhileCreatingCategory": "Có lỗi trong quá trình tạo mới danh sách",
+      "updateCategorySuccessfully": "Cập nhật danh sách thành công",
+      "createCategorySuccessfully": "Khởi tạo danh sách thành công",
+      "editCategory": "Cập nhật danh sách",
+      "newCategoryName": "Tên danh sách mới"
     },
     "RegisterPage": {
         "register": "Đăng ký", 
@@ -24,6 +56,17 @@
       "register": "Đăng ký",
       "orLoginWithProvider": "Hay đăng nhập với: ",
       "loginWithGoogle": "Đăng nhập bằng Google"
+    }, 
+    "ProfilePage": {
+      "saving": "Đang lưu trữ...",
+      "profileIsSaved": "Lưu trữ thành công!",
+      "userName": "Tài khoản",
+      "email": "Địa chỉ email",
+      "address": "Địa chỉ cư trú",
+      "phoneNumber": "Số điện thoại liên lạc",
+      "country": "Thị trấn",
+      "postalCode": "Postal code",
+      "city": "Thành phố"
     },
     "Error": {
       "description": "<p>Có lỗi xảy ra</p>",

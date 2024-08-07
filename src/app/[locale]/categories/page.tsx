@@ -7,7 +7,7 @@ import { categoryApi } from "../api/categories/category.api";
 import { ICategory } from "../api/categories/category.api.types"; 
 import DeleteIcon from "@/components/icons/DeleteIcon";
 import swal from "sweetalert"; 
-import { useTranslation } from 'next-i18next'
+import { useTranslations } from 'next-intl'
   
 export default function Categories(): any {
 
@@ -17,8 +17,8 @@ export default function Categories(): any {
     const [ editCategory, setEditCategory ] = useState<ICategory>({id: 0, name: ''});
 
 
-    const { t } = useTranslation();
-    
+    const t = useTranslations("CategoryPage"); 
+    const tc = useTranslations("CommonPage");
 
     useEffect(() => {
         fetchCategories();
@@ -35,12 +35,12 @@ export default function Categories(): any {
     }
 
     if (profileLoading) {
-        return "Loading user info ..."
+        return tc('loadingUserInfo')
     }  
 
     if (profileData) {
         if (!profileData.is_admin) {
-            return 'Not an admin';
+            return tc('notAnAdmin')
         }
     }
    
@@ -49,10 +49,10 @@ export default function Categories(): any {
         ev.preventDefault()
 
         const confirmed = await swal({
-            title: t('hello'),   // "Are you sure?",
-            text: 'You will not be able to recover this one after confirm Delete!',
+            title: tc('areYouSure'),   // "Are you sure?",
+            text: tc('youWillNotBeAbleToRecoverThisOneAfterConfirmDelete'), // 
             icon: 'warning',
-            buttons: ['No, cancel it', 'Yes, I am sure'],
+            buttons: [tc('noCancelIt'), tc('yesIamSure')],
             dangerMode: true,
         })
 
@@ -67,8 +67,8 @@ export default function Categories(): any {
                 if (res.data.status === 200) {
                     fetchCategories(); 
                     await toast.promise(Promise.resolve(), {
-                        loading: 'Deleting ...',
-                        success: 'Category deleted successfully',
+                        loading: tc('deleting'),
+                        success: t('categoryDeletedSuccessfully'),
                         error:'',
                     }) 
                 } else { 
@@ -76,7 +76,7 @@ export default function Categories(): any {
                     await toast.promise(Promise.reject(res.data.message), {
                         loading: ' ',
                         success: ' ',
-                        error: 'Error delete category!',
+                        error: t('errorDeletedCategory')
                     })
                    
                 } 
@@ -115,75 +115,71 @@ export default function Categories(): any {
                 fetchCategories();
                 setEditCategory({id: 0, name: ''});  // fix bug when edit xong se con luu lai va them moi vo tinh se edit
                 await toast.promise(Promise.resolve(), {
-                    loading: editCategory?.id > 0 ?  'Updating category' : 'Creating your new category ...',
-                    error: 'Error while creating category!',
-                    success: '',
+                    loading: editCategory?.id > 0 ?  t('updatingCategory')  : t('creatingCategory') ,
+                    success: editCategory?.id > 0 ? t('updateCategorySuccessfully') : t('createCategorySuccessfully') ,
+                    error: '',
                 }) 
             }
             else {
                 await toast.promise(Promise.reject(res.data.message), {
-                    loading:  '',
-                    error: '',
-                    success: editCategory?.id > 0 ? 'Congrats, Category updated succeed' : 'Congrats, Category created succeed!',
+                    loading:  '', 
+                    success: '',
+                    error: t('errorWhileCreatingCategory'),
+                   
                 }) 
             }
              
-        })
- 
-
-        await toast.promise(creationPromise, {
-            loading: editCategory?.id > 0 ?  'Updating category' : 'Creating your new category ...',
-            error: 'Error while creating category!',
-            success: editCategory?.id > 0 ? 'Congrats, Category updated succeed' : 'Congrats, Category created succeed!',
         }) 
     }
     
     return (
-        <section className="max-w-lg mx-auto mt-8"> 
-            <UserTabs isAdmin={ true } />
+        <div className="mt-6">
+            <UserTabs isAdmin={ true } /> 
+            <section className="max-w-lg mx-auto mt-8"> 
             
-            <form className="mt-8" onSubmit={ handleNewCategorySubmit }>
-                <div className="flex items-end gap-2">
-                    <div className="grow">
-                        <label> 
-                            { editCategory?.id > 0 ? 'Update Category' : 'New Category Name' } 
-                            { editCategory && (
-                                <>
-                                    : <b> { editCategory.name } </b>
-                                </>
-                            )}
-                        </label>
-                        <input type="text" 
-                            value={ categoryName } 
-                            onChange={ ev => setCategoryName(ev.target.value) }/>
-                    </div>
-                    <div  className="pb-2">
-                        <button type="submit" > { editCategory?.id > 0 ? 'Update' : 'Create'} </button>
-                    </div>
-                </div> 
-            </form>
-
-            <div>
-                <h2 className="mt-8 text-sm text-gray-500"> Edit Category: </h2>
-                {categories?.length > 0 && categories.map(c =>  
-                    
-                    <div className="relative" key={ c.id }>
-                        <button   
-                            onClick={() => {
-                                setEditCategory(c);
-                                setCategoryName(c.name)
-                            }}
-                            className="flex gap-1 p-2 px-4 mb-1 bg-gray-300 cursor-pointer rounded-xl">
-                            <span> { c.name } </span>
-                        </button>
-                        <div 
-                            onClick={ ev =>  handleDelete(ev, c.id) }
-                            className="border rounded-md bg-white shadow-lg absolute transition cursor-pointer hover:scale-[115%] top-1 right-2"> 
-                            <DeleteIcon className="w-8 h-8"/> 
+                <form className="mt-8" onSubmit={ handleNewCategorySubmit }>
+                    <div className="flex items-end gap-2">
+                        <div className="grow">
+                            <label> 
+                                { editCategory?.id > 0 ? t('updateCategory') : t('newCategoryName') } 
+                                { editCategory && (
+                                    <>
+                                        : <b> { editCategory.name } </b>
+                                    </>
+                                )}
+                            </label>
+                            <input type="text" 
+                                value={ categoryName } 
+                                onChange={ ev => setCategoryName(ev.target.value) }/>
                         </div>
-                    </div>
-                )}
-            </div>
-        </section>
+                        <div  className="pb-2">
+                            <button type="submit" > { editCategory?.id > 0 ? tc('update') : tc('create') } </button>
+                        </div>
+                    </div> 
+                </form>
+
+                <div>
+                    <h2 className="mt-8 text-sm text-gray-500"> { t('editCategory') } </h2>
+                    {categories?.length > 0 && categories.map(c =>  
+                        
+                        <div className="relative" key={ c.id }>
+                            <button   
+                                onClick={() => {
+                                    setEditCategory(c);
+                                    setCategoryName(c.name)
+                                }}
+                                className="flex gap-1 p-2 px-4 mb-1 bg-gray-300 cursor-pointer rounded-xl">
+                                <span> { c.name } </span>
+                            </button>
+                            <div 
+                                onClick={ ev =>  handleDelete(ev, c.id) }
+                                className="border rounded-md bg-white shadow-lg absolute transition cursor-pointer hover:scale-[115%] top-1 right-2"> 
+                                <DeleteIcon className="w-8 h-8"/> 
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </section> 
+        </div>
     )
 }

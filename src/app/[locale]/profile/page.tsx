@@ -7,10 +7,10 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast  from 'react-hot-toast';
 import { memberApi } from "../api/members/member.api";
-import EditableImage from "@/components/EditableImage";   
-
+import EditableImage from "@/components/EditableImage";    
 import { useRouter } from 'next/navigation';
-import { useSessionData } from '@/customHook/useSessionData'
+import { useSessionData } from '@/customHook/useSessionData' 
+import { useTranslations } from "next-intl"; 
 
 export default function ProfilePage() {
     const session = useSession();   
@@ -32,8 +32,9 @@ export default function ProfilePage() {
     const [ country, setCountry ] = useState<string>('')
     const [ postalCode, setPostalCode ] = useState<string>('')
     const [ city, setCity ] = useState<string>('')
-    
-    
+
+    const t = useTranslations("ProfilePage"); 
+    const tc = useTranslations("CommonPage");
 
     useEffect( () => {
 
@@ -120,8 +121,8 @@ export default function ProfilePage() {
                 }
             
                 await toast.promise(Promise.resolve(), {
-                    loading: 'Saving ...',
-                    success: 'Profile is saved!',
+                    loading: t('saving') ,
+                    success: t('profileIsSaved...') ,
                     error: ' ',
                 })
             
@@ -145,11 +146,11 @@ export default function ProfilePage() {
             <div className='max-w-lg p-4 mx-auto border'>
 
                 {saved && (
-                    <SuccessBox> Profile saved </SuccessBox>
+                    <SuccessBox> { t('profileIsSaved') } </SuccessBox>
                 )}
 
                 {isSaving && (
-                   <InfoBox > Saving ... </InfoBox>
+                   <InfoBox> { t('saving') } </InfoBox>
                 )}
                 
                 <div className="flex items-start gap-4 mt-2">
@@ -162,47 +163,47 @@ export default function ProfilePage() {
                     </div>
                     <form className="grow" onSubmit={ handleProfileInfoUpdate }>
                         <div>
-                            <label> Username </label>
+                            <label> { t('userName') } </label>
                             <input type="text"  value= { userName  }  onChange={ e => setUserName(e.target.value) }/>
                         </div>
                         
                         <div>
-                            <label> Email </label>
+                            <label> { t('email') } </label>
                             <input type="email" disabled={ true }  value= { userEmail }  />
                         </div>
 
                         <div>
-                            <label> Address </label>
+                            <label> { t('address') } </label>
                             <input type="text"  
                                     value={ address } onChange={ e => setAddress(e.target.value) } /> 
                         </div>
 
                         <div>
-                                <label> Phone Number </label>
+                                <label> { t('phoneNumber') } </label>
                                 <input type="text"  
                                         value={ phone } onChange={ e => setPhone(e.target.value) } /> 
                             </div>
 
                         <div>
-                            <label> Country </label>
+                            <label> { t('country') } </label>
                             <input type="text"  
                                     value={ country } onChange={ e => setCountry(e.target.value) } /> 
                         </div>
 
                         <div className="flex gap-4">
                             <div>
-                                <label> Postal code </label>
+                                <label> { t('postalCode') }  </label>
                                 <input type="text"  
                                         value={ postalCode } onChange={ e => setPostalCode(e.target.value) } /> 
                             </div>
                             <div>
-                                <label> City </label>
+                                <label> { t('city') } </label>
                                 <input type="text"  
                                         value={ city } onChange={ e => setCity(e.target.value) } /> 
                             </div>
                         </div>
 
-                        <button type="submit"> Save </button>
+                        <button type="submit"> { tc('saved') } </button>
                     </form>
                 </div>
             </div>

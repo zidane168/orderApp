@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useSessionData } from "@/customHook/useSessionData";
 import { memberApi } from "@/app/[locale]/api/members/member.api";
 import { productApi } from "@/app/[locale]/api/product/product.api";
-
+import { useTranslations } from "next-intl"
 interface IEditableImage {
     link: string,
     setLink: React.Dispatch<React.SetStateAction<string>>
@@ -14,11 +14,12 @@ interface IEditableImage {
 }
 
 export default function EditableImage( {link, setLink, setAvatarId, typeUpload = 1} : IEditableImage ) {   
-
+ 
+    const tc = useTranslations("CommonPage");
+    
     async function handleFileChange(ev: React.ChangeEvent<HTMLInputElement>) {  
-      
-        const files = ev.target.files;
-        console.log(files)
+ 
+        const files = ev.target.files; 
         if (files && files.length > 0) {
             
             let message = "";   
@@ -50,8 +51,8 @@ export default function EditableImage( {link, setLink, setAvatarId, typeUpload =
                     
             if (uploadPromise) {
                 await toast.promise(uploadPromise, {
-                    loading: 'Uploading ...',
-                    success: 'Upload complete',
+                    loading: tc('uploading'),
+                    success: tc('uploadCompleted'),
                     error: message,
                 }) 
             } 
@@ -68,14 +69,14 @@ export default function EditableImage( {link, setLink, setAvatarId, typeUpload =
             {
                 !link && (
                     <div className="p-4 mb-1 text-center text-gray-500 bg-gray-200 rounded-lg">
-                        No image
+                        { tc('noImage') }
                     </div>
                 )
             }
 
             <label>
                 <input type="file" className="hidden" onChange={ handleFileChange } />
-                <span className="block p-2 text-center bg-white border border-gray-300 rounded-lg cursor-pointer"> Upload { typeUpload == 1 ? 'Avatar' : 'Image' }  </span>
+                <span className="block p-2 text-center bg-white border border-gray-300 rounded-lg cursor-pointer">  { typeUpload == 1 ? tc('uploadAvatar')  : tc('uploadImage') }  </span>
             </label>
         </>
     )

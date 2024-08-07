@@ -3,13 +3,45 @@
         "ourStory": "Our Story"
     },
     "CommonPage": {
+        "loadingUserInfo": "Loading user information ...",
+        "areYouSure": "Are you sure?",
+        "youWillNotBeAbleToRecoverThisOneAfterConfirmDelete": "You will not be able to recover this one after confirm Delete!",
+        "warning": "Warning",
+        "noCancelIt": "No, Cancel it",
+        "yesIamSure": "Yes, I am sure", 
+        "notAnAdmin": "Not an Admin", 
+        "deleting": "Deleting...", 
+        "update": "Update", 
+        "create": "Create", 
+        "profile": "Profile",
+        "categories": "Categories",
+        "menuItems": "Menu Items",
+        "orders": "Orders", 
         "inputEmailHere": "Input email here",
         "inputPasswordHere": "Input password here",
         "anErrorHasOccurred": "An error has occurred",
         "pleaseTryAgainLater": "Please try again later",
         "userCreated": "User created!",
         "loginSuccessfully": "Login successfully",
-        "registerSuccessfully": "Register successfully"
+        "registerSuccessfully": "Register successfully",
+        "saved": "Saved",
+        "uploadAvatar": "Upload Avatar",
+        "uploadImage": "Upload Image",
+        "uploading": "Uploading...",
+        "uploadCompleted": "Upload completed",
+        "noImage": "No image"
+    },
+    "CategoryPage": {
+      "categoryDeletedSuccessfully": "Deleted category successfully",
+      "errorDeletedCategory": "Error while deleted category",
+      "updatingCategory": "Updating category...",
+      "updateCategory": "Update category",
+      "creatingCategory": "Creating category...",
+      "errorWhileCreatingCategory": "Error while creating category",
+      "updateCategorySuccessfully": "Update category successfully",
+      "createCategorySuccessfully": "Create category successfully",
+      "editCategory": "Edit category",
+      "newCategoryName": "New category name"
     },
     "RegisterPage": {
         "register": "Register", 
@@ -24,6 +56,17 @@
       "register": "Register",
       "orLoginWithProvider": "Or login with Provider",
       "loginWithGoogle": "Login with Google"
+    },
+    "ProfilePage": {
+      "saving": "Saving...",
+      "profileIsSaved": "Profile is saved!",
+      "userName": "User Name",
+      "email": "Email",
+      "address": "Address",
+      "phoneNumber": "Phone Number",
+      "country": "Country",
+      "postalCode": "Postal code",
+      "city": "City"
     },
     "Error": {
       "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>",

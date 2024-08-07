@@ -472,6 +472,7 @@ src/app/[locale]/layout.tsx -->   <NextIntlClientProvider messages={messages}>
 use translate
 import {useTranslations} from 'next-intl';
 const t = useTranslations('HomePage');
+const tc = useTranslations('CommonPage');
 subHeader={ t('ourStory') }
 
 vi.json
@@ -486,3 +487,5 @@ vi.json
 
 page (kiểu cũ)
                
+# không nên dùng children trong children prop, nên dùng React.ReactNode vì but React’s children prop can be of various types, including arrays, which is why you’re seeing the error.
+  export default function SuccessBox( { children } : { children : React.ReactNode } ) {...}
