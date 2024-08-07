@@ -1,6 +1,20 @@
 {
     "HomePage": {
-        "ourStory": "Câu chuyện"
+      "ourStory": "Câu chuyện của chúng tôi"
+    },
+    "CommonPage": {
+        "inputEmailHere": "Vui lòng nhập email tại đây",
+        "inputPasswordHere": "Vui lòng nhập password tại đây",
+        "anErrorHasOccurred": "Có lỗi xảy ra",
+        "pleaseTryAgainLater": "Vui lòng thử lại",
+        "userCreated": "Đăng ký thành công!"
+    },
+    "RegisterPage": {
+        "register": "Đăng ký", 
+        "orLoginWithProvider": "Hay đăng nhập với: ",
+        "existingAccount": "Tồn tại tài khoản?",
+        "login": "Đăng nhập ngay!",
+        "loginWithGoogle": "Đăng nhập bằng Google"
     },
     "Error": {
       "description": "<p>Có lỗi xảy ra</p>",

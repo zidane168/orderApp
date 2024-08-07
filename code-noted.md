@@ -469,5 +469,20 @@ src/app/[locale]/page.tsx
 src/app/[locale]/layout.tsx -->   <NextIntlClientProvider messages={messages}>
 
 
+use translate
+import {useTranslations} from 'next-intl';
+const t = useTranslations('HomePage');
+subHeader={ t('ourStory') }
+
+vi.json
+{
+  "HomePage": {
+    "ourStory": "Câu chuyện!"
+  }
+}
+
+
+
+
 page (kiểu cũ)
                

@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-  
+import {useTranslations} from 'next-intl';
+
+
 export default function RegisterPage() {
 
     const [ email, setEmail ] = useState('');
@@ -33,52 +35,56 @@ export default function RegisterPage() {
  
         setCreateingUser(false)
     }
+    
+    const t = useTranslations('RegisterPage');
+    const tc = useTranslations('CommonPage');
 
     return (
         <section>
-            <h1 className="mt-6 text-4xl text-center text-primary"> Register </h1>
+            <h1 className="mt-6 text-4xl text-center text-primary"> { t('register')} </h1>
 
             { userCreated && (
                     <div className="my-4 text-center"> 
-                        User Created.<br /> Now you can <Link href={'/login'} className="underline"> Login </Link>
+                        { tc('userCreated') }<br /> <Link href={'/login'} className="underline"> { t('login')}  </Link>
                     </div>
             ) }
 
             { error && (
                 <div className="my-4 text-center">
-                    An error has occurred <br/>
-                    Please try again later
+                    { tc('anErrorHasOccurred') } <br/>
+                    { tc('pleaseTryAgainLater') } 
                 </div>
             )}
 
 
             <form className="block max-w-xs mx-auto" onSubmit={ handleFormSubmit }>
                 <input type="email" 
-                    placeholder="Input email here" value={ email } onChange={ e => setEmail(e.target.value) } 
+                    placeholder={ tc('inputEmailHere') } value={ email } onChange={ e => setEmail(e.target.value) } 
                     disabled={ creatingUser }
                 />
                 
-                <input type="password" placeholder="Input your assword here" value={ password } 
+                <input type="password" placeholder={ tc('inputPasswordHere') }  value={ password } 
                     disabled={ creatingUser }
                     onChange={ e => setPassword(e.target.value) } />
                 
                 <button 
                     disabled={ creatingUser }
                     type="submit"> 
-                    Register 
+                    { t('register') }
                 </button>
 
-                <div className="my-4 text-center text-gray-400">
-                   Or login with provide
+                <div className="my-4 text-center text-gray-400"> 
+                   { t('orLoginWithProvider') }
                 </div>
 
                 <button className="flex items-center justify-center gap-4 loginWithGoogle" disabled={ creatingUser }> 
                     <Image width={'32'}  height={'32'}  src={'/google.png'} objectFit={'contain'}   alt={'google icon'} />
-                    Login with google 
+                    { t('loginWithGoogle') }
                 </button>
 
-                <div className="my-6 text-center text-gray-500 border-t text">
-                    Existing Account? <Link className="underline" href={'/login'}> Login </Link>
+                <div className="p-4 my-6 mt-4 text-center text-gray-500 border-t text">
+                    { t('existingAccount') } 
+                    <Link className="underline" href={'/login'}> { t('login') } </Link>
                 </div>
             </form>
           

@@ -1,7 +1,7 @@
 import Hero from "@/components/layout/Hero";
 import HomeMenu from "@/components/layout/HomeMenu";
 import SectionHeaders from "@/components/layout/SectionHeaders";
-import LocaleSwitcher from "@/components/LocaleSwithcher";
+ 
 import {useTranslations} from 'next-intl';
 
 export default  function Home() { 

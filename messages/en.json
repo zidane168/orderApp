@@ -2,6 +2,20 @@
     "HomePage": {
         "ourStory": "Our Story"
     },
+    "CommonPage": {
+        "inputEmailHere": "Input email here",
+        "inputPasswordHere": "Input password here",
+        "anErrorHasOccurred": "An error has occurred",
+        "pleaseTryAgainLater": "Please try again later",
+        "userCreated": "Đăng ký thành công!"
+    },
+    "RegisterPage": {
+        "register": "Register", 
+        "orLoginWithProvider": "Or login with Provider",
+        "existingAccount": "Existing Account?",
+        "login": "Login now!",
+        "loginWithGoogle": "Login with Google"
+    },
     "Error": {
       "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>",
       "title": "Something went wrong!"
