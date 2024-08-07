@@ -449,4 +449,25 @@ export default function AppQuillTextEditor2( {value, setValue} : IQuill ) {
 
 # multiple language, phải tìm cho bằng được
 https://next-intl-docs.vercel.app/docs/getting-started/app-router/without-i18n-routing
+
+có hai dạng:
+app (kiểu mới)
+ -> dùng next.config.mjs
+ -> dùng next.config.js
+
+các file liên quan
+src/i18n.ts
+src/middleware.ts
+src/config.ts
+src/navigation.ts
+
+src/components/LocaleSwitcherSelect.tsx
+src/components/LocaleSwitcher.tsx
+
+src/app/[locale]
+src/app/[locale]/page.tsx
+src/app/[locale]/layout.tsx -->   <NextIntlClientProvider messages={messages}>
+
+
+page (kiểu cũ)
                

@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast  from 'react-hot-toast';
-import { memberApi } from "../api/members/member.api";
+import { memberApi } from "../../api/members/member.api";
 import EditableImage from "@/components/EditableImage";   
 
 import { useRouter } from 'next/navigation';
