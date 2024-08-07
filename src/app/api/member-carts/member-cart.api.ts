@@ -34,6 +34,10 @@ export function memberCartApi()
     })
   }   
 
+  const getAllInvoice = () => { 
+    return commonAxios.get<AxiosResponseData>("/api/v1/invoices/getAll.json");
+  }  
+
   const updateQuantity = async(payload: IUpdateQuantity) => {
     return await commonAxios.patch<AxiosResponseData>("/api/v1/memberTempCarts/updateQuantity.json", { 
       member_temp_cart_id: payload.member_temp_cart_id,
@@ -41,6 +45,6 @@ export function memberCartApi()
     })
   }
   
-  return { addToCart, showCart, createInvoice, clearCart, removeCart, updateQuantity };
+  return { addToCart, showCart, createInvoice, getAllInvoice, clearCart, removeCart, updateQuantity };
 };
  

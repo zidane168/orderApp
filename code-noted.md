@@ -441,3 +441,8 @@ export default function AppQuillTextEditor2( {value, setValue} : IQuill ) {
         </div>
     )
 }
+
+
+# dùng dangerouslySetInnerHTML để chuyển HTML có thẻ sang không thẻ
+<div className="text-sm text-gray-500 truncate max-h-16" dangerouslySetInnerHTML={{ __html: description }} />
+               
