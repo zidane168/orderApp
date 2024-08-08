@@ -17,7 +17,7 @@ export default function Header() {
     const t = useTranslations('HomePage');
     const tc = useTranslations("CommonPage")
     const tl = useTranslations('LoginPage');
-    const tr = useTranslations("RegisterPage")
+    const tr = useTranslations("RegisterPage") 
 
     const [ firstName, setFirstName ] = useState('')  
     const { cartProducts, showCarts } = useContext(CartContext) as CardContextType
@@ -81,7 +81,6 @@ export default function Header() {
                             <Link href={'/register'} className = "px-4 py-2 text-white rounded-full bg-primary">  { tr('register') } </Link> 
                         </> 
                     )} 
-
                     
                     <Link href={'/cart'}> 
                         <div className="relative">

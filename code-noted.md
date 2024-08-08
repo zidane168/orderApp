@@ -483,6 +483,10 @@ vi.json
   }
 }
 
+# để biết current language ta use useLocale trong 'next-intl'
+import {useLocale, useTranslations} from 'next-intl';
+
+const locale = useLocale()
 
 
 

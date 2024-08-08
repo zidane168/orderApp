@@ -16,14 +16,7 @@ export const PaginatedItems = ({
   offset = 0, 
   handleClickSearch  
 }: IPagination) => {
-
-// export const PaginatedItems = ({ 
-//     itemsPerPage = 0,
-//     total = 0,
-//     offset = 0, 
-//     handleClickSearch 
-
-// }) => {
+ 
     const t = useTranslations('CommonPage')
     
     const [ pageCount, setPageCount ] = useState(0)
