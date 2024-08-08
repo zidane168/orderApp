@@ -53,7 +53,6 @@ export default function CartPage() {
     const [ totalFormatted, setTotalFormatted ] = useState<string>('') 
 
     const tp = useTranslations("ProfilePage"); 
-    const tc = useTranslations("CommonPage");
     const tca = useTranslations("CartPage");
     const tmi = useTranslations("MenuItemPage");
 
