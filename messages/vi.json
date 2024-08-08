@@ -40,6 +40,18 @@
         "uploadCompleted": "Upload hoàn tất",
         "noImage": "Không có hình ảnh"
     }, 
+    "CartPage": {
+      "checkout": "Giỏ hàng",
+      "noProductInYourShoppingCart": "Không có sản phẩm trong giỏ hàng",
+      "pay": "Thanh toán"
+    }, 
+    "OrderPage": {
+      "invoiceId": "Mã Invoice",
+      "orderDate": "Thời gian order",
+      "subTotal": "Tổng cộng",
+      "listProductsPurchase": "Danh sách Pizza đặt mua",
+      "yourPackageAlreadyDeliverySuccessfully": "Đơn hàng Pizza đã được giao thành công đến cho bạn"
+    },
     "MenuItemPage": {
       "createNewMenuItem": "Tạo mới Danh sách Pizza",
       "showAllProducts": "Hiển thị toàn bộ sản phẩm",

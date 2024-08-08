@@ -40,6 +40,18 @@
         "uploadCompleted": "Upload completed",
         "noImage": "No image"
     },
+    "CartPage": {
+      "checkout": "Checkout",
+      "noProductInYourShoppingCart": "No products in your shopping cart",
+      "pay": "Pay"
+    },
+    "OrderPage": {
+      "invoiceId": "Invoice Id",
+      "orderDate": "Order date",
+      "subTotal": "Sub Total",
+      "listProductsPurchase": "List Products Purchase",
+      "yourPackageAlreadyDeliverySuccessfully": "Your package already delivery successfully"
+    },
     "MenuItemPage": {
       "createNewMenuItem": "Create new menu item",
       "showAllProducts": "Show all products",

@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 import { formattedPrice } from "@/utils/helpers/common";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { useTranslations } from 'next-intl'
 
 // ----------------------- ----------------------- FLOW cart page ----------------------- -----------------------
 // 1. Loaded first time => get cartProducts from appContext.tsx 
@@ -50,6 +51,11 @@ export default function CartPage() {
     const [ reduceButtonsStatus, setReduceButtonsStatus ] = useState<boolean[]>([]);
     const [ increaseButtonsStatus, setIncreaseButtonsStatus ] = useState<boolean[]>([]);
     const [ totalFormatted, setTotalFormatted ] = useState<string>('') 
+
+    const tp = useTranslations("ProfilePage"); 
+    const tc = useTranslations("CommonPage");
+    const tca = useTranslations("CartPage");
+    const tmi = useTranslations("MenuItemPage");
 
     useEffect(() => {
         fetchProfile();
@@ -236,12 +242,12 @@ export default function CartPage() {
                 <SectionHeaders mainHeader="Cart"  />
             </div>
             
-            <h1 className="text-2xl font-bold"> Checkout </h1>
+            <h1 className="text-2xl font-bold"> { tca('checkout') } </h1>
          
             <div> 
                 {
                     cartProducts?.length === 0 && (
-                        <div className=""> No products in your shopping cart </div>
+                        <div className=""> { tca('noProductInYourShoppingCart') } </div>
                     )
                 }
                 { cartProducts?.length > 0 && cartProducts.map( (cart:ICartItem, index) => (
@@ -258,7 +264,7 @@ export default function CartPage() {
                             {
                                 cart.product_size && (
                                     <div className="text-sm text-gray-700"> 
-                                        <div> Size: <span> { cart.product_size?.name } </span> </div>
+                                        <div> { tmi('sizes') }: <span> { cart.product_size?.name } </span> </div>
                                     </div>
                                 )
                             }
@@ -315,32 +321,32 @@ export default function CartPage() {
                   
             <div className="p-4 mt-8 bg-gray-300 rounded-lg">  
                     <div>
-                        <label> Phone </label>
+                        <label> { tp('phoneNumber') }  </label>
                         <input  readOnly={ true } type="text" value={ phone } onChange={ e => setPhone(e.target.value) }/>
                     </div>
                     <div>
-                        <label> Street address </label>
+                        <label> { tp('address') }  </label>
                         <input  readOnly={ true } type="text" value={ streetAddress } onChange={ e => setStreetAddress(e.target.value) }/>
                     </div>
                     <div className="flex gap-2">
                         <div >
-                            <label> Postal code </label>
+                            <label> { tp('postalCode') }  </label>
                             <input readOnly={ true } type="text" value={ postalCode }  onChange={ e => setPostalCode(e.target.value) }/>
                         </div>
                         <div className="grow">
-                            <label> City </label>
+                            <label>  { tp('city') }  </label>
                             <input  readOnly={ true } type="text" value={ city } onChange={ e => setCity(e.target.value) }/>
                         </div>
                     </div>
                     <div>
-                        <label> Country </label>
+                        <label>  { tp('country') }  </label>
                         <input  readOnly={ true } type="text" value={ country } onChange={ e => setCountry(e.target.value) }/>
                     </div>
 
                    <button className=""
                         onClick={handlePayButtonClick}
                         type="submit">
-                            Pay {totalFormatted}
+                             { tca('pay') }  {totalFormatted}
                    </button>
 
                 </div>
