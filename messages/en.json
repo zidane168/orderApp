@@ -7,6 +7,8 @@
         "menu": "Menu"
     },
     "CommonPage": {
+        "next": "Next",
+        "previous": "Previous",
         "pleaseSelect": "-- Please select --",
         "dataIsSaved": "Data is saved",
         "saving": "Saving...",

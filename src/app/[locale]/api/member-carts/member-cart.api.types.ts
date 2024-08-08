@@ -23,3 +23,8 @@ export type IUpdateQuantity = {
 export type IInvoice = {
     member_temp_cart_ids: number[], 
 }
+
+export type IPagination = {
+    limit: number,
+    page: number,
+}

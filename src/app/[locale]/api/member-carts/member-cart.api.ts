@@ -1,7 +1,7 @@
 import commonAxios from "@/utils/axios/common.axios";
 
 import type { AxiosResponseData } from "@/utils/axios/axios.types"; 
-import { IMemberTempCart, IUpdateQuantity, IInvoice } from "./member-cart.api.types";
+import { IMemberTempCart, IUpdateQuantity, IInvoice, IPagination } from "./member-cart.api.types";
  
 export function memberCartApi()  
 {     
@@ -38,6 +38,10 @@ export function memberCartApi()
     return commonAxios.get<AxiosResponseData>("/api/v1/invoices/getAll.json");
   }  
 
+  const getAllInvoicePagination = (pagination : IPagination ) => { 
+    return commonAxios.get<AxiosResponseData>("/api/v1/invoices/getPagination.json?limit=" + pagination.limit + "&page=" + pagination.page);
+  }  
+
   const updateQuantity = async(payload: IUpdateQuantity) => {
     return await commonAxios.patch<AxiosResponseData>("/api/v1/memberTempCarts/updateQuantity.json", { 
       member_temp_cart_id: payload.member_temp_cart_id,
@@ -45,6 +49,6 @@ export function memberCartApi()
     })
   }
   
-  return { addToCart, showCart, createInvoice, getAllInvoice, clearCart, removeCart, updateQuantity };
+  return { addToCart, showCart, createInvoice, getAllInvoice, clearCart, removeCart, updateQuantity, getAllInvoicePagination };
 };
  
