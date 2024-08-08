@@ -54,6 +54,8 @@ export default function Header() {
     return (
         <>
             <LocaleSwitcher />
+
+            <hr />
             <header className="flex items-center justify-between w-full mt-4"> 
                 <nav className="flex items-center gap-8 font-semibold text-gray-500" >
                     <Link className="text-2xl font-semibold text-primary" href={'/'}> ST PIZZA </Link>
