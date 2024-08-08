@@ -17,9 +17,12 @@ interface ComboboxProps {
 
 const ComboBox: React.FC<ComboboxProps> = ({ 
   isRequired = true,
-  name, list, setSelectedItem,
+  name, 
+  list, 
+  setSelectedItem,
   defaultItem } : ComboboxProps) => {
   
+  defaultItem = defaultItem ? defaultItem : {id: list[0]?.id, name: list[0]?.name}
   const [selectedKeys, setSelectedKeys] = React.useState(new Set([ String(defaultItem.id) ]));   
 
   const selectedValue = React.useMemo(() => { 
@@ -47,10 +50,6 @@ const ComboBox: React.FC<ComboboxProps> = ({
 
   return (
     <>
-   <button type="button">
-      Button
-    </button>
-
 
       {
         name && (

@@ -3,6 +3,7 @@ https://heroicons.com/
 sweetalert2
 toast
 react-flying-item: yarn add react-flying-item
+react-pagination để phan trang tư động: yarn add react-pagination
 
 # tsx
 because of have html, render
@@ -489,3 +490,23 @@ page (kiểu cũ)
                
 # không nên dùng children trong children prop, nên dùng React.ReactNode vì but React’s children prop can be of various types, including arrays, which is why you’re seeing the error.
   export default function SuccessBox( { children } : { children : React.ReactNode } ) {...}
+
+
+# dùng react-pagination để phan trang tư động
+
+# setup setFilter
+
+interface IFilter {
+  label: string,
+  value: number,
+}
+
+const [ filter, setFilter ] = useState<IFilter[]>([])
+ setFilter(() => {
+                const temp = [
+                    { label: "10", value: 1 },
+                    { label: "50", value: 2 },
+                    { label: "100", value: 3 }
+                ];
+                return temp;
+            })

@@ -7,6 +7,9 @@
         "menu": "Menu"
     },
     "CommonPage": {
+        "page": "Page",
+        "display": "Show",
+        "filter": "Filter",
         "next": "Next",
         "previous": "Previous",
         "pleaseSelect": "-- Please select --",

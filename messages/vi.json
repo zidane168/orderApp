@@ -7,6 +7,9 @@
       "menu": "Thực đơn"
     },
     "CommonPage": {
+        "page": "Trang hiện tại",
+        "display": "Hiển thị",
+        "filter": "Lọc",
         "next": "Trang kế",
         "previous": "Trang Trước",
         "pleaseSelect": "-- Vui lòng chọn --",
