@@ -35,11 +35,7 @@ const authOptions =
                     password:   credentials.password,
                 })  
   
-                if (res.data.status === 200) {
-                    console.log(' <--------tra ve tu BE ') 
-                    console.log(res.data.params)
-                    console.log(' <--------tra ve tu BE ')
-
+                if (res.data.status === 200) { 
                     return { status: true, user_data:  res.data.params, access_token: res.data.params.token}
                     // return Promise.resolve(response.params);  // ket qua tra ve tu server se di xuong function jwt b
                  
@@ -98,17 +94,14 @@ const authOptions =
                 if (account.provider === "credentials") {
                     token.access_token = await user.user_data.token
                 
-                } else if (account.provider === "google") {
-                    console.log('account.access_token: ', account.access_token)
+                } else if (account.provider === "google") { 
                     token.access_token = await account.access_token
                 }  
             }
             return Promise.resolve(token);
         },
 
-        async session({ session, token } ) {   
-            // session.user = token.user_info.user_data;    
-            // get user by token  
+        async session({ session, token } ) {    
 
             const { getProfileByToken } = memberApi();
             const res = await getProfileByToken(token.access_token)

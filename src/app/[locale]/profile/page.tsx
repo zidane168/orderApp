@@ -58,8 +58,8 @@ export default function ProfilePage() {
                             const country = userData.country
                             const city = userData.city
                             const postalCode = userData.postal_code
-                            const phone = userData.phone
-    
+                            const phone = userData.phone 
+                            
                             setUserName( userName )
                             setIsAdmin( isAdmin ) 
                             setImage( avatar )  

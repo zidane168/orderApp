@@ -1,10 +1,10 @@
 'use client';
 
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import {useTranslations} from 'next-intl';
-
+import { useTranslations } from 'next-intl';
 
 export default function RegisterPage() {
 
@@ -77,7 +77,9 @@ export default function RegisterPage() {
                    { t('orLoginWithProvider') }
                 </div>
 
-                <button className="flex items-center justify-center gap-4 loginWithGoogle" disabled={ creatingUser }> 
+                <button 
+                    onClick={ () => signIn('google', { callbackUrl: '/' }) }
+                    className="flex items-center justify-center gap-4 loginWithGoogle" disabled={ creatingUser }> 
                     <Image width={'32'}  height={'32'}  src={'/google.png'} objectFit={'contain'}   alt={'google icon'} />
                     { t('loginWithGoogle') }
                 </button>
