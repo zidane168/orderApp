@@ -40,7 +40,7 @@ export default function ProfilePage() {
 
         const fetchData = async () => {
             if (status === 'authenticated') { 
-                const session = await useSessionData()      // must use await this for make asynchoronous and useSessionData is get from a hook 
+                const session = await useSessionData()      // must use await this for make asynchronous and useSessionData is get from a hook 
                 if (session) { 
                 
                     try {
@@ -122,7 +122,7 @@ export default function ProfilePage() {
             
                 await toast.promise(Promise.resolve(), {
                     loading: t('saving') ,
-                    success: t('profileIsSaved...') ,
+                    success: t('profileIsSaved') ,
                     error: ' ',
                 })
             

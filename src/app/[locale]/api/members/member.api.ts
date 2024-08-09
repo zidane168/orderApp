@@ -1,7 +1,7 @@
 import commonAxios from "@/utils/axios/common.axios";
 
 import type { AxiosResponseData } from "@/utils/axios/axios.types";
-import { IMember, ILogin, IFile, IUpdateMember } from "./member.api.types"; 
+import { IMember, ILogin, IFile, IUpdateMember, ILoginGoogle } from "./member.api.types"; 
  
 export function memberApi()  
 {   
@@ -22,12 +22,20 @@ export function memberApi()
     })
   }
 
+  const loginGoogle = async(payload: ILoginGoogle) => { 
+    payload.type = 1;
+    return await commonAxios.post<AxiosResponseData>("/api/v1/members/login.json", {
+      access_token: payload.access_token,
+      type: payload.type
+    });
+  }   
+
   const login = async(payload: ILogin) => { 
     payload.type = 2;
     return await commonAxios.post<AxiosResponseData>("/api/v1/members/login.json", {
       ...payload
     });
-  }  
+  }   
 
  const uploadImage2 = async (file: File) => { 
   try {   
@@ -69,6 +77,6 @@ export function memberApi()
    
 //   }
 
-  return { login, register, getProfile, uploadImage2, update };
+  return { login, loginGoogle, register, getProfile, uploadImage2, update };
 };
  

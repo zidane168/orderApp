@@ -24,12 +24,17 @@ export type IUpdateMember = {
   city?: string,
 }
 
+export type ILoginGoogle = {
+  access_token: string,       // for social google login
+  type: number
+}
 
 export type ILogin = {
   email: string, 
-  password: string,
+  password: string, 
   type: number
 }
+  
 
 export type IFile = {
   file: File,
