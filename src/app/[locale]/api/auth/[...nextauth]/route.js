@@ -40,7 +40,7 @@ const authOptions =
                     console.log(res.data.params)
                     console.log(' <--------tra ve tu BE ')
 
-                    return { status: true, user_data:  res.data.params}
+                    return { status: true, user_data:  res.data.params, access_token: res.data.params.token}
                     // return Promise.resolve(response.params);  // ket qua tra ve tu server se di xuong function jwt b
                  
                 } else { 
@@ -82,14 +82,8 @@ const authOptions =
                     type: 1
                 });
                 
-                if (response.data.status === 200) {
-                    // user.token = response?.data.params?.token;
-
-                    console.log(' <--------tra ve tu BE ')
-                    user = response?.data.params;
-                    console.log(user)
-                    console.log(' <--------tra ve tu BE ') 
-                    return true;        // xac nhan login thanh cong tu BE, 
+                if (response.data.status === 200) { 
+                    return true;        // xac nhan login thanh cong tu BE, ko biet vi sao ket qua tra ve o day ko den dc jwt, nên ko thể lay dc token moi gen trong DB, chi co the lay access_token tu google tra ve 
                   
                 } else {
                     return false;       // nếu false sẽ ko thể nào dang nhap google dc
@@ -98,41 +92,33 @@ const authOptions =
             return true; // Do different verification for other providers that don't have `email_verified`
         },
             
-        async jwt({ token, user, account, profile, isNewUser }) { 
-          
+        async jwt({ token, user, account, profile, isNewUser }) {   
+
             if (account) {
-                token.user_info = await user;   // save token from server  
-
-                console.log( '========>  token ')
-                console.log(token ) 
-                console.log( '========> ')
+                if (account.provider === "credentials") {
+                    token.access_token = await user.user_data.token
                 
-                console.log( '========>  account ')
-                console.log(account ) 
-                console.log( '========> ')
-
-                console.log( '========>  user ')
-                console.log(user ) 
-                console.log( '========> ')
-                // data : 
-                //     expires: "2024-08-04T03:47:13.781Z" 
-                //     user : 
-                //         email: "xyzabc@gmail.com"
-                //         enabled: 1
-                //         name: "Vi"
-                //         token:"eyJ0eXAiOiJKV9.Fs5kaAlG0KSOC_W405q8"
-                //     status: "authenticated"
+                } else if (account.provider === "google") {
+                    console.log('account.access_token: ', account.access_token)
+                    token.access_token = await account.access_token
+                }  
             }
             return Promise.resolve(token);
         },
 
         async session({ session, token } ) {   
-            session.user = token.user_info.user_data;    
+            // session.user = token.user_info.user_data;    
+            // get user by token  
 
-            console.log( '<======== console.log(session.user) ')
-            console.log(token ) 
-            console.log( '<======== ')
-            return Promise.resolve(session);
+            const { getProfileByToken } = memberApi();
+            const res = await getProfileByToken(token.access_token)
+ 
+            if (res.data.status === 200) {
+                session.user = res.data.params;
+                return Promise.resolve(session);
+            }
+
+            return Promise.resolve(null);
         },
     },
 }

@@ -16,6 +16,11 @@ export function memberApi()
     return commonAxios.get<AxiosResponseData>("/api/v1/members/getProfile.json");
   }  
 
+  const getProfileByToken = (token: string) => { 
+    return commonAxios.get<AxiosResponseData>("/api/v1/members/getProfileByToken.json?access_token=" + token);
+  }  
+
+
   const update = async(payload: IUpdateMember) => {
     return await commonAxios.post<AxiosResponseData>("/api/v1/members/update.json", {
      ...payload,
@@ -77,6 +82,6 @@ export function memberApi()
    
 //   }
 
-  return { login, loginGoogle, register, getProfile, uploadImage2, update };
+  return { login, loginGoogle, register, getProfile, uploadImage2, update, getProfileByToken };
 };
  
