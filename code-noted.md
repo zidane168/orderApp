@@ -4,6 +4,9 @@ sweetalert2
 toast
 react-flying-item: yarn add react-flying-item
 react-pagination để phan trang tư động: yarn add react-pagination
+next-intl  ( import { useTranslations } from 'next-intl' const t = useTranslations('HomePage'))
+js-cookie ( Cookies.set('language', 'en') )
+
 
 # tsx
 because of have html, render
@@ -514,3 +517,9 @@ const [ filter, setFilter ] = useState<IFilter[]>([])
                 ];
                 return temp;
             })
+
+
+
+# using Cookies from 'js-cookie' to store the language
+Cookies.set('language', nextLocale);
+Cookies.get('language')
