@@ -3,6 +3,8 @@ import axios from "axios";
 import { commonConfig } from "../configs";
 import { useSessionData } from "@/customHook/useSessionData";
 
+import Cookies from 'js-cookie'
+
 const commonAxios = axios.create({
   baseURL: `${commonConfig.API_HOST}`,
   headers: {
@@ -41,6 +43,16 @@ commonAxios.interceptors.request.use(
     if (req.data?.isFile) { 
       req.headers["Content-Type"] = 'multipart/form-data'; 
     } 
+ 
+    let language = 'en_US';
+    if (Cookies.get('language') == 'en') {
+      language = 'en_US'
+
+    } else if (Cookies.get('language') == 'vi') {
+      language = 'vi_VN'
+    }
+
+    req.headers["Language"] = language 
 
     switch ((req.method as string).toUpperCase()) {
       case "GET": {

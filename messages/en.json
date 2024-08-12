@@ -4,7 +4,15 @@
         "home": "Home",
         "about": "About",
         "contact": "Contact",
-        "menu": "Menu"
+        "menu": "Menu",
+        "orderNow": "Order Now",
+        "learnMore": "Learn more",
+        "dontHesitate": "Don't Hesitate", 
+        "contactUs": "Gọi ngay cho chúng tôi qua", 
+        "checkOut": "Check out", 
+        "ourBestSellers": "Our Best Sellers",
+        "aboutUsStory1": "Pizza, a dish of Italian origin, consists of a flattened disk of bread dough topped with a delightful combination of olive oil, oregano, tomatoes, olives, mozzarella (or other cheese), and various other ingredients. It’s baked quickly, often in a wood-fired oven heated to a very high temperature, resulting in a crispy crust and gooey cheese. From the classic Margherita—topped with tomatoes, mozzarella, and basil—to creative variations like California-style pizza, this beloved food has conquered taste buds worldwide. Whether you prefer pepperoni or arugula, pizza remains a universal favorite",
+        "aboutUsStory2": "Pizza Hut’s fragrance adventure took an unexpected turn when they introduced their limited edition Eau de Pizza Hut in 2012. The scent was initially launched in Canada and later made its way to the United States for a Valentine’s Day promotion. But here’s the twist: it didn’t smell like pizza at all! Instead, lucky recipients described it as having the warm and pleasing aroma of cinnamon rolls"
     },
     "CommonPage": {
         "page": "Page",
@@ -48,7 +56,10 @@
     "CartPage": {
       "checkout": "Checkout",
       "noProductInYourShoppingCart": "No products in your shopping cart",
-      "pay": "Pay"
+      "pay": "Pay",
+      "addToCart": "add to cart",
+      "addTo": "Add to",
+      "from": "from"
     },
     "OrderPage": {
       "invoiceId": "Invoice Id",

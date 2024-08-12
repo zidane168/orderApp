@@ -6,8 +6,11 @@ import { useEffect, useState } from "react";
 import { productApi } from "@/app/[locale]/api/product/product.api";
 import toast from 'react-hot-toast'
 import { IProduct } from "@/app/[locale]/api/product";
+import { useTranslations } from 'next-intl'
 
 export default function HomeMenu() {
+
+    const th = useTranslations('HomePage')
 
     const [ products, setProducts ] = useState<IProduct[]>([])
     useEffect(() => {
@@ -45,7 +48,7 @@ export default function HomeMenu() {
                 </div>
             </div>
             <div className="mt-32 text-center"> 
-              <SectionHeaders subHeader={'check out'} mainHeader={'Our Best Sellers'} />
+              <SectionHeaders subHeader={ th('checkOut') } mainHeader={ th('ourBestSellers') } />
             </div>
 
 

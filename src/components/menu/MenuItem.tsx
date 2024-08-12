@@ -25,6 +25,7 @@ interface IMenuItem {
 export default function MenuItem({ id, path, name, description, basePrice, isAddToCart = true,
     sizes, extras 
 } : IMenuItem) {
+
   
     const [ showPopup, setShowPopup ] = useState<boolean>(false);
     
@@ -35,7 +36,8 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
         );  // init first sizes value
     const [ selectedExtras, setSelectedExtras ] = useState<IProductExtra[]>([]);
 
-    const tc = useTranslations("CommonPage"); 
+    const tc = useTranslations("CommonPage");  
+    const tcp = useTranslations('CartPage')
 
     const router = useRouter();
     async function handleDeleteProduct(ev: React.MouseEvent<Element>) {
@@ -179,7 +181,7 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                                         targetTop={'5%'}
                                        
                                         className="sticky mt-4 text-white bg-primary bottom-2" type="button">
-                                        Add to cart ${selectedPrice} 
+                                        { tcp('addToCart') } ${selectedPrice} 
                                     </FlyingButton>
                                 </div>
                             </div>
@@ -205,10 +207,10 @@ export default function MenuItem({ id, path, name, description, basePrice, isAdd
                             >    
                             <div className="flex items-center gap-2 justify-evenly"> 
                                 <div className="flex">
-                                    <div> Add to </div>
+                                    <div> { tcp('addTo') }  </div>
                                     <ShoppingCartIcon className="w-6 h-6"/> 
                                 </div>
-                                <div> (from ${basePrice}) </div> 
+                                <div> ({ tcp('from') } ${basePrice}) </div> 
                             </div>
                         </button>
                         :  

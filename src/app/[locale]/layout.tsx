@@ -15,8 +15,8 @@ const roboto = Roboto({ subsets: ["latin"], weight: ['400', '500', '700'] });
 require('dotenv').config();
 
 export const metadata: Metadata = {
-  title: "Order app",
-  description: "By ViLH",
+  title: "Lucky Pizza - Order app",
+  description: "By Zidane",
 };
 
 export default async function RootLayout({

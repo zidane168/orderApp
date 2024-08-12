@@ -3,7 +3,8 @@
 import clsx from 'clsx';
 import {useParams} from 'next/navigation';
 import {ChangeEvent, ReactNode, useTransition} from 'react';
-import {useRouter, usePathname} from '@/navigation';
+import {useRouter, usePathname} from '@/navigation'; 
+import Cookies from 'js-cookie'
 
 type Props = {
   children: ReactNode;
@@ -23,6 +24,10 @@ export default function LocaleSwitcherSelect({
 
   function onSelectChange(event: ChangeEvent<HTMLSelectElement>) {
     const nextLocale = event.target.value;
+
+    // gan vào cookies chon ngon ngu o day
+    Cookies.set('language', nextLocale);
+    
     startTransition(() => {
       router.replace(
         // @ts-expect-error -- TypeScript will validate that only known `params`

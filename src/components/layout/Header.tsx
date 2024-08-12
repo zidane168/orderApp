@@ -25,7 +25,9 @@ export default function Header() {
     useEffect(() => {  
         const fetchData = async () => {
             try {
-                const session = await useSessionData()      // must use await this for make asynchronous and useSessionData is get from a hook 
+                const session = await useSessionData()      
+                // must use await this for make asynchronous and useSessionData is get from a hook 
+                // must use this for can get session.user nha?
               
                 if (session) {  
                     const { getProfile } = memberApi();
@@ -49,7 +51,7 @@ export default function Header() {
             }
         }; 
         fetchData();
-    }, [ session ])
+    }, []) //[ session ])
     
     return (
         <>
@@ -58,7 +60,7 @@ export default function Header() {
             <hr />
             <header className="flex items-center justify-between w-full mt-4"> 
                 <nav className="flex items-center gap-8 font-semibold text-gray-500" >
-                    <Link className="text-2xl font-semibold text-primary" href={'/'}> ST PIZZA </Link>
+                    <Link className="text-2xl font-semibold text-primary" href={'/'}> LUCKY PIZZA </Link>
                     <Link href={'/'}> { t('home') } </Link>
                     <Link href={'/menu'}> { t('menu') } </Link>
                     <Link href={'/#about'}> { t('about') } </Link>

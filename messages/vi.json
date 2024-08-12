@@ -4,7 +4,15 @@
       "home": "Trang chủ",
       "about": "Về chúng tôi",
       "contact": "Liên hệ",
-      "menu": "Thực đơn"
+      "menu": "Thực đơn",
+      "orderNow": "Đặt hàng ngay",
+      "learnMore": "Xem thêm", 
+      "dontHesitate": "Đừng ngần ngại", 
+      "contactUs": "Gọi ngay cho chúng tôi qua", 
+      "checkOut": "Đặt món ngay", 
+      "ourBestSellers": "Những món ngon nhất của chúng tôi",
+      "aboutUsStory1": "Pizza, một món ăn có nguồn gốc từ Ý, bao gồm một đĩa bột bánh mì dẹt phủ một hỗn hợp tuyệt vời gồm dầu ô liu, rau oregano, cà chua, ô liu, phô mai mozzarella (hoặc phô mai khác) và nhiều thành phần khác. Pizza được nướng nhanh, thường là trong lò đốt củi được đun nóng ở nhiệt độ rất cao, tạo ra lớp vỏ giòn và phô mai dẻo. Từ món Margherita cổ điển—phủ cà chua, phô mai mozzarella và húng quế—cho đến những biến thể sáng tạo như pizza kiểu California, món ăn được yêu thích này đã chinh phục vị giác của mọi người trên toàn thế giới. Cho dù bạn thích pepperoni hay arugula, pizza vẫn là món ăn được yêu thích nhất",
+      "aboutUsStory2": "Cuộc phiêu lưu hương thơm của Pizza Hut đã có một bước ngoặt bất ngờ khi họ giới thiệu phiên bản giới hạn Eau de Pizza Hut vào năm 2012. Mùi hương này ban đầu được ra mắt tại Canada và sau đó được đưa đến Hoa Kỳ để quảng bá cho Ngày lễ tình nhân. Nhưng đây là sự thật: nó không hề có mùi giống pizza! Thay vào đó, những người nhận may mắn mô tả nó có mùi thơm ấm áp và dễ chịu của bánh quế"
     },
     "CommonPage": {
         "page": "Trang hiện tại",
@@ -48,7 +56,10 @@
     "CartPage": {
       "checkout": "Giỏ hàng",
       "noProductInYourShoppingCart": "Không có sản phẩm trong giỏ hàng",
-      "pay": "Thanh toán"
+      "pay": "Thanh toán",
+      "addToCart": "Thêm vào giỏ hàng",
+      "addTo": "Thêm vào",
+      "from": "Chỉ từ"
     }, 
     "OrderPage": {
       "invoiceId": "Mã Invoice",
