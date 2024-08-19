@@ -523,3 +523,24 @@ const [ filter, setFilter ] = useState<IFilter[]>([])
 # using Cookies from 'js-cookie' to store the language
 Cookies.set('language', nextLocale);
 Cookies.get('language')
+
+
+# nestjs
+mot cach paging moi, truong hop la mang gop cua nhiều bảng mình ko thể dùng page, limt, skip trong câu truy vấn dc, thì ta dùng như sau, cai tệ cua Truong Hop này trên BE là phải lấy hết nhưng FE thì show ra cái cần thiết thôi
+  async getAllInvitation(eventId: number, page: number, limit: number) : Promise<Object> {      
+         
+        const customer = await this.eventInvitationCustomerService.getInfo(eventId)
+        const partner = await this.eventInvitationPartnerService.getInfo(eventId)
+        const vendor = await this.eventInvitationVendorService.getInfo(eventId)  
+
+        let datas =  [
+            ...customer,
+            ...partner, 
+            ...vendor
+        ]  
+
+        const start = (page - 1) * limit
+        const end = start + limit
+        const paginatedData = datas.slice(start, end); 
+        return  {page: page,  limit : limit, totalPages: Math.ceil((datas.length) / limit), data: paginatedData} 
+    } 
